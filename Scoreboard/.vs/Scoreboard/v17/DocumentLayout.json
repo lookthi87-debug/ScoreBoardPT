@@ -1,0 +1,398 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\BongDa\\Scoreboard\\Scoreboard\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\loginform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\ucformview_toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\ucformview_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\adduserdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\adduserdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\database\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\database\\repository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\addupdatematchs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\addupdatematchs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\adminform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\adminform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\addupdatematchs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\addupdatematchs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\adminform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\adminform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\adduserdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\adduserdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\database\\sqlitehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\database\\sqlitehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\ucformview_toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\ucformview_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\readme.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\ucformview_user.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_user.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|d:\\bongda\\scoreboard\\scoreboard\\scoreboard\\ucformview_toggle.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\ucformview_toggle.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|D:\\BongDa\\Scoreboard\\Scoreboard\\scoreboard\\multiselectdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\Scoreboard.csproj|solutionrelative:scoreboard\\multiselectdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoginForm.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\LoginForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\LoginForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\LoginForm.cs",
+              "RelativeToolTip": "Scoreboard\\LoginForm.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAApwJwAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-30T04:44:05.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AdminForm.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AdminForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AdminForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AdminForm.cs",
+              "RelativeToolTip": "Scoreboard\\AdminForm.cs",
+              "ViewState": "AgIAAPEAAAAAAAAAAAAiwAkBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T03:46:16.263Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainForm.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MainForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\MainForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MainForm.cs",
+              "RelativeToolTip": "Scoreboard\\MainForm.cs",
+              "ViewState": "AgIAAAUBAAAAAAAAAAAUwBcBAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:42:29.22Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Toggle.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Toggle.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\Toggle.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Toggle.cs",
+              "RelativeToolTip": "Scoreboard\\Toggle.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAiwFAAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-30T02:51:47.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ucFormView_Toggle.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_Toggle.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.cs",
+              "RelativeToolTip": "Scoreboard\\ucFormView_Toggle.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAQwDAAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T02:35:42.079Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ucFormView_User.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_User.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.cs",
+              "RelativeToolTip": "Scoreboard\\ucFormView_User.cs",
+              "ViewState": "AgIAAO8AAAAAAAAAAADwv/wAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T04:26:16.56Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainForm.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MainForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\MainForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MainForm.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\MainForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T01:38:59.042Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "LoginForm.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\LoginForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\LoginForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\LoginForm.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\LoginForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T02:27:44.856Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "AddUserDialog.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUserDialog.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AddUserDialog.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUserDialog.cs",
+              "RelativeToolTip": "Scoreboard\\AddUserDialog.cs",
+              "ViewState": "AgIAAK8AAAAAAAAAAADgv78AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T07:26:11.193Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "AddUpdateMatchs.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUpdateMatchs.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AddUpdateMatchs.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUpdateMatchs.cs",
+              "RelativeToolTip": "Scoreboard\\AddUpdateMatchs.cs",
+              "ViewState": "AgIAAFABAAAAAAAAAAAhwGMBAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T04:27:02.058Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Repository.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Database\\Repository.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\Database\\Repository.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Database\\Repository.cs",
+              "RelativeToolTip": "Scoreboard\\Database\\Repository.cs",
+              "ViewState": "AgIAALoAAAAAAAAAAAAgwMYAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-30T04:17:21.543Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AddUpdateMatchs.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUpdateMatchs.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AddUpdateMatchs.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUpdateMatchs.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\AddUpdateMatchs.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T04:26:55.958Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AdminForm.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AdminForm.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AdminForm.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AdminForm.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\AdminForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T03:47:30.316Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "SQLiteHelper.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Database\\SQLiteHelper.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\Database\\SQLiteHelper.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Database\\SQLiteHelper.cs",
+              "RelativeToolTip": "Scoreboard\\Database\\SQLiteHelper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T03:56:16.165Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AddUserDialog.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUserDialog.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\AddUserDialog.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\AddUserDialog.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\AddUserDialog.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T02:12:37.862Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Program.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\Program.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Program.cs",
+              "RelativeToolTip": "Scoreboard\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-24T04:24:35.434Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ucFormView_Toggle.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_Toggle.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\ucFormView_Toggle.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T02:36:12.607Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Toggle.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Toggle.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\Toggle.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Toggle.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\Toggle.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-30T02:51:45.186Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ucFormView_User.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_User.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\ucFormView_User.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-23T04:17:45.942Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ucFormView_Toggle.Designer.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.Designer.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_Toggle.Designer.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_Toggle.Designer.cs",
+              "RelativeToolTip": "Scoreboard\\ucFormView_Toggle.Designer.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAMwBwAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T03:07:17.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "README.txt",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\README.txt",
+              "RelativeDocumentMoniker": "Scoreboard\\README.txt",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\README.txt",
+              "RelativeToolTip": "Scoreboard\\README.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-09-24T08:47:21.319Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ucFormView_User.Designer.cs",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.Designer.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\ucFormView_User.Designer.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\ucFormView_User.Designer.cs",
+              "RelativeToolTip": "Scoreboard\\ucFormView_User.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T03:26:30.869Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "MultiSelectDialog.cs [Design]",
+              "DocumentMoniker": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MultiSelectDialog.cs",
+              "RelativeDocumentMoniker": "Scoreboard\\MultiSelectDialog.cs",
+              "ToolTip": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\MultiSelectDialog.cs [Design]",
+              "RelativeToolTip": "Scoreboard\\MultiSelectDialog.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-29T02:27:28.3Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
