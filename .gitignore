@@ -1,0 +1,76 @@
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.VC.db
+*.VC.opendb
+*.ncb
+*.opensdf
+*.sdf
+*.cache
+*.db
+
+# Build results
+[Bb]in/
+[Oo]bj/
+publish/
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.log
+
+# VS Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+*.dotCover
+
+# Resharper
+_ReSharper*/
+*.ReSharper
+*.DotSettings.user
+
+# NuGet v3
+*.nuget.props
+*.nuget.targets
+
+# Local secrets & settings
+appsettings*.json
+secrets.json
+*.Local.user
+*.Local.settings.json
+
+# Rider / JetBrains caches
+.idea/
+*.iml
+
+# Publish / deployment
+*.publish.xml
+wwwroot/
+publish/
+
+# IIS / web (if any)
+*.vspscc
+*.vssscc
+
+# Other common
+*.zip
+*.7z
+*.tar.gz
+*.bak
+*.tmp
+
+# If you have designer-generated resource files that you DO NOT want in repo (rare)
+# *.resx

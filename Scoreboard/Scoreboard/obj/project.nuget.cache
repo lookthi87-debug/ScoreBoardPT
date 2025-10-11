@@ -1,12 +1,38 @@
 {
   "version": 2,
-  "dgSpecHash": "NX+8q+w9DcI=",
+  "dgSpecHash": "IAbda3PdrrE=",
   "success": true,
-  "projectFilePath": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
+  "projectFilePath": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Thi-NV\\.nuget\\packages\\materialskin.2\\2.2.1\\materialskin.2.2.2.1.nupkg.sha512",
-    "C:\\Users\\Thi-NV\\.nuget\\packages\\stub.system.data.sqlite.core.netframework\\1.0.117\\stub.system.data.sqlite.core.netframework.1.0.117.nupkg.sha512",
-    "C:\\Users\\Thi-NV\\.nuget\\packages\\system.data.sqlite.core\\1.0.117\\system.data.sqlite.core.1.0.117.nupkg.sha512"
+    "C:\\Users\\locnt\\.nuget\\packages\\materialskin.2\\2.2.1\\materialskin.2.2.2.1.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\npgsql\\6.0.7\\npgsql.6.0.7.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.threading.tasks.extensions\\4.5.4\\system.threading.tasks.extensions.4.5.4.nupkg.sha512",
+    "C:\\Users\\locnt\\.nuget\\packages\\system.valuetuple\\4.5.0\\system.valuetuple.4.5.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "message": "Package 'Npgsql' 6.0.7 has a known high severity vulnerability, https://github.com/advisories/GHSA-x9vc-6hfv-hg8c",
+      "projectPath": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
+      "warningLevel": 1,
+      "filePath": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
+      "libraryId": "Npgsql",
+      "targetGraphs": [
+        ".NETFramework,Version=v4.8",
+        ".NETFramework,Version=v4.8/win-x86"
+      ]
+    }
+  ]
 }

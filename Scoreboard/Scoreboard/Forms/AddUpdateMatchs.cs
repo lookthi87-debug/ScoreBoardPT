@@ -31,6 +31,7 @@ namespace Scoreboard
         private Label lblTrongTai;
         private System.Windows.Forms.ComboBox cbUser;
         private Label lblTeam1;
+
         private void InitializeComponent()
         {
             this.lblTenTranDau = new System.Windows.Forms.Label();
@@ -60,7 +61,7 @@ namespace Scoreboard
             // 
             // lblTenTranDau
             // 
-            this.lblTenTranDau.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTenTranDau.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenTranDau.Location = new System.Drawing.Point(29, 88);
             this.lblTenTranDau.Name = "lblTenTranDau";
             this.lblTenTranDau.Size = new System.Drawing.Size(110, 23);
@@ -70,23 +71,23 @@ namespace Scoreboard
             // 
             // txtTitle
             // 
-            this.txtTitle.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.txtTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTitle.Location = new System.Drawing.Point(145, 88);
             this.txtTitle.Name = "txtTitle";
-            this.txtTitle.Size = new System.Drawing.Size(621, 29);
+            this.txtTitle.Size = new System.Drawing.Size(621, 26);
             this.txtTitle.TabIndex = 1;
             // 
             // txtTeam1
             // 
-            this.txtTeam1.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.txtTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTeam1.Location = new System.Drawing.Point(145, 231);
             this.txtTeam1.Name = "txtTeam1";
-            this.txtTeam1.Size = new System.Drawing.Size(303, 29);
+            this.txtTeam1.Size = new System.Drawing.Size(303, 26);
             this.txtTeam1.TabIndex = 8;
             // 
             // lblTeam1
             // 
-            this.lblTeam1.Font = new System.Drawing.Font("Arial Unicode MS", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam1.Location = new System.Drawing.Point(145, 201);
             this.lblTeam1.Name = "lblTeam1";
             this.lblTeam1.Size = new System.Drawing.Size(303, 27);
@@ -96,15 +97,15 @@ namespace Scoreboard
             // 
             // txtTeam2
             // 
-            this.txtTeam2.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.txtTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTeam2.Location = new System.Drawing.Point(463, 231);
             this.txtTeam2.Name = "txtTeam2";
-            this.txtTeam2.Size = new System.Drawing.Size(303, 29);
+            this.txtTeam2.Size = new System.Drawing.Size(303, 26);
             this.txtTeam2.TabIndex = 9;
             // 
             // lblTeam2
             // 
-            this.lblTeam2.Font = new System.Drawing.Font("Arial Unicode MS", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam2.Location = new System.Drawing.Point(463, 201);
             this.lblTeam2.Name = "lblTeam2";
             this.lblTeam2.Size = new System.Drawing.Size(303, 27);
@@ -114,7 +115,7 @@ namespace Scoreboard
             // 
             // lblName
             // 
-            this.lblName.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblName.Location = new System.Drawing.Point(29, 231);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(110, 23);
@@ -124,7 +125,7 @@ namespace Scoreboard
             // 
             // lblScore
             // 
-            this.lblScore.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore.Location = new System.Drawing.Point(29, 277);
             this.lblScore.Name = "lblScore";
             this.lblScore.Size = new System.Drawing.Size(110, 23);
@@ -134,7 +135,7 @@ namespace Scoreboard
             // 
             // label3
             // 
-            this.label3.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(29, 159);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 23);
@@ -144,7 +145,7 @@ namespace Scoreboard
             // 
             // nSets
             // 
-            this.nSets.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.nSets.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nSets.Location = new System.Drawing.Point(262, 157);
             this.nSets.Minimum = new decimal(new int[] {
             1,
@@ -152,7 +153,7 @@ namespace Scoreboard
             0,
             0});
             this.nSets.Name = "nSets";
-            this.nSets.Size = new System.Drawing.Size(94, 29);
+            this.nSets.Size = new System.Drawing.Size(94, 26);
             this.nSets.TabIndex = 6;
             this.nSets.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nSets.Value = new decimal(new int[] {
@@ -163,7 +164,7 @@ namespace Scoreboard
             // 
             // label4
             // 
-            this.label4.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(29, 123);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(110, 23);
@@ -173,30 +174,30 @@ namespace Scoreboard
             // 
             // txtStartTime
             // 
-            this.txtStartTime.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.txtStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtStartTime.Location = new System.Drawing.Point(145, 123);
             this.txtStartTime.Name = "txtStartTime";
             this.txtStartTime.ReadOnly = true;
-            this.txtStartTime.Size = new System.Drawing.Size(94, 29);
+            this.txtStartTime.Size = new System.Drawing.Size(94, 26);
             this.txtStartTime.TabIndex = 3;
             this.txtStartTime.Text = "00:00";
             this.txtStartTime.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // nScore1
             // 
-            this.nScore1.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.nScore1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nScore1.Location = new System.Drawing.Point(145, 271);
             this.nScore1.Name = "nScore1";
-            this.nScore1.Size = new System.Drawing.Size(108, 29);
+            this.nScore1.Size = new System.Drawing.Size(108, 26);
             this.nScore1.TabIndex = 11;
             this.nScore1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // nScore2
             // 
-            this.nScore2.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.nScore2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nScore2.Location = new System.Drawing.Point(463, 271);
             this.nScore2.Name = "nScore2";
-            this.nScore2.Size = new System.Drawing.Size(108, 29);
+            this.nScore2.Size = new System.Drawing.Size(108, 26);
             this.nScore2.TabIndex = 12;
             this.nScore2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -243,7 +244,7 @@ namespace Scoreboard
             // lblId
             // 
             this.lblId.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.lblId.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblId.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblId.Location = new System.Drawing.Point(508, 144);
             this.lblId.Name = "lblId";
             this.lblId.Size = new System.Drawing.Size(184, 23);
@@ -254,19 +255,19 @@ namespace Scoreboard
             // 
             // cbSets
             // 
-            this.cbSets.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.cbSets.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbSets.FormattingEnabled = true;
             this.cbSets.Items.AddRange(new object[] {
             "Hiệp",
             "Set"});
             this.cbSets.Location = new System.Drawing.Point(145, 157);
             this.cbSets.Name = "cbSets";
-            this.cbSets.Size = new System.Drawing.Size(111, 29);
+            this.cbSets.Size = new System.Drawing.Size(111, 28);
             this.cbSets.TabIndex = 5;
             // 
             // lblTrongTai
             // 
-            this.lblTrongTai.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTrongTai.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTrongTai.Location = new System.Drawing.Point(29, 319);
             this.lblTrongTai.Name = "lblTrongTai";
             this.lblTrongTai.Size = new System.Drawing.Size(110, 23);
@@ -276,12 +277,13 @@ namespace Scoreboard
             // 
             // cbUser
             // 
-            this.cbUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.cbUser.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbUser.FormattingEnabled = true;
             this.cbUser.Location = new System.Drawing.Point(145, 319);
             this.cbUser.Name = "cbUser";
-            this.cbUser.Size = new System.Drawing.Size(426, 29);
+            this.cbUser.Size = new System.Drawing.Size(426, 28);
             this.cbUser.TabIndex = 21;
+            this.cbSets.SelectedIndex = 0;
             // 
             // AddUpdateMatchs
             // 
@@ -324,6 +326,12 @@ namespace Scoreboard
         public AddUpdateMatchs(MatchModel m)
         {
             InitializeComponent();
+            // Always use user objects for DataSource, not just names
+            var users = Repository.GetAllUserNotAdmin("Admin").ToList();
+            cbUser.DataSource = users;
+            cbUser.DisplayMember = "Name";    // Show user name
+            cbUser.ValueMember = "Id";        // Use user Id as value
+            cbUser.SelectedIndex = users.Count > 0 ? 0 : -1;
             lblId.Text = m.Id.ToString();
             if (m.Id != -1)
             { 
@@ -335,24 +343,57 @@ namespace Scoreboard
                 nScore2.Value= m.Score2;
                 nSets.Value = m.Sets;
                 cbSets.Text = m.SetsName;
-                var us = Repository.GetAllUserNotAdmin("Admin");
-                cbUser.DataSource = us;
-                cbUser.DisplayMember = "Name";    // Hiển thị tên
-                cbUser.ValueMember = "Id";
-                if (us.Any(u => u.Id == m.UserId))
+                if (users.Any(u => u.Id == m.UserId))
                 {
                     cbUser.SelectedValue = m.UserId;
                 }
                 else
                 {
-                    cbUser.SelectedIndex = -1;  // Không chọn gì => combobox trống
+                    cbUser.SelectedIndex = -1;  // No selection
                 }
             }
         }
-
         //Lưu kết trận đấu
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Validate dữ liệu
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên trận đấu!");
+                txtTitle.Focus();
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtTeam1.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên đội 1!");
+                txtTeam1.Focus();
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtTeam2.Text))
+            {
+                MessageBox.Show("Vui lòng nhập tên đội 2!");
+                txtTeam2.Focus();
+                return;
+            }
+            if (cbSets.SelectedIndex < 0)
+            {
+                MessageBox.Show("Vui lòng chọn loại hiệp đấu (Hiệp/Set)!");
+                cbSets.Focus();
+                return;
+            }
+            if (nSets.Value < 1)
+            {
+                MessageBox.Show("Số hiệp/set phải lớn hơn 0!");
+                nSets.Focus();
+                return;
+            }
+            if (cbUser.SelectedIndex < 0)
+            {
+                MessageBox.Show("Vui lòng chọn trọng tài!");
+                cbUser.Focus();
+                return;
+            }
+
             var m = new MatchModel {
                 Id = int.Parse(lblId.Text),
                 Title = txtTitle.Text,
@@ -360,14 +401,14 @@ namespace Scoreboard
                 Team2 = txtTeam2.Text,
                 Score1 = (int)nScore1.Value,
                 Score2 = (int)nScore2.Value,
-                SetsName= cbSets.Text,
-                Sets = 1,
+                SetsName = cbSets.Text,
+                Sets = (int)nSets.Value,
                 StartTime = txtStartTime.Text,
                 ElapsedSeconds = 0,
                 IsPaused = 0,
                 Status = 0,
                 ShowToggle = false,
-                UserId = 1,
+                UserId = (int)cbUser.SelectedValue,
             };
             try
             {

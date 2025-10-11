@@ -1,47 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using Npgsql;
+using Scoreboard.Database;
 
 namespace Scoreboard.Database
 {
-    public class User {
-        public int Id { get; set; }
-        public string Username { get; set; }
-        public string Role { get; set; }
-        public string Name { get; set; }
-    }
-    public class MatchModel
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Team1 { get; set; }
-        public string Team2 { get; set; }
-        public int Score1 { get; set; }
-        public int Score2 { get; set; }
-        public string SetsName { get; set; }
-        public int Sets { get; set; }
-        public string StartTime { get; set; }
-        public int ElapsedSeconds { get; set; }
-        public int IsPaused { get; set; }
-        public int Status { get; set; }
-        public bool ShowToggle { get; set; }
-        public int UserId { get; set; }
-    }
-    public class MatchState
-    {
-        public int MatchId { get; set; }
-        public int Score1 { get; set; }
-        public int Score2 { get; set; }
-        public int ElapsedSeconds { get; set; }
-    }
     public static class Repository
     {
         public static event Action SettingsChanged;
 
         public static User Authenticate(string username, string password)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Username, PasswordHash, Role FROM Users WHERE Username=@u";
@@ -64,7 +34,7 @@ namespace Scoreboard.Database
         public static List<User> GetAllUsers()
         {
             var list = new List<User>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Username, Role, Name FROM Users";
@@ -75,10 +45,10 @@ namespace Scoreboard.Database
             }
             return list;
         }
-        public static List<User> GetAllUsersById(string UserName)
+        public static List<User> GetAllUsersByUserName(string UserName)
         {
             var list = new List<User>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Username, Role, Name FROM Users WHERE UserName = @uc";
@@ -90,10 +60,28 @@ namespace Scoreboard.Database
             }
             return list;
         }
+
+        public static User GetUsersById(int userId)
+        {
+            using (var conn = PostgreSQLHelper.GetConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT Id, Username, Role, Name FROM Users WHERE Id = @userId";
+                cmd.Parameters.AddWithValue("@userId", userId);
+                using (var r = cmd.ExecuteReader())
+                {
+                    if (r.Read())
+                    {
+                        return new User { Id = r.GetInt32(0), Username = r.GetString(1), Role = r.GetString(2), Name = r.GetString(3) };
+                    }
+                }
+            }
+            return null;
+        }
         public static List<User> GetAllUserNotAdmin(string strRole)
         {
             var list = new List<User>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Username, Role, Name FROM Users where Role <> @Role";
@@ -107,7 +95,7 @@ namespace Scoreboard.Database
         }
         public static void AddUser(string username, string password, string role, string name)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "INSERT INTO Users (Username, PasswordHash, Role, Name) VALUES (@u,@p,@r,@n)";
@@ -119,9 +107,35 @@ namespace Scoreboard.Database
             }
         }
 
+        public static void UpdateUser(User user)
+        {
+            using (var conn = PostgreSQLHelper.GetConnection())
+            using (var cmd = conn.CreateCommand())
+            {
+                // If password is being updated, hash it
+                if (!string.IsNullOrEmpty(user.Password))
+                {
+                    cmd.CommandText = "UPDATE Users SET PasswordHash=@p, Role=@r, Name=@n WHERE Id=@id";
+                    cmd.Parameters.AddWithValue("@p", Utilities.Security.HashPassword(user.Password));
+                    cmd.Parameters.AddWithValue("@r", user.Role);
+                    cmd.Parameters.AddWithValue("@n", user.Name);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+                }
+                else
+                {
+                    // If no password change, don't update the password field
+                    cmd.CommandText = "UPDATE Users SET Role=@r, Name=@n WHERE Id=@id";
+                    cmd.Parameters.AddWithValue("@r", user.Role);
+                    cmd.Parameters.AddWithValue("@n", user.Name);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+                }
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void DeleteUser(int id)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM Users WHERE Id=@id";
@@ -133,7 +147,7 @@ namespace Scoreboard.Database
         public static List<MatchModel> GetAllMatches()
         {
             var list = new List<MatchModel>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId FROM Matches";
@@ -154,7 +168,7 @@ namespace Scoreboard.Database
                             ElapsedSeconds = r.GetInt32(9),
                             IsPaused = r.GetInt32(10),
                             Status = r.GetInt32(11),
-                            ShowToggle = r.GetInt32(12)!= 0,
+                            ShowToggle = r.GetBoolean(12),
                             UserId = r.GetInt32(13),
                         });
                     }
@@ -165,10 +179,10 @@ namespace Scoreboard.Database
         public static List<MatchModel> GetShowMatchesUser(User uc)
         {
             var list = new List<MatchModel>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId FROM Matches Where ShowToggle = 1 AND UserId = @uc";
+                cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId FROM Matches Where ShowToggle = true AND UserId = @uc";
                 cmd.Parameters.AddWithValue("@uc", uc.Id);
                 using (var r = cmd.ExecuteReader())
                 {
@@ -188,7 +202,7 @@ namespace Scoreboard.Database
                             ElapsedSeconds = r.GetInt32(9),
                             IsPaused = r.GetInt32(10),
                             Status = r.GetInt32(11),
-                            ShowToggle = r.GetInt32(12) != 0,
+                            ShowToggle = r.GetBoolean(12),
                             UserId = r.GetInt32(13),
                         });
                     }
@@ -199,10 +213,10 @@ namespace Scoreboard.Database
         public static List<MatchModel> GetShowMatchesToggle()
         {
             var list = new List<MatchModel>();
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId FROM Matches Where ShowToggle = 1";
+                cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId FROM Matches Where ShowToggle = true";
                 using (var r = cmd.ExecuteReader())
                 {
                     while (r.Read())
@@ -221,7 +235,7 @@ namespace Scoreboard.Database
                             ElapsedSeconds = r.GetInt32(9),
                             IsPaused = r.GetInt32(10),
                             Status = r.GetInt32(11),
-                            ShowToggle = r.GetInt32(12) != 0,
+                            ShowToggle = r.GetBoolean(12),
                             UserId = r.GetInt32(13),
                         });
                     }
@@ -231,10 +245,10 @@ namespace Scoreboard.Database
         }
         public static int CreateMatch(MatchModel m)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "INSERT INTO Matches (Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId) VALUES (@t,@a,@b,@s1,@s2,@setn,@set,@str,@ela,@isp,@sts, @uc); SELECT last_insert_rowid();";
+                cmd.CommandText = "INSERT INTO Matches (Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status, ShowToggle,UserId) VALUES (@t,@a,@b,@s1,@s2,@setn,@set,@str,@ela,@isp,@sts,@tog,@uc) RETURNING Id";
                 cmd.Parameters.AddWithValue("@t", m.Title);
                 cmd.Parameters.AddWithValue("@a", m.Team1);
                 cmd.Parameters.AddWithValue("@b", m.Team2);
@@ -246,26 +260,26 @@ namespace Scoreboard.Database
                 cmd.Parameters.AddWithValue("@ela", m.ElapsedSeconds);
                 cmd.Parameters.AddWithValue("@isp", m.IsPaused);
                 cmd.Parameters.AddWithValue("@sts", m.Status);
-                cmd.Parameters.AddWithValue("@tog", m.ShowToggle ? 1 : 0);
+                cmd.Parameters.AddWithValue("@tog", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@uc", m.UserId);
-                var id = (long)cmd.ExecuteScalar();
-                return (int)id;
+                var id = (int)cmd.ExecuteScalar();
+                return id;
             }
         }
 
         public static void UpdateMatch(MatchModel m)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "UPDATE Matches SET Title=@t,Team1=@a,Team2=@b,Score1=@s1,Score2=@s2,SetsName=@Setn,Sets=@Sets,StartTime=@str,ElapsedSeconds=@ela,IsPaused=@isp,Status=@sts,ShowToggle=@tog,UserId=@uc WHERE Id=@id";
+                cmd.CommandText = "UPDATE Matches SET Title=@t,Team1=@a,Team2=@b,Score1=@s1,Score2=@s2,SetsName=@setn,Sets=@set,StartTime=@str,ElapsedSeconds=@ela,IsPaused=@isp,Status=@sts,ShowToggle=@tog,UserId=@uc WHERE Id=@id";
                 cmd.Parameters.AddWithValue("@t", m.Title);
                 cmd.Parameters.AddWithValue("@a", m.Team1);
                 cmd.Parameters.AddWithValue("@b", m.Team2);
                 cmd.Parameters.AddWithValue("@s1", m.Score1);
                 cmd.Parameters.AddWithValue("@s2", m.Score2);
                 cmd.Parameters.AddWithValue("@setn", m.SetsName);
-                cmd.Parameters.AddWithValue("@Sets", m.Sets);
+                cmd.Parameters.AddWithValue("@set", m.Sets);
                 cmd.Parameters.AddWithValue("@str", m.StartTime);
                 cmd.Parameters.AddWithValue("@ela", m.ElapsedSeconds);
                 cmd.Parameters.AddWithValue("@isp", m.IsPaused);
@@ -279,7 +293,7 @@ namespace Scoreboard.Database
 
         public static void DeleteMatch(int id)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "DELETE FROM Matches WHERE Id=@id";
@@ -290,7 +304,7 @@ namespace Scoreboard.Database
 
         public static MatchModel GetMatchById(int id)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Id, Title, Team1, Team2, Score1, Score2,SetsName, Sets, StartTime, ElapsedSeconds, IsPaused, Status,ShowToggle,UserId FROM Matches WHERE Id=@id";
@@ -312,7 +326,7 @@ namespace Scoreboard.Database
                             ElapsedSeconds = r.GetInt32(9),
                             IsPaused = r.GetInt32(10),
                             Status = r.GetInt32(11),
-                            ShowToggle = r.GetInt32(12) != 0,
+                            ShowToggle = r.GetBoolean(12),
                             UserId= r.GetInt32(13),
                         };
                     }
@@ -323,7 +337,7 @@ namespace Scoreboard.Database
 
         public static string GetSetting(string key, string defaultValue = null)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT Value FROM Settings WHERE Key=@k";
@@ -336,10 +350,10 @@ namespace Scoreboard.Database
 
         public static void SetSetting(string key, string value)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "INSERT OR REPLACE INTO Settings (Key, Value) VALUES (@k,@v)";
+                cmd.CommandText = "INSERT INTO Settings (Key, Value) VALUES (@k,@v) ON CONFLICT (Key) DO UPDATE SET Value = @v";
                 cmd.Parameters.AddWithValue("@k", key);
                 cmd.Parameters.AddWithValue("@v", value);
                 cmd.ExecuteNonQuery();
@@ -348,9 +362,8 @@ namespace Scoreboard.Database
         }
         public static void SaveMatchState(MatchState state)
         {
-            using (var conn = SQLiteHelper.GetConnection())
+            using (var conn = PostgreSQLHelper.GetConnection())
             {
-                conn.Open();
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Matches
