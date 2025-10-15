@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Scoreboard.csproj": {}
+    "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj": {}
   },
   "projects": {
-    "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Scoreboard.csproj": {
+    "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
+        "projectUniqueName": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
         "projectName": "Scoreboard",
-        "projectPath": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
-        "packagesPath": "C:\\Users\\Thi-NV\\.nuget\\packages\\",
-        "outputPath": "D:\\BongDa\\Scoreboard\\Scoreboard\\Scoreboard\\obj\\",
+        "projectPath": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\Scoreboard.csproj",
+        "packagesPath": "C:\\Users\\locnt\\.nuget\\packages\\",
+        "outputPath": "E:\\Work\\ScoreBoardPT\\Scoreboard\\Scoreboard\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Thi-NV\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\locnt\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,22 +44,38 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net48": {
           "targetAlias": "net48",
           "dependencies": {
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.105.0, )"
+            },
             "MaterialSkin.2": {
               "target": "Package",
               "version": "[2.2.1, )"
             },
+            "Microsoft.Office.Interop.Excel": {
+              "target": "Package",
+              "version": "[15.0.4795.1001, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[4.1.14, )"
+            },
             "System.Data.SQLite.Core": {
               "target": "Package",
               "version": "[1.0.117, )"
+            },
+            "System.Resources.Extensions": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

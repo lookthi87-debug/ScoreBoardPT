@@ -5,28 +5,146 @@
     <AssemblyName>Scoreboard</AssemblyName>
     <RootNamespace>Scoreboard</RootNamespace>
     <OutputType>WinExe</OutputType>
+    <GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Microsoft.Office.Interop.Excel" Version="15.0.4795.1001" />
+    <PackageReference Include="Npgsql" Version="4.1.14" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.117" />
     <PackageReference Include="MaterialSkin.2" Version="2.2.1" />
+    <PackageReference Include="System.Resources.Extensions" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="AddUpdateMatchs.cs">
+    <Compile Update="Forms\AddUpdateMatch.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Toggle.cs">
+    <Compile Update="Forms\AddUpdateTournaments.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\ChangePassForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ConfigDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ToggleAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\ToggleUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\TournamentsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\UserInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\UpdateTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddUpdateMatchsets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AdminForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\UserForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\AddUserDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MatchsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Data\PostgresHelper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Data\Repository.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Data\Security.cs" />
+    <Compile Update="Models\RoleModel.cs" />
+    <Compile Update="Models\UserModel.cs" />
+    <Compile Update="Models\TournamentModel.cs" />
+    <Compile Update="Models\MatchModel.cs" />
+    <Compile Update="Models\MatchsetModel.cs" />
+    <Compile Update="Models\MatchClassModel.cs" />
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Update="ucFormView_Toggle.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Update="Forms\AddUpdateMatch.resx">
+      <DependentUpon>AddUpdateMatch.cs</DependentUpon>
+      <LogicalName>Scoreboard.AddUpdateMatch.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\AddUpdateMatchsets.resx">
+      <DependentUpon>AddUpdateMatchsets.cs</DependentUpon>
+      <LogicalName>Scoreboard.AddUpdateMatchsets.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\AddUpdateTournaments.resx">
+      <DependentUpon>AddUpdateTournaments.cs</DependentUpon>
+      <LogicalName>Scoreboard.AddUpdateTournaments.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\AddUserDialog.resx">
+      <DependentUpon>AddUserDialog.cs</DependentUpon>
+      <LogicalName>Scoreboard.AddUserDialog.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\AdminForm.resx">
+      <DependentUpon>AdminForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.AdminForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ChangePassForm.resx">
+      <DependentUpon>ChangePassForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.ChangePassForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ConfigDatabase.resx">
+      <DependentUpon>ConfigDatabase.cs</DependentUpon>
+      <LogicalName>Scoreboard.ConfigDatabase.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.LoginForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\MatchsForm.resx">
+      <DependentUpon>MatchsForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.MatchsForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ToggleAdmin.resx">
+      <DependentUpon>ToggleAdmin.cs</DependentUpon>
+      <LogicalName>Scoreboard.ToggleAdmin.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ToggleUser.resx">
+      <DependentUpon>ToggleUser.cs</DependentUpon>
+      <LogicalName>Scoreboard.ToggleUser.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\TournamentsForm.resx">
+      <DependentUpon>TournamentsForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.TournamentsForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\UpdateTime.resx">
+      <DependentUpon>UpdateTime.cs</DependentUpon>
+      <LogicalName>Scoreboard.UpdateTime.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\UserForm.resx">
+      <DependentUpon>UserForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.UserForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\UserInfoForm.resx">
+      <DependentUpon>UserInfoForm.cs</DependentUpon>
+      <LogicalName>Scoreboard.UserInfoForm.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\ucFormView_User.resx">
+      <DependentUpon>ucFormView_User.cs</DependentUpon>
+      <LogicalName>Scoreboard.ucFormView_User.resources</LogicalName>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
