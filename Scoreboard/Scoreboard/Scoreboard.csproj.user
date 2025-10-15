@@ -2,28 +2,22 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="Forms\AddUpdateMatchs.cs">
+    <Compile Update="AddUserDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\AddUpdateUserDialog.cs">
+    <Compile Update="AdminForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\AdminForm.cs">
+    <Compile Update="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\LoginForm.cs">
+    <Compile Update="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\MainForm.cs">
+    <Compile Update="MultiSelectDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\Toggle.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="UserControls\ucFormView_Toggle.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Update="UserControls\ucFormView_User.cs">
+    <Compile Update="ucFormView_User.cs">
       <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
