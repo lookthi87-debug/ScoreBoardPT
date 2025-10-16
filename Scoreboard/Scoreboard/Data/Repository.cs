@@ -100,6 +100,51 @@ namespace Scoreboard.Data
             }
             return list;
         }
+
+        public static List<UserModel> SearchUser(string search)
+        {
+            // If no search term provided, return all users (preserves previous behavior)
+            if (string.IsNullOrWhiteSpace(search))
+                return GetAllUsers();
+
+            var list = new List<UserModel>();
+            string sql = @"
+                    SELECT u.id, u.name, u.password, u.role_id, u.fullname, u.phone, u.email, r.name AS role_name
+                    FROM Users u
+                    LEFT JOIN Roles r ON u.role_id = r.id
+                    WHERE u.isactive='1'
+                      AND (
+                            u.name     ILIKE @q OR
+                            COALESCE(u.email, '')    ILIKE @q OR
+                            COALESCE(u.phone, '')    ILIKE @q OR
+                            COALESCE(u.fullname, '') ILIKE @q
+                          )
+                    ORDER BY u.id";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@q", "%" + search.Trim() + "%");
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new UserModel
+                        {
+                            Id = dr.GetInt32(0),
+                            Name = dr.GetString(1),
+                            Password = dr.GetString(2),
+                            RoleId = dr.IsDBNull(3) ? (int?)null : dr.GetInt32(3),
+                            Fullname = dr.IsDBNull(4) ? null : dr.GetString(4),
+                            Phone = dr.IsDBNull(5) ? null : dr.GetString(5),
+                            Email = dr.IsDBNull(6) ? null : dr.GetString(6),
+                            RoleName = dr.IsDBNull(7) ? null : dr.GetString(7)
+                        });
+                    }
+                }
+            }
+            return list;
+        }
         public static UserModel GetUserById(int id)
         {
             using (var cmd = new NpgsqlCommand(@"
@@ -244,7 +289,7 @@ namespace Scoreboard.Data
                     mcl.name AS match_class_name
                 FROM Tournaments t
                 LEFT JOIN MatchClass mcl ON t.match_class_id = mcl.id
-                ORDER BY t.id;
+                ORDER BY t.start DESC;
             ";
             using (var cmd = new NpgsqlCommand(sql, Conn))
             using (var reader = cmd.ExecuteReader())
@@ -292,6 +337,45 @@ namespace Scoreboard.Data
             }     
             return null;
         }
+
+        public static List<TournamentModel> GetAllTournamentsByClassId(int id)
+        {
+            var tournaments = new List<TournamentModel>();
+
+            string query = "SELECT t.id, t.name, t.start, t.\"end\", t.description, t.match_class_id, mcl.name AS match_class_name " +
+                           "FROM Tournaments t " +
+                           "LEFT JOIN Matchclass mcl ON t.match_class_id = mcl.id ";
+
+            // Nếu id > 0 thì lọc theo class_id
+            if (id > 0)
+                query += "WHERE t.match_class_id = @id";
+
+            using (var cmd = new NpgsqlCommand(query, Conn))
+            {
+                if (id > 0)
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        tournaments.Add(new TournamentModel
+                        {
+                            Id = reader.GetInt32(0),
+                            Name = reader.GetString(1),
+                            Start = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
+                            End = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3),
+                            Description = reader.IsDBNull(4) ? "" : reader.GetString(4),
+                            match_class_id = reader.GetInt32(5),
+                            match_class_name = reader.IsDBNull(6) ? "" : reader.GetString(6)
+                        });
+                    }
+                }
+            }
+
+            return tournaments;
+        }
+
         public static void AddTournament(TournamentModel t)
         {
             using (var cmd = new NpgsqlCommand(
@@ -420,12 +504,12 @@ namespace Scoreboard.Data
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
             {
-                cmd.Parameters.AddWithValue("@id", tournamentId);
+                cmd.Parameters.AddWithValue("@tid", tournamentId);
                 using (var dr = cmd.ExecuteReader())
                 {
                     while (dr.Read())
                     {
-                        list.Add(new MatchModel
+                        var match = new MatchModel
                         {
                             Id = dr.GetString(0),
                             Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
@@ -442,7 +526,12 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(12) ? null : dr.GetString(12),
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
-                        });
+                        };
+                        
+                        // Parse multiple referees from note field if exists
+                        ParseMultipleRefereesFromNote(match);
+                        
+                        list.Add(match);
                     }
                 }
             }
@@ -469,7 +558,7 @@ namespace Scoreboard.Data
             {
                 while (dr.Read())
                 {
-                    list.Add(new MatchModel
+                    var match = new MatchModel
                     {
                         Id = dr.GetString(0),
                         Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
@@ -490,7 +579,12 @@ namespace Scoreboard.Data
                         MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
                         TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
                         TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
-                    });
+                    };
+                    
+                    // Parse multiple referees from note field if exists
+                    ParseMultipleRefereesFromNote(match);
+                    
+                    list.Add(match);
                 }
             }
 
@@ -518,7 +612,7 @@ namespace Scoreboard.Data
                 {
                     if (dr.Read())
                     {
-                        return new MatchModel
+                        var match = new MatchModel
                         {
                             Id = dr.GetString(0),
                             Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
@@ -540,12 +634,80 @@ namespace Scoreboard.Data
                             TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
                             TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
                         };
+                        
+                        // Parse multiple referees from note field if exists
+                        ParseMultipleRefereesFromNote(match);
+                        
+                        return match;
                     }
                 }
             }
 
             return null;
         }
+        
+        // Helper method to parse multiple referees from note field
+        private static void ParseMultipleRefereesFromNote(MatchModel match)
+        {
+            if (!string.IsNullOrEmpty(match.Note) && match.Note.Contains("[Referees:"))
+            {
+                try
+                {
+                    // Extract referee info from note field
+                    int startIndex = match.Note.IndexOf("[Referees:");
+                    int endIndex = match.Note.IndexOf("]", startIndex);
+                    
+                    if (startIndex >= 0 && endIndex > startIndex)
+                    {
+                        string refereesInfo = match.Note.Substring(startIndex + 10, endIndex - startIndex - 10);
+                        match.Note = match.Note.Substring(0, startIndex).Trim(); // Remove referee info from note
+                        
+                        // Parse referee IDs and names
+                        var parts = refereesInfo.Split('|');
+                        foreach (var part in parts)
+                        {
+                            var idName = part.Split(':');
+                            if (idName.Length == 2 && int.TryParse(idName[0], out int id))
+                            {
+                                match.RefereeIds.Add(id);
+                                match.RefereeNames.Add(idName[1]);
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // If parsing fails, keep the original data
+                }
+            }
+            else if (match.RefereeId.HasValue)
+            {
+                // For backward compatibility, add the single referee
+                match.RefereeIds.Add(match.RefereeId.Value);
+                match.RefereeNames.Add(match.RefereeName ?? "");
+            }
+        }
+        
+        // Helper method to prepare note field with multiple referees
+        private static string PrepareNoteWithReferees(MatchModel m)
+        {
+            string note = m.Note ?? "";
+            
+            if (m.RefereeIds != null && m.RefereeIds.Count > 0 && m.RefereeNames != null && m.RefereeNames.Count > 0)
+            {
+                // Add referee info to note field
+                var refereePairs = new List<string>();
+                for (int i = 0; i < m.RefereeIds.Count && i < m.RefereeNames.Count; i++)
+                {
+                    refereePairs.Add($"{m.RefereeIds[i]}:{m.RefereeNames[i]}");
+                }
+                string refereesInfo = "[Referees:" + string.Join("|", refereePairs) + "]";
+                note = note + " " + refereesInfo;
+            }
+            
+            return note.Trim();
+        }
+
         public static void AddMatch(MatchModel m)
         {
             string sql = @"
@@ -566,7 +728,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@et", m.End.HasValue ? (object)m.End.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@time", m.Time ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@note", m.Note ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
@@ -603,7 +765,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@et", m.End.HasValue ? (object)m.End.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@time", m.Time ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@note", m.Note ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);

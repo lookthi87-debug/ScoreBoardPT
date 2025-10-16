@@ -12,7 +12,6 @@ namespace Scoreboard
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private MaterialButton btnTournaments;
-        private MaterialButton btnMatch;
         private UserModel User;
 
         public AdminForm(UserModel user)
@@ -26,7 +25,6 @@ namespace Scoreboard
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminForm));
             this.btnTournaments = new MaterialSkin.Controls.MaterialButton();
             this.btnUser = new MaterialSkin.Controls.MaterialButton();
-            this.btnMatch = new MaterialSkin.Controls.MaterialButton();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -42,7 +40,7 @@ namespace Scoreboard
             this.btnTournaments.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTournaments.HighEmphasis = true;
             this.btnTournaments.Icon = null;
-            this.btnTournaments.Location = new System.Drawing.Point(61, 269);
+            this.btnTournaments.Location = new System.Drawing.Point(61, 195);
             this.btnTournaments.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnTournaments.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnTournaments.Name = "btnTournaments";
@@ -74,27 +72,6 @@ namespace Scoreboard
             this.btnUser.UseVisualStyleBackColor = true;
             this.btnUser.Click += new System.EventHandler(this.btnUser_Click);
             // 
-            // btnMatch
-            // 
-            this.btnMatch.AutoSize = false;
-            this.btnMatch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnMatch.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnMatch.Depth = 0;
-            this.btnMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnMatch.HighEmphasis = true;
-            this.btnMatch.Icon = null;
-            this.btnMatch.Location = new System.Drawing.Point(61, 195);
-            this.btnMatch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnMatch.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnMatch.Name = "btnMatch";
-            this.btnMatch.Size = new System.Drawing.Size(200, 62);
-            this.btnMatch.TabIndex = 7;
-            this.btnMatch.Text = "Cấu hình hệ thống";
-            this.btnMatch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnMatch.UseAccentColor = false;
-            this.btnMatch.UseVisualStyleBackColor = true;
-            this.btnMatch.Click += new System.EventHandler(this.btnMatch_Click);
-            // 
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Scoreboard.Properties.Resources.User;
@@ -117,8 +94,7 @@ namespace Scoreboard
             // 
             // AdminForm
             // 
-            this.ClientSize = new System.Drawing.Size(600, 364);
-            this.Controls.Add(this.btnMatch);
+            this.ClientSize = new System.Drawing.Size(600, 299);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnUser);

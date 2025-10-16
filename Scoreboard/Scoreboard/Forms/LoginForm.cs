@@ -22,6 +22,7 @@ namespace Scoreboard
         public LoginForm()
         {
             InitializeComponent();
+            this.pDB.Image = global::Scoreboard.Properties.Resources.DB;
         }
         private void InitializeComponent()
         {
@@ -143,15 +144,6 @@ namespace Scoreboard
             // 
             // pDB
             // 
-            try
-            {
-                this.pDB.Image = global::Scoreboard.Properties.Resources.DB;
-            }
-            catch
-            {
-                // If the resource cannot be loaded, leave the image as null
-                this.pDB.Image = null;
-            }
             this.pDB.Location = new System.Drawing.Point(535, 67);
             this.pDB.Name = "pDB";
             this.pDB.Size = new System.Drawing.Size(30, 30);

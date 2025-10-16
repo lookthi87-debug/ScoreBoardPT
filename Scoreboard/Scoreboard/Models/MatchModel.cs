@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Scoreboard.Models
 {
@@ -14,6 +15,8 @@ namespace Scoreboard.Models
         public string Time { get; set; }
         public int? RefereeId { get; set; }
         public string RefereeName { get; set; }
+        public List<int> RefereeIds { get; set; } = new List<int>(); // For multiple referees
+        public List<string> RefereeNames { get; set; } = new List<string>(); // For multiple referee names
         public string Note { get; set; }
         public int ShowToggle { get; set; }
         public string Status { get; set; }

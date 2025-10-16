@@ -1,0 +1,33 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+Scoreboard/.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Backup & logs
+*.log
+*.bak
+*.backup
+*.tmp
+
+# Resharper / Rider / VS Cache
+_ReSharper*/
+*.DotSettings.user
+.idea/
+
+# VSCode
+.vscode/
+
+# Others
+*.db
+*.cache
+*.pdb
+*.vsix

@@ -16,14 +16,8 @@ namespace Scoreboard
         private DataGridView dgData;
         private MaterialButton btnAdd;
         private MaterialButton btnDelete;
-        private TextBox txtName;
-        private Label lblName;
         private MaterialButton btnSearch;
-        private MaterialButton btnCancel;
-        private Label lblStart;
-        private DateTimePicker dStart;
-        private DateTimePicker dEnd;
-        private Label lblEnd;
+        private MaterialButton btnManageMatch;
         private ComboBox cbMatchClass;
         private DataGridViewTextBoxColumn name;
         private DataGridViewTextBoxColumn start;
@@ -31,7 +25,7 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn description;
         private DataGridViewTextBoxColumn id;
         private Label lblClassMatch;
-        private UserModel user { get; set; }
+        private UserModel user;
         public TournamentsForm(UserModel us)
         {
             InitializeComponent();
@@ -50,14 +44,8 @@ namespace Scoreboard
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAdd = new MaterialSkin.Controls.MaterialButton();
             this.btnDelete = new MaterialSkin.Controls.MaterialButton();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.lblName = new System.Windows.Forms.Label();
             this.btnSearch = new MaterialSkin.Controls.MaterialButton();
-            this.btnCancel = new MaterialSkin.Controls.MaterialButton();
-            this.lblStart = new System.Windows.Forms.Label();
-            this.dStart = new System.Windows.Forms.DateTimePicker();
-            this.dEnd = new System.Windows.Forms.DateTimePicker();
-            this.lblEnd = new System.Windows.Forms.Label();
+            this.btnManageMatch = new MaterialSkin.Controls.MaterialButton();
             this.cbMatchClass = new System.Windows.Forms.ComboBox();
             this.lblClassMatch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
@@ -94,11 +82,11 @@ namespace Scoreboard
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgData.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgData.Location = new System.Drawing.Point(17, 190);
+            this.dgData.Location = new System.Drawing.Point(17, 110);
             this.dgData.Name = "dgData";
             this.dgData.RowHeadersVisible = false;
             this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgData.Size = new System.Drawing.Size(1046, 416);
+            this.dgData.Size = new System.Drawing.Size(1046, 496);
             this.dgData.TabIndex = 5;
             this.dgData.DoubleClick += new System.EventHandler(this.dgUser_DoubleClick);
             // 
@@ -183,24 +171,6 @@ namespace Scoreboard
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // txtName
-            // 
-            this.txtName.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtName.Location = new System.Drawing.Point(170, 109);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(567, 29);
-            this.txtName.TabIndex = 1;
-            // 
-            // lblName
-            // 
-            this.lblName.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(12, 109);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(152, 29);
-            this.lblName.TabIndex = 11;
-            this.lblName.Text = "Tên giải đấu";
-            this.lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // btnSearch
             // 
             this.btnSearch.AutoSize = false;
@@ -209,11 +179,11 @@ namespace Scoreboard
             this.btnSearch.Depth = 0;
             this.btnSearch.HighEmphasis = true;
             this.btnSearch.Icon = null;
-            this.btnSearch.Location = new System.Drawing.Point(586, 150);
+            this.btnSearch.Location = new System.Drawing.Point(418, 73);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSearch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(151, 29);
+            this.btnSearch.Size = new System.Drawing.Size(151, 28);
             this.btnSearch.TabIndex = 4;
             this.btnSearch.Text = "Tìm kiếm";
             this.btnSearch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -221,100 +191,54 @@ namespace Scoreboard
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
-            // btnCancel
+            // btnManageMatch
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.AutoSize = false;
-            this.btnCancel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnCancel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnCancel.Depth = 0;
-            this.btnCancel.HighEmphasis = true;
-            this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(905, 619);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(158, 36);
-            this.btnCancel.TabIndex = 8;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnCancel.UseAccentColor = false;
-            this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // lblStart
-            // 
-            this.lblStart.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStart.Location = new System.Drawing.Point(12, 150);
-            this.lblStart.Name = "lblStart";
-            this.lblStart.Size = new System.Drawing.Size(152, 29);
-            this.lblStart.TabIndex = 13;
-            this.lblStart.Text = "Ngày bắt đầu";
-            this.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // dStart
-            // 
-            this.dStart.CustomFormat = "dd/MM/yyyy";
-            this.dStart.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.dStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dStart.Location = new System.Drawing.Point(170, 150);
-            this.dStart.Name = "dStart";
-            this.dStart.Size = new System.Drawing.Size(107, 29);
-            this.dStart.TabIndex = 2;
-            // 
-            // dEnd
-            // 
-            this.dEnd.CustomFormat = "dd/MM/yyyy";
-            this.dEnd.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.dEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dEnd.Location = new System.Drawing.Point(441, 150);
-            this.dEnd.Name = "dEnd";
-            this.dEnd.Size = new System.Drawing.Size(107, 29);
-            this.dEnd.TabIndex = 3;
-            // 
-            // lblEnd
-            // 
-            this.lblEnd.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEnd.Location = new System.Drawing.Point(283, 150);
-            this.lblEnd.Name = "lblEnd";
-            this.lblEnd.Size = new System.Drawing.Size(152, 29);
-            this.lblEnd.TabIndex = 33;
-            this.lblEnd.Text = "Ngày kết thúc";
-            this.lblEnd.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnManageMatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnManageMatch.AutoSize = false;
+            this.btnManageMatch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnManageMatch.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnManageMatch.Depth = 0;
+            this.btnManageMatch.HighEmphasis = true;
+            this.btnManageMatch.Icon = null;
+            this.btnManageMatch.Location = new System.Drawing.Point(905, 619);
+            this.btnManageMatch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnManageMatch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnManageMatch.Name = "btnManageMatch";
+            this.btnManageMatch.Size = new System.Drawing.Size(158, 36);
+            this.btnManageMatch.TabIndex = 8;
+            this.btnManageMatch.Text = "Quản  lý trận đấu";
+            this.btnManageMatch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnManageMatch.UseAccentColor = false;
+            this.btnManageMatch.UseVisualStyleBackColor = true;
+            this.btnManageMatch.Click += new System.EventHandler(this.btnManageMatch_Click);
             // 
             // cbMatchClass
             // 
             this.cbMatchClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMatchClass.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
+            this.cbMatchClass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbMatchClass.FormattingEnabled = true;
-            this.cbMatchClass.Location = new System.Drawing.Point(170, 73);
+            this.cbMatchClass.Location = new System.Drawing.Point(86, 73);
             this.cbMatchClass.Name = "cbMatchClass";
-            this.cbMatchClass.Size = new System.Drawing.Size(325, 29);
+            this.cbMatchClass.Size = new System.Drawing.Size(325, 28);
             this.cbMatchClass.TabIndex = 0;
             // 
             // lblClassMatch
             // 
-            this.lblClassMatch.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClassMatch.Location = new System.Drawing.Point(54, 73);
+            this.lblClassMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClassMatch.Location = new System.Drawing.Point(13, 73);
             this.lblClassMatch.Name = "lblClassMatch";
-            this.lblClassMatch.Size = new System.Drawing.Size(110, 29);
+            this.lblClassMatch.Size = new System.Drawing.Size(67, 29);
             this.lblClassMatch.TabIndex = 35;
             this.lblClassMatch.Text = "Bộ môn";
-            this.lblClassMatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblClassMatch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // TournamentsForm
             // 
             this.ClientSize = new System.Drawing.Size(1078, 671);
             this.Controls.Add(this.cbMatchClass);
             this.Controls.Add(this.lblClassMatch);
-            this.Controls.Add(this.dEnd);
-            this.Controls.Add(this.lblEnd);
-            this.Controls.Add(this.dStart);
-            this.Controls.Add(this.lblStart);
-            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnManageMatch);
             this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.txtName);
-            this.Controls.Add(this.lblName);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.dgData);
@@ -327,7 +251,6 @@ namespace Scoreboard
             this.Load += new System.EventHandler(this.AdminForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
         private void LoadClass()
@@ -335,7 +258,8 @@ namespace Scoreboard
             try
             {
                 var sets = Repository.GetAllMatchClasses();
-                cbMatchClass.DataSource = sets;
+                sets.Add(new MatchClassModel { Id = 0, Name = "Tất cả" });
+                cbMatchClass.DataSource = sets.OrderBy(element => element.Id).ToList();
                 cbMatchClass.DisplayMember = "Name";
                 cbMatchClass.ValueMember = "Id";
                 cbMatchClass.SelectedIndex = 0;
@@ -350,36 +274,27 @@ namespace Scoreboard
         //Load toàn bộ data
         private void AdminForm_Load(object sender, EventArgs e)
         {
-            dEnd.Value = dStart.Value.AddDays(10);
             LoadClass();
-            settingControl(false);
+            LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
-        private void LoadTournaments(string Class_id ="",string nameFilter = "", string startFilter = "", string endFiler = "")
+        private void LoadTournaments(string Class_id ="")
         {
             var tournaments = Repository.GetAllTournaments() ?? new List<TournamentModel>();
 
             if (!string.IsNullOrWhiteSpace(Class_id))
             {
                 int id = int.Parse(Class_id);
-                tournaments = tournaments
-                                .Where(u => u.match_class_id == id)
-                                .ToList();
+                if (id == 0)
+                {
+                    tournaments = tournaments.ToList();
+                }
+                else
+                {
+                    tournaments = tournaments
+                                    .Where(u => u.match_class_id == id)
+                                    .ToList();
+                }
             }
-
-            if (!string.IsNullOrWhiteSpace(nameFilter))
-            {
-                tournaments = tournaments
-                    .Where(u => !string.IsNullOrEmpty(u.Name) &&
-                                u.Name.IndexOf(nameFilter, StringComparison.OrdinalIgnoreCase) >= 0)
-                    .ToList();
-            }
-
-            tournaments = tournaments
-                    .Where(u =>
-                        (u.Start.Value.Date >= dStart.Value.Date && u.Start.Value.Date <= dEnd.Value.Date)
-                         ||
-                        (u.End.Value.Date >= dStart.Value.Date && u.End.Value.Date <= dEnd.Value.Date))
-                    .ToList();
 
             dgData.AutoGenerateColumns = false;
             dgData.DataSource = tournaments;
@@ -392,8 +307,7 @@ namespace Scoreboard
                 cbMatchClass.Focus();
                 return;
             }    
-            LoadTournaments(cbMatchClass.SelectedValue.ToString(),txtName.Text,dStart.Text,dEnd.Text);
-            settingControl(true);
+            LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
 
         //Thêm trận đấu
@@ -402,7 +316,7 @@ namespace Scoreboard
             var frm = new AddUpdateTournaments();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                LoadTournaments(cbMatchClass.SelectedValue.ToString(), txtName.Text.Trim(), dStart.Text, dEnd.Text);
+                LoadTournaments(cbMatchClass.SelectedValue.ToString());
             }
         }
         private void btnDelete_Click(object sender, EventArgs e)
@@ -428,40 +342,14 @@ namespace Scoreboard
             var frm = new AddUpdateTournaments(id);
             if (frm.ShowDialog() == DialogResult.OK) 
             {
-                LoadTournaments(cbMatchClass.SelectedValue.ToString(), txtName.Text.Trim(), dStart.Text, dEnd.Text);
+                LoadTournaments(cbMatchClass.SelectedValue.ToString());
             }
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnManageMatch_Click(object sender, EventArgs e)
         {
-            settingControl(false);
-        }
-        private void settingControl(bool isSearch)
-        {
-            if (isSearch)
-            {
-                cbMatchClass.Enabled = false;
-                txtName.Enabled = false;
-                dStart.Enabled = false;
-                dEnd.Enabled = false;
-                btnSearch.Enabled = false;
-
-                btnAdd.Enabled = true;
-                btnDelete.Enabled = true;
-                btnCancel.Enabled = true;
-            }
-            else
-            {
-                cbMatchClass.Enabled = true;
-                txtName.Enabled = true;
-                dStart.Enabled = true;
-                dEnd.Enabled = true;
-                btnSearch.Enabled = true;
-
-                btnAdd.Enabled = false;
-                btnDelete.Enabled = false;
-                btnCancel.Enabled = false;
-            }
+            MatchsForm frm = new MatchsForm(user);
+            frm.ShowDialog();
         }
     }
 }
