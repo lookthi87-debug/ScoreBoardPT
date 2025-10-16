@@ -44,9 +44,9 @@ namespace Scoreboard
             this.btnTournaments.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnTournaments.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnTournaments.Name = "btnTournaments";
-            this.btnTournaments.Size = new System.Drawing.Size(200, 62);
+            this.btnTournaments.Size = new System.Drawing.Size(200, 91);
             this.btnTournaments.TabIndex = 3;
-            this.btnTournaments.Text = "Giải đấu";
+            this.btnTournaments.Text = "Quản lý trận đấu";
             this.btnTournaments.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnTournaments.UseAccentColor = false;
             this.btnTournaments.UseVisualStyleBackColor = true;
@@ -64,9 +64,9 @@ namespace Scoreboard
             this.btnUser.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnUser.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnUser.Name = "btnUser";
-            this.btnUser.Size = new System.Drawing.Size(200, 62);
+            this.btnUser.Size = new System.Drawing.Size(200, 91);
             this.btnUser.TabIndex = 4;
-            this.btnUser.Text = "user";
+            this.btnUser.Text = "Quản lý user";
             this.btnUser.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnUser.UseAccentColor = false;
             this.btnUser.UseVisualStyleBackColor = true;
@@ -94,7 +94,7 @@ namespace Scoreboard
             // 
             // AdminForm
             // 
-            this.ClientSize = new System.Drawing.Size(600, 299);
+            this.ClientSize = new System.Drawing.Size(600, 334);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnUser);
@@ -105,7 +105,7 @@ namespace Scoreboard
             this.Name = "AdminForm";
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Admin";
+            this.Text = " ";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AdminForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
