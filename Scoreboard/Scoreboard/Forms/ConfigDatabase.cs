@@ -1,10 +1,7 @@
 using System;
-using System.IO;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
-using System.Runtime.CompilerServices;
 
 namespace Scoreboard
 {
@@ -235,11 +232,11 @@ namespace Scoreboard
                 MessageBox.Show("Vui lòng nhập password.");
                 txtPass.Focus();
             }
-            PostgresHelper.SaveConfig(txtHost.Text.Trim(),txtPort.Text.Trim(), txtDatabase.Text.Trim(), txtUserName.Text.Trim(), txtPass.Text.Trim());
+            PostgresHelper.SaveConfig(txtHost.Text.Trim(), txtPort.Text.Trim(), txtDatabase.Text.Trim(), txtUserName.Text.Trim(), txtPass.Text.Trim());
             if (PostgresHelper.OpenSharedConnection() == true)
             {
                 Repository.AddDefaultUser();
-                IsConect =true;
+                IsConect = true;
                 MessageBox.Show("Connect thành công.");
                 this.Close();
             }
@@ -256,7 +253,7 @@ namespace Scoreboard
             txtPort.Text = cf.Port;
             txtDatabase.Text = cf.Database;
             txtUserName.Text = cf.User;
-            txtPass.Text=cf.Password;
+            txtPass.Text = cf.Password;
         }
 
         private void ConfigDatabase_FormClosing(object sender, FormClosingEventArgs e)

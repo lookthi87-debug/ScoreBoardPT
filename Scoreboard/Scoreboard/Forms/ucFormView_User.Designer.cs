@@ -42,7 +42,6 @@
             this.lblHiepDau = new System.Windows.Forms.Label();
             this.lblScoreTeam2 = new System.Windows.Forms.Label();
             this.lblScoreTeam1 = new System.Windows.Forms.Label();
-            this.lblBonus = new System.Windows.Forms.Label();
             this.lblTeam2 = new System.Windows.Forms.Label();
             this.lblTeam1 = new System.Windows.Forms.Label();
             this.tableView = new System.Windows.Forms.TableLayoutPanel();
@@ -116,18 +115,6 @@
             this.lblScoreTeam1.Text = "0";
             this.lblScoreTeam1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblBonus
-            // 
-            this.lblBonus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblBonus.Font = new System.Drawing.Font("Arial", 12.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBonus.ForeColor = System.Drawing.Color.Yellow;
-            this.lblBonus.Location = new System.Drawing.Point(3, 181);
-            this.lblBonus.Name = "lblBonus";
-            this.lblBonus.Size = new System.Drawing.Size(474, 22);
-            this.lblBonus.TabIndex = 10;
-            this.lblBonus.Text = "BONUS";
-            this.lblBonus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
             // lblTeam2
             // 
             this.lblTeam2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -156,7 +143,6 @@
             // 
             this.tableView.ColumnCount = 1;
             this.tableView.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableView.Controls.Add(this.lblBonus, 0, 4);
             this.tableView.Controls.Add(this.lblTitle, 0, 0);
             this.tableView.Controls.Add(this.lblTime, 0, 1);
             this.tableView.Controls.Add(this.lblHiepDau, 0, 2);
@@ -208,14 +194,14 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(474, 61);
             this.tableLayoutPanel1.TabIndex = 8;
             // 
-            // ucFormView
+            // ucFormView_User
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.Controls.Add(this.tableView);
             this.MinimumSize = new System.Drawing.Size(480, 270);
-            this.Name = "ucFormView";
+            this.Name = "ucFormView_User";
             this.Size = new System.Drawing.Size(480, 270);
             this.tableView.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -231,7 +217,6 @@
         private System.Windows.Forms.Label lblHiepDau;
         private System.Windows.Forms.Label lblScoreTeam2;
         private System.Windows.Forms.Label lblScoreTeam1;
-        private System.Windows.Forms.Label lblBonus;
         private System.Windows.Forms.Label lblTeam2;
         private System.Windows.Forms.Label lblTeam1;
         private System.Windows.Forms.TableLayoutPanel tableView;

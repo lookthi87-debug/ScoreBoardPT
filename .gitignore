@@ -1,33 +1,22 @@
-# Build folders
-bin/
-obj/
-
-# Visual Studio files
+# Visual Studio
 .vs/
 Scoreboard/.vs/
 
-# User-specific files
+# Build output
+bin/
+obj/
+Scoreboard/bin/
+Scoreboard/obj/
+
+# User files
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Backup & logs
+# Logs & cache
 *.log
-*.bak
-*.backup
-*.tmp
-
-# Resharper / Rider / VS Cache
-_ReSharper*/
-*.DotSettings.user
-.idea/
-
-# VSCode
-.vscode/
-
-# Others
-*.db
 *.cache
 *.pdb
-*.vsix
+*.tmp
+*.bak

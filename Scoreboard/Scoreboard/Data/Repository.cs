@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Office.Word;
@@ -850,7 +850,7 @@ namespace Scoreboard.Data
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -918,7 +918,7 @@ namespace Scoreboard.Data
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -984,7 +984,7 @@ namespace Scoreboard.Data
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -1052,7 +1052,7 @@ namespace Scoreboard.Data
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -1065,7 +1065,7 @@ namespace Scoreboard.Data
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.status = '0'
                   AND ms.match_id = @mid
-                  AND (ms.referee_id = @uid OR @uid IS NULL)
+                  AND (ms.referee_id = @uid OR @uid = 0 OR @uid IS NULL)
                 ORDER BY ms.id ASC LIMIT 1;
             ";
 
@@ -1115,13 +1115,15 @@ namespace Scoreboard.Data
                     m.team2,
                     m.score1 AS total_score1,
                     m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -1152,17 +1154,19 @@ namespace Scoreboard.Data
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
                             TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
                             TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
-                            Time = dr.IsDBNull(6) ? null : dr.GetString(6),
-                            Note = dr.IsDBNull(7) ? null : dr.GetString(7),
-                            Status = dr.IsDBNull(8) ? null : dr.GetString(8),
-                            RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
-                            RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            Score1 = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
+                            Score2 = dr.IsDBNull(7) ? 0 : dr.GetInt32(7),
+                            Time = dr.IsDBNull(8) ? null : dr.GetString(8),
+                            Note = dr.IsDBNull(9) ? null : dr.GetString(9),
+                            Status = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
+                            RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
+                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
+                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
                         });
                     }
                 }
@@ -1180,13 +1184,15 @@ namespace Scoreboard.Data
                     m.team2,
                     m.score1 AS total_score1,
                     m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
                     ms.ClassSets_id,
-                    cs.name AS classsets_name,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
@@ -1217,17 +1223,19 @@ namespace Scoreboard.Data
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
                             TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
                             TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
-                            Time = dr.IsDBNull(6) ? null : dr.GetString(6),
-                            Note = dr.IsDBNull(7) ? null : dr.GetString(7),
-                            Status = dr.IsDBNull(8) ? null : dr.GetString(8),
-                            RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
-                            RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            Score1 = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
+                            Score2 = dr.IsDBNull(7) ? 0 : dr.GetInt32(7),
+                            Time = dr.IsDBNull(8) ? null : dr.GetString(8),
+                            Note = dr.IsDBNull(9) ? null : dr.GetString(9),
+                            Status = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
+                            RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
+                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
+                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
                         };
                     }
                 }
@@ -1246,8 +1254,8 @@ namespace Scoreboard.Data
 
             string sql = @"
                 INSERT INTO MatchSets
-                (id, match_id, score1, score2, start, ""end"", time, note, status, ClassSets_id, referee_id)
-                VALUES (@id, @mid, @s1, @s2, @st, @et, @t, @note, @stt, @cid, @rid);
+                (id, match_id, score1, score2, start, ""end"", time, note, status, ClassSets_id, referee_id, ClassSetsName)
+                VALUES (@id, @mid, @s1, @s2, @st, @et, @t, @note, @stt, @cid, @rid, @csname);
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1263,6 +1271,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@csname", m.ClassSetsName ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -1387,7 +1396,8 @@ namespace Scoreboard.Data
         {
             var list = new List<MatchClassModel>();
 
-            using (var cmd = new NpgsqlCommand("SELECT id, name FROM MatchClass ORDER BY id", Conn))
+            using (var cmd = new NpgsqlCommand(@"SELECT id, name, period_type, standard_periods, periods_to_win, 
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at FROM MatchClass ORDER BY id", Conn))
             using (var dr = cmd.ExecuteReader())
             {
                 while (dr.Read())
@@ -1395,7 +1405,15 @@ namespace Scoreboard.Data
                     list.Add(new MatchClassModel
                     {
                         Id = dr.GetInt32(0),
-                        Name = dr.GetString(1)
+                        Name = dr.GetString(1),
+                        PeriodType = dr.IsDBNull(2) ? null : dr.GetString(2),
+                        StandardPeriods = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
+                        PeriodsToWin = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                        AllowOvertime = dr.IsDBNull(5) ? false : dr.GetBoolean(5),
+                        MaxOvertimePeriods = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
+                        AllowTie = dr.IsDBNull(7) ? false : dr.GetBoolean(7),
+                        CreatedAt = dr.IsDBNull(8) ? DateTime.Now : dr.GetDateTime(8),
+                        UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9)
                     });
                 }
             }
@@ -1405,18 +1423,37 @@ namespace Scoreboard.Data
 
         public static void AddMatchClass(MatchClassModel m)
         {
-            using (var cmd = new NpgsqlCommand("INSERT INTO MatchClass(name) VALUES(@n)", Conn))
+            using (var cmd = new NpgsqlCommand(@"INSERT INTO MatchClass(name, period_type, standard_periods, periods_to_win, 
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at) 
+                VALUES(@n, @pt, @sp, @ptw, @ao, @mop, @at, @ca, @ua)", Conn))
             {
                 cmd.Parameters.AddWithValue("@n", m.Name);
+                cmd.Parameters.AddWithValue("@pt", string.IsNullOrEmpty(m.PeriodType) ? (object)DBNull.Value : m.PeriodType);
+                cmd.Parameters.AddWithValue("@sp", m.StandardPeriods);
+                cmd.Parameters.AddWithValue("@ptw", m.PeriodsToWin);
+                cmd.Parameters.AddWithValue("@ao", m.AllowOvertime);
+                cmd.Parameters.AddWithValue("@mop", m.MaxOvertimePeriods);
+                cmd.Parameters.AddWithValue("@at", m.AllowTie);
+                cmd.Parameters.AddWithValue("@ca", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ua", DateTime.Now);
                 cmd.ExecuteNonQuery();
             }
         }
         public static void UpdateMatchClass(MatchClassModel m)
         {
-            using (var cmd = new NpgsqlCommand("UPDATE MatchClass SET name=@n WHERE id=@id", Conn))
+            using (var cmd = new NpgsqlCommand(@"UPDATE MatchClass SET name=@n, period_type=@pt, standard_periods=@sp, 
+                periods_to_win=@ptw, allow_overtime=@ao, max_overtime_periods=@mop, allow_tie=@at, updated_at=@ua 
+                WHERE id=@id", Conn))
             {
                 cmd.Parameters.AddWithValue("@id", m.Id);
                 cmd.Parameters.AddWithValue("@n", m.Name);
+                cmd.Parameters.AddWithValue("@pt", string.IsNullOrEmpty(m.PeriodType) ? (object)DBNull.Value : m.PeriodType);
+                cmd.Parameters.AddWithValue("@sp", m.StandardPeriods);
+                cmd.Parameters.AddWithValue("@ptw", m.PeriodsToWin);
+                cmd.Parameters.AddWithValue("@ao", m.AllowOvertime);
+                cmd.Parameters.AddWithValue("@mop", m.MaxOvertimePeriods);
+                cmd.Parameters.AddWithValue("@at", m.AllowTie);
+                cmd.Parameters.AddWithValue("@ua", DateTime.Now);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -1519,6 +1556,102 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        // ====================================================
+        // MATCH CLASS HELPER METHODS
+        // ====================================================
+        public static MatchClassModel GetMatchClassById(int id)
+        {
+            using (var cmd = new NpgsqlCommand(@"SELECT id, name, period_type, standard_periods, periods_to_win, 
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at FROM MatchClass WHERE id = @id", Conn))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+                using (var dr = cmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        return new MatchClassModel
+                        {
+                            Id = dr.GetInt32(0),
+                            Name = dr.GetString(1),
+                            PeriodType = dr.IsDBNull(2) ? null : dr.GetString(2),
+                            StandardPeriods = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
+                            PeriodsToWin = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            AllowOvertime = dr.IsDBNull(5) ? false : dr.GetBoolean(5),
+                            MaxOvertimePeriods = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
+                            AllowTie = dr.IsDBNull(7) ? false : dr.GetBoolean(7),
+                            CreatedAt = dr.IsDBNull(8) ? DateTime.Now : dr.GetDateTime(8),
+                            UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static void CreateOvertimePeriod(string matchId, int currentSetId, string periodName, int refereeId)
+        {
+            // Get current match details
+            var currentMatch = GetMatchSetByMatchAndId(matchId, currentSetId);
+            if (currentMatch == null) return;
+
+            // Get match class details
+            var matchClass = GetMatchClassById(currentMatch.MatchClassId ?? 0);
+            if (matchClass == null) return;
+
+            // Create new overtime period
+            var overtimeSet = new MatchsetModel
+            {
+                MatchId = matchId,
+                Team1 = currentMatch.Team1,
+                Team2 = currentMatch.Team2,
+                Score1 = 0,
+                Score2 = 0,
+                Time = "00:00",
+                Note = periodName,
+                Status = "0", // Inactive initially
+                RefereeId = refereeId,
+                RefereeName = currentMatch.RefereeName,
+                ClassSets_Id = currentMatch.ClassSets_Id,
+                ClassSetsName = periodName,
+                TournamentId = currentMatch.TournamentId,
+                TournamentName = currentMatch.TournamentName,
+                MatchClassId = currentMatch.MatchClassId,
+                MatchClassName = currentMatch.MatchClassName
+            };
+
+            AddMatchSet(overtimeSet);
+        }
+
+        public static void CreatePenaltyShootout(string matchId, int refereeId)
+        {
+            // Get current match details
+            var match = GetMatchById(matchId);
+            if (match == null) return;
+
+            // Create penalty shootout period
+            var penaltySet = new MatchsetModel
+            {
+                MatchId = matchId,
+                Team1 = match.Team1,
+                Team2 = match.Team2,
+                Score1 = 0,
+                Score2 = 0,
+                Time = "00:00",
+                Note = "Đá penalty",
+                Status = "0", // Inactive initially
+                RefereeId = refereeId,
+                RefereeName = match.RefereeName,
+                ClassSets_Id = null, // Special period
+                ClassSetsName = "Đá penalty",
+                TournamentId = match.TournamentId,
+                TournamentName = match.TournamentName,
+                MatchClassId = match.MatchClassId,
+                MatchClassName = match.MatchClassName
+            };
+
+            AddMatchSet(penaltySet);
         }
 
     }

@@ -1,13 +1,7 @@
 using System;
-using System.Linq;
-using System.Diagnostics.Eventing.Reader;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
-using Scoreboard.Data;
 using Scoreboard.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Scoreboard
 {
@@ -109,7 +103,7 @@ namespace Scoreboard
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            MatchsetModel.Time= txtHour.Text + ":" + txtMinute.Text;
+            MatchsetModel.Time = txtHour.Text + ":" + txtMinute.Text;
             this.Close();
         }
 

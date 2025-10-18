@@ -3,17 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using Scoreboard.Data;
 using Scoreboard.Models;
-using MaterialSkin.Controls;
-using MaterialSkin;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
-using System.Reflection.Emit;
-using ClosedXML.Excel;
-using System.IO;
-using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace Scoreboard
 {
@@ -52,15 +42,15 @@ namespace Scoreboard
                     m.Result = (IntPtr)HTTOPRIGHT;
                 else if (cursor.X <= RESIZE_HANDLE_SIZE && cursor.Y >= Height - RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTBOTTOMLEFT);
-                else if (cursor.X >= Width -  RESIZE_HANDLE_SIZE && cursor.Y >= Height - RESIZE_HANDLE_SIZE)
+                else if (cursor.X >= Width - RESIZE_HANDLE_SIZE && cursor.Y >= Height - RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTBOTTOMRIGHT);
                 else if (cursor.X <= RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTLEFT);
                 else if (cursor.X >= Width - RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTRIGHT);
-                else if (cursor.Y <=  RESIZE_HANDLE_SIZE)
+                else if (cursor.Y <= RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTTOP);
-                else if (cursor.Y >=Height - RESIZE_HANDLE_SIZE)
+                else if (cursor.Y >= Height - RESIZE_HANDLE_SIZE)
                     m.Result = (IntPtr)(HTBOTTOM);
                 return;
             }
@@ -76,7 +66,7 @@ namespace Scoreboard
             // 
             // lblNote
             // 
-            this.lblNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.lblNote.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblNote.Font = new System.Drawing.Font("Arial Unicode MS", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblNote.ForeColor = System.Drawing.Color.White;
@@ -159,11 +149,27 @@ namespace Scoreboard
             switch (e.KeyCode)
             {
                 case Keys.D1:  // + điểm đội 1
-                    activeUc.AddPointTeam1();
+                    MessageBox.Show("Phím 1 được nhận (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (activeUc != null)
+                    {
+                        activeUc.AddPointTeam1();
+                    }
+                    else
+                    {
+                        MessageBox.Show("activeUc is null (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                     break;
 
                 case Keys.D2:  // + điểm đội 2
-                    activeUc.AddPointTeam2();
+                    MessageBox.Show("Phím 2 được nhận (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (activeUc != null)
+                    {
+                        activeUc.AddPointTeam2();
+                    }
+                    else
+                    {
+                        MessageBox.Show("activeUc is null (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                     break;
 
                 case Keys.D3:  // Reset điểm

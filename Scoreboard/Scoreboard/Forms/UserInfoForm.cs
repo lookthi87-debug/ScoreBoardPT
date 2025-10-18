@@ -250,22 +250,26 @@ namespace Scoreboard
             this.Name = "UserInfoForm";
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Thông tin (ten trong tai)";
+            this.Text = "Thông tin";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserInfoForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
+
         }
         private void LoadUserInfo()
         {
-            if (currentUser.RoleId == 2)
+            // Set title with user name
+            this.Text = "Thông tin " + (currentUser?.Fullname ?? "User");
+
+            if (currentUser?.RoleId == 2)
             {
                 var match = Repository.GetActiveMatchSetsByUser(currentUser.Id);
                 if (match != null & match.Count > 0)
                 {
-                    this.Text = match[0].RefereeName;
+                    this.Text = "Thông tin " + match[0].RefereeName;
                     txtTitle.Text = match[0].TournamentName;
                     txtTeam1.Text = match[0].Team1;
                     txtTeam2.Text = match[0].Team2;
@@ -275,7 +279,7 @@ namespace Scoreboard
                     lblMessage.Text = "";
                     btnStart.Enabled = true;
                 }
-                else 
+                else
                 {
                     lblMessage.Text = "Chưa có dữ liệu";
                     btnStart.Enabled = false;

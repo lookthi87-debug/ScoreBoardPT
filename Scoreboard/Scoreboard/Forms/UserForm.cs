@@ -1,12 +1,9 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using System.Collections.Generic;
-using MaterialSkin.Controls;
-using System.Text.RegularExpressions;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Scoreboard
 {
@@ -55,8 +52,8 @@ namespace Scoreboard
             // 
             this.dgUser.AllowUserToAddRows = false;
             this.dgUser.AllowUserToDeleteRows = false;
-            this.dgUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgUser.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -332,11 +329,11 @@ namespace Scoreboard
 
             var id = Convert.ToInt32(dgUser.CurrentRow.Cells["Id"].Value);
             var frm = new AddUserDialog(id);
-            if (frm.ShowDialog() == DialogResult.OK) 
+            if (frm.ShowDialog() == DialogResult.OK)
             {
                 LoadUsers(txtSearch.Text.Trim());
             }
-                
+
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

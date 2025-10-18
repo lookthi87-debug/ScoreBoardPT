@@ -1,16 +1,8 @@
 using System;
-using System.Linq;
-using System.Diagnostics.Eventing.Reader;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Collections.Generic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Xml.Linq;
 
 namespace Scoreboard
 {
@@ -323,7 +315,8 @@ namespace Scoreboard
                 cbUser.ValueMember = "Id";
                 cbUser.SelectedIndex = 0;
             }
-            catch {
+            catch
+            {
                 cbUser.Items.Clear();
                 cbUser.Items.Add("No data");
                 MessageBox.Show("Không có dữ liệu trọng tài. Vui lòng tạo");
@@ -348,7 +341,7 @@ namespace Scoreboard
         }
         private void PopulateFromModel(MatchsetModel m)
         {
-            txtMatchTime.Text=m.Time ?? "00:00";
+            txtMatchTime.Text = m.Time ?? "00:00";
             try { cbSetMatch.SelectedValue = m.ClassSets_Id; } catch { }
             cbSetMatch.Text = m.ClassSetsName ?? "";
             txtTeam1.Text = m.Team1;
@@ -356,10 +349,10 @@ namespace Scoreboard
             try { cbUser.SelectedValue = m.RefereeId; } catch { }
             cbUser.Text = m.RefereeName ?? "";
         }
-        public AddUpdateMatchsets(string matchId = null,int id = -1)
+        public AddUpdateMatchsets(string matchId = null, int id = -1)
         {
             InitializeComponent();
-            currentMatch= new MatchsetModel();
+            currentMatch = new MatchsetModel();
             LoadUsers();
             if (matchId != null)
             {
@@ -368,8 +361,8 @@ namespace Scoreboard
                 {
                     try { cbUser.SelectedValue = m.RefereeId; } catch { }
                     cbUser.Text = m.RefereeName ?? "";
-                    txtTeam1.Text=m.Team1;
-                    txtTeam2.Text=m.Team2;
+                    txtTeam1.Text = m.Team1;
+                    txtTeam2.Text = m.Team2;
                     currentMatch.MatchId = matchId;
                     currentMatch.MatchClassId = m.MatchClassId;
                 }
@@ -378,7 +371,7 @@ namespace Scoreboard
             if (id != -1)
             {
                 // edit mode
-                currentMatch = Repository.GetMatchSetByMatchAndId(matchId,id);
+                currentMatch = Repository.GetMatchSetByMatchAndId(matchId, id);
                 if (currentMatch != null)
                     PopulateFromModel(currentMatch);
                 else
@@ -430,6 +423,7 @@ namespace Scoreboard
             currentMatch.RefereeId = (cbUser.SelectedValue is int) ? (int)cbUser.SelectedValue : 0;
             currentMatch.Note = txtnote.Text;
             currentMatch.ClassSets_Id = (cbSetMatch.SelectedValue is int) ? (int)cbSetMatch.SelectedValue : 0;
+            currentMatch.ClassSetsName = cbSetMatch.Text;
             try
             {
                 if (currentMatch.Id == 0)
@@ -459,9 +453,9 @@ namespace Scoreboard
         private void btnUpdateTime_Click(object sender, EventArgs e)
         {
             UpdateTime up = new UpdateTime();
-            up.MatchsetModel.Time= txtMatchTime.Text;
+            up.MatchsetModel.Time = txtMatchTime.Text;
             up.ShowDialog();
-            txtMatchTime.Text= up.MatchsetModel.Time;
+            txtMatchTime.Text = up.MatchsetModel.Time;
         }
     }
 }

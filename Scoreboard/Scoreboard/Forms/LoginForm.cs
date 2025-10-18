@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
@@ -47,6 +46,7 @@ namespace Scoreboard
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
             this.txtUserName.Text = "Admin";
+            this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
             // 
             // lblUser
             // 
@@ -257,7 +257,7 @@ namespace Scoreboard
                 MessageBox.Show("Vui lòng cấu hình database");
                 pDB.Focus();
             }
-            
+
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -265,6 +265,14 @@ namespace Scoreboard
         }
 
         private void txtPassWord_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnLogin.PerformClick();
+            }
+        }
+
+        private void txtUserName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {

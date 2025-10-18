@@ -1,11 +1,8 @@
 using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Scoreboard
 {
@@ -25,7 +22,8 @@ namespace Scoreboard
         public ChangePassForm(UserModel us)
         {
             InitializeComponent();
-            if (us != null) {
+            if (us != null)
+            {
                 txtUserName.Text = us.Name;
                 User = us;
             }
@@ -207,7 +205,7 @@ namespace Scoreboard
             string username = txtUserName.Text.Trim();
             string password = txtPassWord.Text.Trim();
 
-            if (string.IsNullOrEmpty(username) )
+            if (string.IsNullOrEmpty(username))
             {
                 MessageBox.Show("Vui lòng nhập tài khoản");
                 txtUserName.Focus();
@@ -233,7 +231,7 @@ namespace Scoreboard
                 txtPassWord.Focus();
                 return;
             }
-            if (txtPassWordNew.Text.Trim().Length==0)
+            if (txtPassWordNew.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Chưa nhập mật khẩu mới.");
                 txtPassWordNew.Clear();
@@ -254,7 +252,7 @@ namespace Scoreboard
                 txtPassWordNew.Focus();
                 return;
             }
-            if (txtPassWordNewCf.Text.Length==0)
+            if (txtPassWordNewCf.Text.Length == 0)
             {
                 MessageBox.Show("Chưa nhập xác nhận mật khẩu mới.");
                 txtPassWordNewCf.Clear();
@@ -274,7 +272,7 @@ namespace Scoreboard
                 Repository.UpdateUser(User);
                 MessageBox.Show("Thay đổi mật khẩu thành công.");
             }
-            catch 
+            catch
             {
                 MessageBox.Show("Lỗi hệ thống.");
             }

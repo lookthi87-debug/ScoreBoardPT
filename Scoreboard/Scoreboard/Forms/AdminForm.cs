@@ -1,7 +1,6 @@
 using System;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
-using Scoreboard.Data;
 using Scoreboard.Models;
 
 namespace Scoreboard

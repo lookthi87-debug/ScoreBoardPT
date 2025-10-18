@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using ClosedXML.Excel;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Scoreboard
 {
@@ -47,6 +45,11 @@ namespace Scoreboard
             foreach (Control ctl in this.Controls)
                 AttachFocusHandler(ctl);
 
+            // Ensure this control can receive focus
+            this.SetStyle(ControlStyles.Selectable, true);
+            this.TabStop = true;
+            this.Focus();
+
             match = m;
             lblTitle.Text = m.TournamentName;
             lblHiepDau.Text = m.ClassSetsName;
@@ -58,6 +61,10 @@ namespace Scoreboard
 
             TotalscoreTeam1 = m.TotalScore1;
             TotalscoreTeam2 = m.TotalScore2;
+
+            // Initialize current period scores
+            scoreTeam1 = m.Score1;
+            scoreTeam2 = m.Score2;
 
             if (lblTime.Text != "00:00")
             {
@@ -73,9 +80,6 @@ namespace Scoreboard
             {
                 elapsedMinutes = 0;
             }
-
-            scoreTeam1 = m.TotalScore1;
-            scoreTeam2 = m.TotalScore2;
         }
 
         private void AttachFocusHandler(Control ctl)
@@ -134,43 +138,144 @@ namespace Scoreboard
             lblTeam2.Font = new Font("Arial", baseSize, FontStyle.Bold);
             lblScoreTeam1.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
             lblScoreTeam2.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
-            lblBonus.Font = new Font("Arial", baseSize - 10, FontStyle.Bold);
             foreach (Control ctl in this.Controls)
                 if (ctl is Label lbl) lbl.TextAlign = ContentAlignment.MiddleCenter;
         }
 
         public void AddPointTeam1()
         {
-            scoreTeam1++;
-            UpdateScoreLabel();
-            match.TotalScore1 = scoreTeam1;
-            match.Score1 = scoreTeam1 - TotalscoreTeam1;
-            Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
-            Repository.UpdateMatchScore1(match.MatchId, scoreTeam1);
+            try
+            {
+                // Only allow adding points when clock is running
+                if (isPaused)
+                {
+                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Increment current period score
+                scoreTeam1++;
+
+                // Update current period score in match object
+                match.Score1 = scoreTeam1;
+
+                // Save to database first
+                Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
+
+                // Calculate total score from database (sum of all periods with same match_id)
+                match.TotalScore1 = CalculateTotalScore1();
+                TotalscoreTeam1 = match.TotalScore1;
+
+                // Update match total in database
+                Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
+
+                // Update UI
+                UpdateScoreLabel();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong AddPointTeam1: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void AddPointTeam2()
         {
-            scoreTeam2++;
-            UpdateScoreLabel();
-            match.TotalScore1 = scoreTeam2;
-            match.Score2 = scoreTeam2 - TotalscoreTeam2;
-            Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
-            Repository.UpdateMatchScore2(match.MatchId, scoreTeam2);
+            try
+            {
+                // Only allow adding points when clock is running
+                if (isPaused)
+                {
+                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Increment current period score
+                scoreTeam2++;
+
+                // Update current period score in match object
+                match.Score2 = scoreTeam2;
+
+                // Save to database first
+                Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
+
+                // Calculate total score from database (sum of all periods with same match_id)
+                match.TotalScore2 = CalculateTotalScore2();
+                TotalscoreTeam2 = match.TotalScore2;
+
+                // Update match total in database
+                Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
+
+                // Update UI
+                UpdateScoreLabel();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi trong AddPointTeam2: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         public void ResetScore()
         {
-            scoreTeam1 = match.TotalScore1;
-            scoreTeam2 = match.TotalScore2;
+            // Reset current period scores to 0
+            scoreTeam1 = 0;
+            scoreTeam2 = 0;
+
+            // Update match object
+            match.Score1 = 0;
+            match.Score2 = 0;
+
+            // Recalculate total scores
+            match.TotalScore1 = CalculateTotalScore1();
+            match.TotalScore2 = CalculateTotalScore2();
+            TotalscoreTeam1 = match.TotalScore1;
+            TotalscoreTeam2 = match.TotalScore2;
+
+            // Update database
+            Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
+            Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
+            Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
+            Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
+
             UpdateScoreLabel();
+        }
+
+
+        private int CalculateTotalScore1()
+        {
+            // Get all periods for this match from database
+            var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+
+            // Sum up all score1 from all periods with same match_id
+            int totalScore = 0;
+            foreach (var period in allPeriods)
+            {
+                totalScore += period.Score1;
+            }
+
+            return totalScore;
+        }
+
+        private int CalculateTotalScore2()
+        {
+            // Get all periods for this match from database
+            var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+
+            // Sum up all score2 from all periods with same match_id
+            int totalScore = 0;
+            foreach (var period in allPeriods)
+            {
+                totalScore += period.Score2;
+            }
+
+            return totalScore;
         }
 
         private void UpdateScoreLabel()
         {
-            lblScoreTeam1.Text = $"{scoreTeam1}";
-            lblScoreTeam2.Text = $"{scoreTeam2}";
-
+            var list = Repository.GetMatchSetsByMatchId(match.MatchId);
+            // Display total scores (sum of all periods)
+            lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
+            lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
         }
 
         public void UpdateMatchTime(string time)
@@ -284,7 +389,7 @@ namespace Scoreboard
 
                     wb.SaveAs(sfd.FileName);
                     Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
-                    Repository.UpdateMatchStatus(match.MatchId,"2");
+                    Repository.UpdateMatchStatus(match.MatchId, "2");
                     MessageBox.Show($"Đã xuất file:\n{sfd.FileName}", "Xuất Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -302,52 +407,382 @@ namespace Scoreboard
         }
         public void NextSet()
         {
-            Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
-
-            var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
-            if (next == null)
+            try
             {
-                MessageBox.Show("Đã hết hiệp đấu!");
-                return;
+                // Mark current set as finished
+                Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
+
+                // Try to get next existing period first
+                var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
+
+                if (next == null)
+                {
+                    // No next period exists, create a new one
+                    next = CreateNextPeriod();
+                    if (next == null)
+                    {
+                        MessageBox.Show("Không thể tạo hiệp mới!");
+                        return;
+                    }
+                }
+
+                // Activate next period
+                Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
+
+                // Use the next period directly
+                match = next;
+
+                // Reset current period scores to 0 (new period starts)
+                scoreTeam1 = 0;
+                scoreTeam2 = 0;
+
+                // Update match object with current period scores
+                match.Score1 = 0;
+                match.Score2 = 0;
+
+                // Save new period scores to database (0-0)
+                Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
+                Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
+
+                // Calculate and update total scores from database
+                match.TotalScore1 = CalculateTotalScore1();
+                match.TotalScore2 = CalculateTotalScore2();
+                TotalscoreTeam1 = match.TotalScore1;
+                TotalscoreTeam2 = match.TotalScore2;
+
+                // Update match totals in database
+                Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
+                Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
+
+                UpdateScoreLabel();
+
+                // Force UI update
+                UpdateUI();
+
+                if (lblTime.Text != "00:00")
+                {
+                    var parts = lblTime.Text.Split(':');
+                    if (parts.Length == 2 &&
+                        int.TryParse(parts[0], out int hours) &&
+                        int.TryParse(parts[1], out int minutes))
+                    {
+                        elapsedMinutes = hours * 60 + minutes;
+                    }
+                }
+                else
+                {
+                    elapsedMinutes = 0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Silent error handling
+            }
+        }
+
+        private MatchsetModel CreateNextPeriod()
+        {
+            try
+            {
+                // Get match class info to determine period rules
+                var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+                if (matchClass == null)
+                {
+                    return null;
+                }
+
+                // Get all periods for this match
+                var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+
+                // Determine next period based on match class rules
+                string nextPeriodName = DetermineNextPeriodName(allPeriods, matchClass);
+
+                if (string.IsNullOrEmpty(nextPeriodName))
+                {
+                    return null; // No more periods allowed
+                }
+
+
+                // Create new matchset
+                var newSet = new MatchsetModel
+                {
+                    MatchId = match.MatchId,
+                    Team1 = match.Team1,
+                    Team2 = match.Team2,
+                    Score1 = 0,
+                    Score2 = 0,
+                    Time = "00:00",
+                    Note = "",
+                    Status = "0", // Inactive initially
+                    RefereeId = match.RefereeId,
+                    RefereeName = match.RefereeName,
+                    ClassSets_Id = match.ClassSets_Id, // Keep same ClassSets_Id as current period
+                    ClassSetsName = nextPeriodName, // Use the determined period name
+                    TournamentId = match.TournamentId,
+                    TournamentName = match.TournamentName,
+                    MatchClassId = match.MatchClassId,
+                    MatchClassName = match.MatchClassName
+                };
+
+                // Add to database
+                Repository.AddMatchSet(newSet);
+
+                // Wait a moment for database to update
+                System.Threading.Thread.Sleep(100);
+
+                // Get all periods again to find the newly created one
+                var updatedPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+
+                // Try to find the newly created set by name
+                var createdSet = updatedPeriods.FirstOrDefault(s => s.ClassSetsName == nextPeriodName);
+
+                if (createdSet == null)
+                {
+                    // If not found by name, try to get the last created period
+                    createdSet = updatedPeriods.OrderByDescending(s => s.Id).FirstOrDefault();
+                }
+
+                return createdSet;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private string DetermineNextPeriodName(List<MatchsetModel> allPeriods, MatchClassModel matchClass)
+        {
+            // Count different types of periods
+            var regularPeriods = allPeriods.Where(p => p.ClassSetsName?.StartsWith("Hiệp ") == true && !p.ClassSetsName.Contains("phụ") && !p.ClassSetsName.Contains("penalty")).ToList();
+            var overtimePeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("phụ") == true).ToList();
+            var penaltyPeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("penalty") == true || p.ClassSetsName?.Contains("pen") == true).ToList();
+
+            // Get current scores
+            int team1Score = match.TotalScore1;
+            int team2Score = match.TotalScore2;
+            bool isTied = team1Score == team2Score;
+
+            // Determine next period based on match class rules
+            switch (matchClass.PeriodType?.ToLower())
+            {
+                case "half": // Football/Soccer
+                    return DetermineFootballNextPeriod(regularPeriods, overtimePeriods, penaltyPeriods, isTied, matchClass);
+
+                case "set": // Volleyball, Badminton
+                    return DetermineSetBasedNextPeriod(regularPeriods, isTied, matchClass);
+
+                case "quarter": // Basketball
+                    return DetermineQuarterNextPeriod(regularPeriods, isTied, matchClass);
+
+                default:
+                    return DetermineDefaultNextPeriod(regularPeriods);
+            }
+        }
+
+        private string DetermineFootballNextPeriod(List<MatchsetModel> regularPeriods, List<MatchsetModel> overtimePeriods, List<MatchsetModel> penaltyPeriods, bool isTied, MatchClassModel matchClass)
+        {
+            // Standard football: 2 regular periods
+            if (regularPeriods.Count < matchClass.StandardPeriods)
+            {
+                return $"Hiệp {regularPeriods.Count + 1}";
             }
 
-            Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
-
-            match = next;
-
-            lblTitle.Text = match.TournamentName;
-            lblHiepDau.Text = match.ClassSetsName;
-            lblTeam1.Text = match.Team1;
-            lblTeam2.Text = match.Team2;
-            lblScoreTeam1.Text = match.TotalScore1.ToString();
-            lblScoreTeam2.Text = match.TotalScore2.ToString();
-            lblTime.Text = match.Time ?? "00:00";
-
-            if (lblTime.Text != "00:00")
+            // After 2 regular periods, check if someone won
+            if (!isTied)
             {
-                var parts = lblTime.Text.Split(':');
-                if (parts.Length == 2 &&
-                    int.TryParse(parts[0], out int hours) &&
-                    int.TryParse(parts[1], out int minutes))
+                // Someone won, show result and end match
+                ShowMatchResult();
+                return null; // No more periods
+            }
+
+            // If tied after regular periods, check if overtime is allowed
+            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count < matchClass.MaxOvertimePeriods)
+            {
+                return $"Hiệp phụ {overtimePeriods.Count + 1}";
+            }
+
+            // After overtime, if still tied, go to penalty
+            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count >= matchClass.MaxOvertimePeriods && penaltyPeriods.Count == 0)
+            {
+                return "Penalty";
+            }
+
+            // No more periods allowed
+            return null;
+        }
+
+        private string DetermineSetBasedNextPeriod(List<MatchsetModel> regularPeriods, bool isTied, MatchClassModel matchClass)
+        {
+            // For set-based sports (volleyball, badminton), check if someone already won
+            if (regularPeriods.Count >= matchClass.PeriodsToWin)
+            {
+                // Check if someone has won enough sets
+                int team1WonSets = CountWonSets(regularPeriods, match.Team1);
+                int team2WonSets = CountWonSets(regularPeriods, match.Team2);
+
+                if (team1WonSets >= matchClass.PeriodsToWin || team2WonSets >= matchClass.PeriodsToWin)
                 {
-                    elapsedMinutes = hours * 3600 + minutes * 60;
+                    ShowMatchResult();
+                    return null; // Match finished
+                }
+            }
+
+            // Continue with more sets if no one has won yet
+            if (regularPeriods.Count < matchClass.StandardPeriods)
+            {
+                return $"Set {regularPeriods.Count + 1}";
+            }
+
+            // No more sets allowed
+            return null;
+        }
+
+        private string DetermineQuarterNextPeriod(List<MatchsetModel> regularPeriods, bool isTied, MatchClassModel matchClass)
+        {
+            // For quarter-based sports (basketball)
+            if (regularPeriods.Count < matchClass.StandardPeriods)
+            {
+                return $"Hiệp phụ {regularPeriods.Count + 1}";
+            }
+
+            // No more quarters allowed
+            return null;
+        }
+
+        private string DetermineDefaultNextPeriod(List<MatchsetModel> regularPeriods)
+        {
+            // Default: just increment period number
+            return $"Hiệp {regularPeriods.Count + 1}";
+        }
+
+        private int CountWonSets(List<MatchsetModel> periods, string teamName)
+        {
+            int wonSets = 0;
+            foreach (var period in periods)
+            {
+                if (period.Status == "2") // Finished period
+                {
+                    if (teamName == match.Team1 && period.Score1 > period.Score2)
+                    {
+                        wonSets++;
+                    }
+                    else if (teamName == match.Team2 && period.Score2 > period.Score1)
+                    {
+                        wonSets++;
+                    }
+                }
+            }
+            return wonSets;
+        }
+
+        private void ShowMatchResult()
+        {
+            try
+            {
+                int team1Score = match.TotalScore1;
+                int team2Score = match.TotalScore2;
+
+                string winner = "";
+                string resultMessage = "";
+
+                if (team1Score > team2Score)
+                {
+                    winner = match.Team1;
+                    resultMessage = $"🏆 {match.Team1} THẮNG!\n\n" +
+                                  $"Tỉ số: {match.Team1} {team1Score} - {team2Score} {match.Team2}\n" +
+                                  $"Trận đấu kết thúc!";
+                }
+                else if (team2Score > team1Score)
+                {
+                    winner = match.Team2;
+                    resultMessage = $"🏆 {match.Team2} THẮNG!\n\n" +
+                                  $"Tỉ số: {match.Team1} {team1Score} - {team2Score} {match.Team2}\n" +
+                                  $"Trận đấu kết thúc!";
+                }
+                else
+                {
+                    resultMessage = $"🤝 HÒA!\n\n" +
+                                  $"Tỉ số: {match.Team1} {team1Score} - {team2Score} {match.Team2}\n" +
+                                  $"Trận đấu kết thúc!";
+                }
+
+                MessageBox.Show(resultMessage, "Kết quả trận đấu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Mark all periods as finished
+                var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+                foreach (var period in allPeriods)
+                {
+                    Repository.UpdateMatchSetStatus(period.MatchId, period.Id, "2"); // Finished
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi hiển thị kết quả: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GetPeriodName(int periodNumber)
+        {
+            // Get match class info to determine period type
+            var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+
+            if (matchClass != null)
+            {
+                switch (matchClass.PeriodType?.ToLower())
+                {
+                    case "half":
+                        return $"Hiệp {periodNumber}";
+                    case "quarter":
+                        return $"Hiệp phụ {periodNumber}";
+                    case "set":
+                        return $"Set {periodNumber}";
+                    default:
+                        return $"Hiệp {periodNumber}";
                 }
             }
             else
             {
-                elapsedMinutes = 0;
+                return $"Hiệp {periodNumber}";
             }
-
-            scoreTeam1 = match.TotalScore1;
-            scoreTeam2 = match.TotalScore2;
         }
+
+        private void UpdateUI()
+        {
+            try
+            {
+                if (match == null)
+                {
+                    return;
+                }
+                var list = Repository.GetMatchSetsByMatchId(match.MatchId);
+
+                // Update UI elements
+                lblTitle.Text = match.TournamentName ?? "";
+                lblHiepDau.Text = match.ClassSetsName ?? "";
+                lblTeam1.Text = match.Team1 ?? "";
+                lblTeam2.Text = match.Team2 ?? "";
+                lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
+                lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
+                lblTime.Text = match.Time ?? "00:00";
+
+                // Force UI refresh
+                this.Invalidate();
+                this.Update();
+            }
+            catch (Exception ex)
+            {
+                // Silent error handling
+            }
+        }
+
 
         private void InitTimer()
         {
             if (matchTimer == null)
             {
                 matchTimer = new Timer();
-                matchTimer.Interval = 1000; 
+                matchTimer.Interval = 1000;
                 matchTimer.Tick += (s, e) =>
                 {
                     if (!isPaused)
@@ -373,5 +808,6 @@ namespace Scoreboard
         }
 
         public MatchsetModel Matchset => match;
+
     }
 }

@@ -315,7 +315,7 @@ namespace Scoreboard
         private void btnSave_Click(object sender, EventArgs e)
         {
             string username = txtUser.Text.Trim();
-            string name = txtName.Text.Trim();
+            string fullName = txtName.Text.Trim();
             int roleId = (cbRole.SelectedValue is int) ? (int)cbRole.SelectedValue : 0;
 
             if (string.IsNullOrEmpty(username))
@@ -324,7 +324,7 @@ namespace Scoreboard
                 txtUser.Focus();
                 return;
             }
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(fullName))
             {
                 MessageBox.Show("Vui lòng nhập name.");
                 txtName.Focus();
@@ -348,7 +348,7 @@ namespace Scoreboard
                     return;
                 }
             }
-             try
+            try
             {
                 if (!editingUserId.HasValue)
                 {
@@ -359,7 +359,7 @@ namespace Scoreboard
                         return;
                     }
 
-                    var u = new UserModel { Name = username, Password = Security.HashPassword(lblPassDefault.Text), Fullname = name, RoleId = roleId };
+                    var u = new UserModel { Name = username, Password = Security.HashPassword(lblPassDefault.Text), Fullname = fullName, RoleId = roleId };
                     Repository.AddUser(u);
                     MessageBox.Show("Tạo user thành công.");
                 }
@@ -372,12 +372,12 @@ namespace Scoreboard
                         return;
                     }
 
-                    u.Name = name;
+                    u.Fullname = fullName;
                     if (cReset.Checked == true)
                     {
                         u.Password = Security.HashPassword(lblPassDefault.Text); // hash recommended
                     }
-                        
+
                     u.RoleId = roleId;
                     Repository.UpdateUser(u);
                     MessageBox.Show("Cập nhật user thành công.");

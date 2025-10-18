@@ -1,13 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using System.Collections.Generic;
-using MaterialSkin.Controls;
-using System.Text.RegularExpressions;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Scoreboard
 {
@@ -55,8 +52,8 @@ namespace Scoreboard
             // 
             this.dgData.AllowUserToAddRows = false;
             this.dgData.AllowUserToDeleteRows = false;
-            this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgData.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -277,7 +274,7 @@ namespace Scoreboard
             LoadClass();
             LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
-        private void LoadTournaments(string Class_id ="")
+        private void LoadTournaments(string Class_id = "")
         {
             var tournaments = Repository.GetAllTournaments() ?? new List<TournamentModel>();
 
@@ -301,12 +298,12 @@ namespace Scoreboard
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (cbMatchClass.Text.Trim()=="")
+            if (cbMatchClass.Text.Trim() == "")
             {
                 MessageBox.Show("Vui lòng chọn bộ môn thi đấu");
                 cbMatchClass.Focus();
                 return;
-            }    
+            }
             LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
 
@@ -340,7 +337,7 @@ namespace Scoreboard
 
             var id = Convert.ToInt32(dgData.CurrentRow.Cells["Id"].Value);
             var frm = new AddUpdateTournaments(id);
-            if (frm.ShowDialog() == DialogResult.OK) 
+            if (frm.ShowDialog() == DialogResult.OK)
             {
                 LoadTournaments(cbMatchClass.SelectedValue.ToString());
             }

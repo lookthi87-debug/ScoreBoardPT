@@ -1,14 +1,8 @@
 using System;
-using System.Linq;
-using System.Diagnostics.Eventing.Reader;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Collections.Generic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Scoreboard
 {
@@ -235,7 +229,7 @@ namespace Scoreboard
                 cbMatchClass.ValueMember = "Id";
                 cbMatchClass.SelectedIndex = 0;
             }
-            catch 
+            catch
             {
                 cbMatchClass.Items.Clear();
                 cbMatchClass.Items.Add("No data");
@@ -249,7 +243,7 @@ namespace Scoreboard
             dStart.Text = t.Start.ToString();
             dEnd.Text = t.End.ToString();
             try { cbMatchClass.SelectedValue = t.match_class_id; } catch { }
-            cbMatchClass.Text = t.match_class_name?? "";
+            cbMatchClass.Text = t.match_class_name ?? "";
         }
         public AddUpdateTournaments(int TournamentsId = -1)
         {
@@ -280,7 +274,7 @@ namespace Scoreboard
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (cbMatchClass.Text.Trim()== "")
+            if (cbMatchClass.Text.Trim() == "")
             {
                 MessageBox.Show("Vui lòng chọn bộ môn thi đấu", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cbMatchClass.Focus();
@@ -301,7 +295,7 @@ namespace Scoreboard
             }
             // map
             currentTournament.Name = txtName.Text;
-            currentTournament.match_class_id= (cbMatchClass.SelectedValue is int) ? (int)cbMatchClass.SelectedValue : 0;
+            currentTournament.match_class_id = (cbMatchClass.SelectedValue is int) ? (int)cbMatchClass.SelectedValue : 0;
             currentTournament.Start = dStart.Value;
             currentTournament.End = dEnd.Value;
             currentTournament.Description = txtDescription.Text;

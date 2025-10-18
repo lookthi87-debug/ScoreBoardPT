@@ -1,18 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
-using System.Collections.Generic;
-using MaterialSkin.Controls;
-using System.Text.RegularExpressions;
-using System.Reflection;
-using System.IO;
-using System.Drawing;
 using Excel = Microsoft.Office.Interop.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace Scoreboard
 {
@@ -58,7 +52,7 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn Score2;
         private DataGridViewTextBoxColumn Id;
         private DataGridViewTextBoxColumn status;
-        private DataGridViewTextBoxColumn start;
+        private DataGridViewTextBoxColumn timeStart;
 
         private UserModel user { get; set; }
         private List<MatchModel> currentMatchList = new List<MatchModel>();
@@ -109,7 +103,7 @@ namespace Scoreboard
             this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.start = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgGiaiDau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.SuspendLayout();
@@ -118,8 +112,8 @@ namespace Scoreboard
             // 
             this.dgGiaiDau.AllowUserToAddRows = false;
             this.dgGiaiDau.AllowUserToDeleteRows = false;
-            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgGiaiDau.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -140,7 +134,7 @@ namespace Scoreboard
             this.Score2,
             this.Id,
             this.status,
-            this.start});
+            this.timeStart});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -344,7 +338,7 @@ namespace Scoreboard
             // 
             this.dgvDetail.AllowUserToAddRows = false;
             this.dgvDetail.AllowUserToDeleteRows = false;
-            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDetail.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -535,7 +529,7 @@ namespace Scoreboard
             // lvActiveMatch
             // 
             this.lvActiveMatch.AllowDrop = true;
-            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvActiveMatch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
@@ -665,12 +659,12 @@ namespace Scoreboard
             this.status.Visible = false;
             this.status.Width = 5;
             // 
-            // start
+            // timeStart
             // 
-            this.start.HeaderText = "Thời gian";
-            this.start.Name = "start";
-            this.start.DataPropertyName = "start";
-            this.start.ReadOnly = true;
+            this.timeStart.DataPropertyName = "time";
+            this.timeStart.HeaderText = "Thời gian";
+            this.timeStart.Name = "timeStart";
+            this.timeStart.ReadOnly = true;
             // 
             // MatchsForm
             // 
@@ -714,7 +708,6 @@ namespace Scoreboard
             try
             {
                 var ml = Repository.GetAllMatchClasses();
-                ml.Add(new MatchClassModel { Id = 0, Name = "Tất cả" });
                 cbMatchClass.DataSource = ml.OrderBy(element => element.Id).ToList();
                 cbMatchClass.DisplayMember = "Name";
                 cbMatchClass.ValueMember = "Id";
@@ -747,7 +740,7 @@ namespace Scoreboard
         public MatchsForm(UserModel us)
         {
             InitializeComponent();
-            dgGiaiDau.AutoGenerateColumns=false;
+            dgGiaiDau.AutoGenerateColumns = false;
             dgvDetail.AutoGenerateColumns = false;
             user = us;
             LoadMatchClass();
@@ -765,7 +758,8 @@ namespace Scoreboard
                     if (classId == 0)
                     {
                         matches = matches.ToList();
-                    } else
+                    }
+                    else
                     {
                         matches = matches.Where(m => m.MatchClassId == classId).ToList();
                     }
@@ -827,7 +821,7 @@ namespace Scoreboard
                 {
                     // Nếu không có dòng nào được chọn, lấy dòng đầu tiên hợp lệ
                     row = dgGiaiDau.Rows.Cast<DataGridViewRow>()
-                                         .FirstOrDefault(r => !r.IsNewRow);
+                                 .FirstOrDefault(r => !r.IsNewRow);
                     if (row == null)
                         return; // Không có dòng hợp lệ nào
                 }
@@ -898,9 +892,9 @@ namespace Scoreboard
             }
             string matchId = row.Cells["id"].Value?.ToString();
             AddUpdateMatchsets mgAdd = new AddUpdateMatchsets(matchId);
-            if (mgAdd.ShowDialog() == DialogResult.OK) 
+            if (mgAdd.ShowDialog() == DialogResult.OK)
             {
-                int index = dgGiaiDau.RowCount-1;
+                int index = dgGiaiDau.RowCount - 1;
                 LoadDetailsForSelectedMatch(index);
             }
         }
@@ -944,7 +938,7 @@ namespace Scoreboard
             }
             if (status == "1")
             {
-                DialogResult rs = MessageBox.Show( "Trận đấu đang hoạt động! Bạn có chắc chắn muốn sửa không?","Xác nhận chỉnh sửa",  MessageBoxButtons.YesNo,MessageBoxIcon.Warning);
+                DialogResult rs = MessageBox.Show("Trận đấu đang hoạt động! Bạn có chắc chắn muốn sửa không?", "Xác nhận chỉnh sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (rs == DialogResult.No)
                 {
                     return;
@@ -953,7 +947,7 @@ namespace Scoreboard
             int colid = dgvDetail.Rows[index].DataGridView.Columns["Id2"].Index;
             var id = int.Parse(dgvDetail.Rows[index].Cells[colid].Value.ToString());
             var matchid = dgvDetail.Rows[index].Cells["MatchId"].Value.ToString();
-            AddUpdateMatchsets mgAdd = new AddUpdateMatchsets(matchid,id);
+            AddUpdateMatchsets mgAdd = new AddUpdateMatchsets(matchid, id);
             if (mgAdd.ShowDialog() == DialogResult.OK)
             {
                 LoadDetailsForSelectedMatch(index);
@@ -1087,7 +1081,7 @@ namespace Scoreboard
 
             // Thêm vào lvToggle
             var m = Repository.GetMatchById(matchId);
-            var li = new ListViewItem($"{m.Team1} vs {m.Team2} - {m.RefereeName}" ) { Tag = matchId };
+            var li = new ListViewItem($"{m.Team1} vs {m.Team2} - {m.RefereeName}") { Tag = matchId };
             lvToggle.Items.Add(li);
 
             // Cập nhật ShowToggle trên Matches
@@ -1204,7 +1198,7 @@ namespace Scoreboard
             if (ms != null)
             {
                 ms.Status = "1";
-                Repository.UpdateMatchSetStatus(matchId,ms.Id, ms.Status);
+                Repository.UpdateMatchSetStatus(matchId, ms.Id, ms.Status);
             }
 
             // Thêm vào lvActiveMatch
@@ -1243,7 +1237,7 @@ namespace Scoreboard
             // Nếu status != 2 thì cập nhật status = 0 (cho phép lại)
 
             List<MatchsetModel> ms = Repository.GetActiveMatchSetsByMatchId(matchId);
-            for (int i = 0; i < ms.Count-1; i++) 
+            for (int i = 0; i < ms.Count - 1; i++)
             {
                 ms[0].Status = "0";
                 Repository.UpdateMatchSetStatus(matchId, ms[0].Id, ms[0].Status);
@@ -1254,9 +1248,9 @@ namespace Scoreboard
                 if (item.Tag?.ToString() == matchId)
                 {
                     lvToggle.Items.Remove(lv);
-                    for (int i = 0; i <= dgGiaiDau.Rows.Count-1; i++)
+                    for (int i = 0; i <= dgGiaiDau.Rows.Count - 1; i++)
                     {
-                        dgGiaiDau.Rows[i].Cells["ShowToggle"].Value=0;
+                        dgGiaiDau.Rows[i].Cells["ShowToggle"].Value = 0;
                     }
                     break;
                 }
@@ -1446,7 +1440,7 @@ namespace Scoreboard
                 }
             }
             string matchid = dgGiaiDau.Rows[index].Cells["id"].Value.ToString();
-            AddUpdateMatch mgAdd = new AddUpdateMatch(int.Parse(cbTournaments.SelectedValue.ToString()),matchid);
+            AddUpdateMatch mgAdd = new AddUpdateMatch(int.Parse(cbTournaments.SelectedValue.ToString()), matchid);
             if (mgAdd.ShowDialog() == DialogResult.OK)
             {
                 LoadDetailsForSelectedMatch(index);
@@ -1471,7 +1465,7 @@ namespace Scoreboard
             }
             try
             {
-                Repository.DeleteMatchSet(Matchid,id);
+                Repository.DeleteMatchSet(Matchid, id);
                 if (dgGiaiDau.Rows.Count > 0)
                 {
                     LoadDetailsForSelectedMatch(dgGiaiDau.CurrentRow.Index);
@@ -1506,14 +1500,14 @@ namespace Scoreboard
                 }
                 Repository.DeleteMatch(id);
                 LoadAllMatches();
-                if (index >=0) 
+                if (index >= 0)
                 {
                     dgGiaiDau.Rows[index].Selected = true;
                     LoadDetailsForSelectedMatch(index);
                 }
-                
+
                 MessageBox.Show("Xóa trận đấu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
             }
             catch (Exception ex)
             {
@@ -1532,5 +1526,6 @@ namespace Scoreboard
 
             LoadTournaments(classId);
         }
+
     }
 }
