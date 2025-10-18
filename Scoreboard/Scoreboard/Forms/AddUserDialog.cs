@@ -287,6 +287,8 @@ namespace Scoreboard
                 txtUser.Text = u.Name;
                 txtUser.Enabled = false;
                 txtName.Text = u.Fullname;
+                txtEmail.Text = u.Email;
+                txtPhone.Text = u.Phone;
                 // don't show password
                 try { cbRole.SelectedValue = u.RoleId; } catch { }
             }
@@ -316,6 +318,8 @@ namespace Scoreboard
         {
             string username = txtUser.Text.Trim();
             string fullName = txtName.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string email = txtEmail.Text.Trim();
             int roleId = (cbRole.SelectedValue is int) ? (int)cbRole.SelectedValue : 0;
 
             if (string.IsNullOrEmpty(username))
@@ -359,7 +363,7 @@ namespace Scoreboard
                         return;
                     }
 
-                    var u = new UserModel { Name = username, Password = Security.HashPassword(lblPassDefault.Text), Fullname = fullName, RoleId = roleId };
+                    var u = new UserModel { Name = username, Password = Security.HashPassword(lblPassDefault.Text), Fullname = fullName, RoleId = roleId, Phone = phone, Email = email };
                     Repository.AddUser(u);
                     MessageBox.Show("Tạo user thành công.");
                 }
@@ -373,6 +377,8 @@ namespace Scoreboard
                     }
 
                     u.Fullname = fullName;
+                    u.Phone = phone;
+                    u.Email = email;
                     if (cReset.Checked == true)
                     {
                         u.Password = Security.HashPassword(lblPassDefault.Text); // hash recommended

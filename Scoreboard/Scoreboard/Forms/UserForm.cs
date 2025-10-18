@@ -15,13 +15,13 @@ namespace Scoreboard
         private TextBox txtSearch;
         private Label lblSearch;
         private MaterialButton btnSearch;
-        private MaterialButton btnCancel;
         private DataGridViewTextBoxColumn name;
         private DataGridViewTextBoxColumn fullname;
         private DataGridViewTextBoxColumn phone;
         private DataGridViewTextBoxColumn email;
         private DataGridViewTextBoxColumn RoleName;
         private DataGridViewTextBoxColumn id;
+        private MaterialButton btnCancel;
         private UserModel user { get; set; }
         public UsersForm(UserModel us)
         {
@@ -33,18 +33,18 @@ namespace Scoreboard
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgUser = new System.Windows.Forms.DataGridView();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fullname = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.email = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RoleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAdd = new MaterialSkin.Controls.MaterialButton();
             this.btnDelete = new MaterialSkin.Controls.MaterialButton();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.btnSearch = new MaterialSkin.Controls.MaterialButton();
             this.btnCancel = new MaterialSkin.Controls.MaterialButton();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fullname = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.email = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RoleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgUser)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,8 +52,8 @@ namespace Scoreboard
             // 
             this.dgUser.AllowUserToAddRows = false;
             this.dgUser.AllowUserToDeleteRows = false;
-            this.dgUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgUser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgUser.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -86,50 +86,6 @@ namespace Scoreboard
             this.dgUser.Size = new System.Drawing.Size(1086, 351);
             this.dgUser.TabIndex = 6;
             this.dgUser.DoubleClick += new System.EventHandler(this.dgUser_DoubleClick);
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Tài khoản";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 200;
-            // 
-            // fullname
-            // 
-            this.fullname.DataPropertyName = "fullname";
-            this.fullname.HeaderText = "Tên";
-            this.fullname.Name = "fullname";
-            this.fullname.ReadOnly = true;
-            this.fullname.Width = 350;
-            // 
-            // phone
-            // 
-            this.phone.HeaderText = "Điện thoại";
-            this.phone.Name = "phone";
-            this.phone.Width = 180;
-            // 
-            // email
-            // 
-            this.email.HeaderText = "Email";
-            this.email.Name = "email";
-            this.email.Width = 200;
-            // 
-            // RoleName
-            // 
-            this.RoleName.DataPropertyName = "RoleName";
-            this.RoleName.HeaderText = "Quyền hạn";
-            this.RoleName.Name = "RoleName";
-            this.RoleName.Width = 150;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            this.id.Width = 5;
             // 
             // btnAdd
             // 
@@ -231,6 +187,52 @@ namespace Scoreboard
             this.btnCancel.UseAccentColor = false;
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // name
+            // 
+            this.name.DataPropertyName = "name";
+            this.name.HeaderText = "Tài khoản";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 200;
+            // 
+            // fullname
+            // 
+            this.fullname.DataPropertyName = "fullname";
+            this.fullname.HeaderText = "Tên";
+            this.fullname.Name = "fullname";
+            this.fullname.ReadOnly = true;
+            this.fullname.Width = 350;
+            // 
+            // phone
+            // 
+            this.phone.DataPropertyName = "Phone";
+            this.phone.HeaderText = "Điện thoại";
+            this.phone.Name = "phone";
+            this.phone.Width = 180;
+            // 
+            // email
+            // 
+            this.email.DataPropertyName = "email";
+            this.email.HeaderText = "Email";
+            this.email.Name = "email";
+            this.email.Width = 200;
+            // 
+            // RoleName
+            // 
+            this.RoleName.DataPropertyName = "RoleName";
+            this.RoleName.HeaderText = "Quyền hạn";
+            this.RoleName.Name = "RoleName";
+            this.RoleName.Width = 150;
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            this.id.Width = 5;
             // 
             // UsersForm
             // 
