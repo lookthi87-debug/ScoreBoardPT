@@ -1,5 +1,6 @@
 ﻿﻿﻿﻿﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Office2010.Excel;
@@ -912,6 +913,8 @@ namespace Scoreboard.Data
                     m.team2,
                     m.score1 AS total_score1,
                     m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     ms.status,
@@ -950,22 +953,115 @@ namespace Scoreboard.Data
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
                             TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
                             TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
-                            Time = dr.IsDBNull(6) ? null : dr.GetString(6),
-                            Note = dr.IsDBNull(7) ? null : dr.GetString(7),
-                            Status = dr.IsDBNull(8) ? null : dr.GetString(8),
-                            RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
-                            RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            Score1 = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
+                            Score2 = dr.IsDBNull(7) ? 0 : dr.GetInt32(7),
+                            Time = dr.IsDBNull(8) ? null : dr.GetString(8),
+                            Note = dr.IsDBNull(9) ? null : dr.GetString(9),
+                            Status = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
+                            RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
+                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
+                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
                         };
                     }
                 }
             }
             return result;
+        }
+        public static List<MatchModel> GetMatchesByStatus(string status)
+        {
+            var list = new List<MatchModel>();
+            string sql = @"
+                SELECT 
+                    m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
+                    m.time, m.referee_id, u.name AS referee_name, 
+                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
+                FROM Matches m
+                LEFT JOIN Users u ON m.referee_id = u.id
+                LEFT JOIN Tournaments t ON m.tournament_id = t.id
+                WHERE m.status=@status;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@status", status);
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var match = new MatchModel
+                        {
+                            Id = dr.GetString(0),
+                            Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
+                            Team2 = dr.IsDBNull(2) ? null : dr.GetString(2),
+                            Score1 = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
+                            Score2 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Start = dr.IsDBNull(5) ? (DateTime?)null : dr.GetDateTime(5),
+                            End = dr.IsDBNull(6) ? (DateTime?)null : dr.GetDateTime(6),
+                            Time = dr.IsDBNull(7) ? null : dr.GetString(7),
+                            RefereeId = dr.IsDBNull(8) ? (int?)null : dr.GetInt32(8),
+                            RefereeName = dr.IsDBNull(9) ? null : dr.GetString(9),
+                            Note = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
+                            Status = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
+                        };
+                        list.Add(match);
+                    }
+                }
+            }
+            return list;
+        }
+
+        public static List<MatchModel> GetMatchesShowToggle()
+        {
+            var list = new List<MatchModel>();
+            string sql = @"
+                SELECT 
+                    m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
+                    m.time, m.referee_id, u.name AS referee_name, 
+                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
+                FROM Matches m
+                LEFT JOIN Users u ON m.referee_id = u.id
+                LEFT JOIN Tournaments t ON m.tournament_id = t.id
+                WHERE m.status='1' AND m.show_toggle=1;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        var match = new MatchModel
+                        {
+                            Id = dr.GetString(0),
+                            Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
+                            Team2 = dr.IsDBNull(2) ? null : dr.GetString(2),
+                            Score1 = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
+                            Score2 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Start = dr.IsDBNull(5) ? (DateTime?)null : dr.GetDateTime(5),
+                            End = dr.IsDBNull(6) ? (DateTime?)null : dr.GetDateTime(6),
+                            Time = dr.IsDBNull(7) ? null : dr.GetString(7),
+                            RefereeId = dr.IsDBNull(8) ? (int?)null : dr.GetInt32(8),
+                            RefereeName = dr.IsDBNull(9) ? null : dr.GetString(9),
+                            Note = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
+                            Status = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
+                        };
+                        list.Add(match);
+                    }
+                }
+            }
+            return list;
         }
         public static List<MatchsetModel> GetActiveMatchSetsByMatchId(string matchId)
         {
@@ -1297,7 +1393,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@s2", m.Score2);
                 cmd.Parameters.AddWithValue("@t", m.Time);
                 cmd.Parameters.AddWithValue("@note",m.Note);
-                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+               cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
 

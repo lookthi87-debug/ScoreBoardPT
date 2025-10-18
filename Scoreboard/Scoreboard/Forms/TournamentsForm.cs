@@ -16,12 +16,13 @@ namespace Scoreboard
         private MaterialButton btnSearch;
         private MaterialButton btnManageMatch;
         private ComboBox cbMatchClass;
+        private Label lblClassMatch;
         private DataGridViewTextBoxColumn name;
+        private DataGridViewTextBoxColumn match_class_name;
         private DataGridViewTextBoxColumn start;
         private DataGridViewTextBoxColumn end;
         private DataGridViewTextBoxColumn description;
         private DataGridViewTextBoxColumn id;
-        private Label lblClassMatch;
         private UserModel user;
         public TournamentsForm(UserModel us)
         {
@@ -34,17 +35,18 @@ namespace Scoreboard
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TournamentsForm));
             this.dgData = new System.Windows.Forms.DataGridView();
-            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.start = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.end = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAdd = new MaterialSkin.Controls.MaterialButton();
             this.btnDelete = new MaterialSkin.Controls.MaterialButton();
             this.btnSearch = new MaterialSkin.Controls.MaterialButton();
             this.btnManageMatch = new MaterialSkin.Controls.MaterialButton();
             this.cbMatchClass = new System.Windows.Forms.ComboBox();
             this.lblClassMatch = new System.Windows.Forms.Label();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.match_class_name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.start = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.end = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.description = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,8 +54,8 @@ namespace Scoreboard
             // 
             this.dgData.AllowUserToAddRows = false;
             this.dgData.AllowUserToDeleteRows = false;
-            this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgData.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -67,6 +69,7 @@ namespace Scoreboard
             this.dgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgData.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.name,
+            this.match_class_name,
             this.start,
             this.end,
             this.description,
@@ -86,45 +89,6 @@ namespace Scoreboard
             this.dgData.Size = new System.Drawing.Size(1046, 496);
             this.dgData.TabIndex = 5;
             this.dgData.DoubleClick += new System.EventHandler(this.dgUser_DoubleClick);
-            // 
-            // name
-            // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Tên giải đấu";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 400;
-            // 
-            // start
-            // 
-            this.start.DataPropertyName = "start";
-            this.start.HeaderText = "Ngày bắt đầu";
-            this.start.Name = "start";
-            this.start.ReadOnly = true;
-            this.start.Width = 120;
-            // 
-            // end
-            // 
-            this.end.DataPropertyName = "end";
-            this.end.HeaderText = "Ngày kết thúc";
-            this.end.Name = "end";
-            this.end.Width = 120;
-            // 
-            // description
-            // 
-            this.description.DataPropertyName = "description";
-            this.description.HeaderText = "Ghi chú";
-            this.description.Name = "description";
-            this.description.Width = 400;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            this.id.Width = 5;
             // 
             // btnAdd
             // 
@@ -228,6 +192,51 @@ namespace Scoreboard
             this.lblClassMatch.TabIndex = 35;
             this.lblClassMatch.Text = "Bộ môn";
             this.lblClassMatch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // name
+            // 
+            this.name.DataPropertyName = "name";
+            this.name.HeaderText = "Tên giải đấu";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.Width = 400;
+            // 
+            // match_class_name
+            // 
+            this.match_class_name.DataPropertyName = "match_class_name";
+            this.match_class_name.HeaderText = "Bộ môn";
+            this.match_class_name.Name = "match_class_name";
+            // 
+            // start
+            // 
+            this.start.DataPropertyName = "start";
+            this.start.HeaderText = "Ngày bắt đầu";
+            this.start.Name = "start";
+            this.start.ReadOnly = true;
+            this.start.Width = 120;
+            // 
+            // end
+            // 
+            this.end.DataPropertyName = "end";
+            this.end.HeaderText = "Ngày kết thúc";
+            this.end.Name = "end";
+            this.end.Width = 120;
+            // 
+            // description
+            // 
+            this.description.DataPropertyName = "description";
+            this.description.HeaderText = "Ghi chú";
+            this.description.Name = "description";
+            this.description.Width = 400;
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            this.id.Width = 5;
             // 
             // TournamentsForm
             // 

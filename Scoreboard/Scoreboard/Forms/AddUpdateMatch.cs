@@ -33,6 +33,9 @@ namespace Scoreboard
         private List<UserModel> allUsers; // Store all users for reference
 		private Label lblStartTime;
 		private DateTimePicker dtpStartTime;
+        private Label lblStatus;
+        private System.Windows.Forms.ComboBox cbStatus;
+
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddUpdateMatch));
@@ -50,6 +53,8 @@ namespace Scoreboard
             this.txtnote = new System.Windows.Forms.TextBox();
             this.lblStartTime = new System.Windows.Forms.Label();
             this.dtpStartTime = new System.Windows.Forms.DateTimePicker();
+            this.lblStatus = new System.Windows.Forms.Label();
+            this.cbStatus = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // txtTeam1
@@ -110,7 +115,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(261, 428);
+            this.btnCancel.Location = new System.Drawing.Point(252, 465);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -130,7 +135,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(435, 428);
+            this.btnSave.Location = new System.Drawing.Point(426, 465);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -214,9 +219,31 @@ namespace Scoreboard
             this.dtpStartTime.Size = new System.Drawing.Size(108, 26);
             this.dtpStartTime.TabIndex = 8;
             // 
+            // lblStatus
+            // 
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatus.Location = new System.Drawing.Point(32, 425);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(110, 29);
+            this.lblStatus.TabIndex = 38;
+            this.lblStatus.Text = "Trạng thái";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cbStatus
+            // 
+            this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cbStatus.FormattingEnabled = true;
+            this.cbStatus.Location = new System.Drawing.Point(148, 425);
+            this.cbStatus.Name = "cbStatus";
+            this.cbStatus.Size = new System.Drawing.Size(200, 28);
+            this.cbStatus.TabIndex = 10;
+            // 
             // AddUpdateMatch
             // 
             this.ClientSize = new System.Drawing.Size(787, 520);
+            this.Controls.Add(this.cbStatus);
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblNote);
             this.Controls.Add(this.dtpStartTime);
             this.Controls.Add(this.lblStartTime);
@@ -270,6 +297,17 @@ namespace Scoreboard
                 MessageBox.Show("Không có dữ liệu trọng tài. Vui lòng tạo");
             }
         }
+
+        private void LoadStatus()
+        {
+            cbStatus.Items.Clear();
+            cbStatus.Items.Add(new { Text = "Chưa bắt đầu", Value = "0" });
+            cbStatus.Items.Add(new { Text = "Đang diễn ra", Value = "1" });
+            cbStatus.Items.Add(new { Text = "Đã kết thúc", Value = "2" });
+            cbStatus.DisplayMember = "Text";
+            cbStatus.ValueMember = "Value";
+            cbStatus.SelectedIndex = 0; // Default to "Chưa bắt đầu"
+        }
         
         private void PopulateFromModel(MatchModel m)
         {
@@ -281,6 +319,21 @@ namespace Scoreboard
             
             // Time: store HH:mm only
             currentMatch.Time = dtpStartTime.Value.ToString("HH:mm");
+
+            // Set status
+            if (!string.IsNullOrEmpty(m.Status))
+            {
+                for (int i = 0; i < cbStatus.Items.Count; i++)
+                {
+                    var item = cbStatus.Items[i];
+                    var valueProperty = item.GetType().GetProperty("Value");
+                    if (valueProperty != null && valueProperty.GetValue(item).ToString() == m.Status)
+                    {
+                        cbStatus.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
 
             // Handle multiple referees
             if (m.RefereeIds != null && m.RefereeIds.Count > 0)
@@ -316,14 +369,16 @@ namespace Scoreboard
             txtnote.Text = m.Note;
             // Always set time to 00:00
             dtpStartTime.Value = DateTime.Today;
+            this.Text = "Thông tin trận đấu: " + txtTeam1.Text + " - " + txtTeam2.Text;
         }
-        
+
         public AddUpdateMatch(int tournament_id, string id = "")
         {
             InitializeComponent();
             // Set default time to 00:00
             dtpStartTime.Value = DateTime.Today;
             LoadUsers();
+            LoadStatus();
             if (id != "")
             {
                 // edit mode
@@ -397,7 +452,8 @@ namespace Scoreboard
             // Handle multiple referees
             currentMatch.RefereeIds = new List<int>();
             currentMatch.RefereeNames = new List<string>();
-            
+            currentMatch.Status = cbStatus.SelectedValue?.ToString();
+
             foreach (var referee in selectedReferees)
             {
                 currentMatch.RefereeIds.Add(referee.Id);
@@ -412,6 +468,17 @@ namespace Scoreboard
             }
             
             currentMatch.Note = txtnote.Text.Trim();
+            
+            // Set status from combobox
+            if (cbStatus.SelectedItem != null)
+            {
+                var selectedItem = cbStatus.SelectedItem;
+                var valueProperty = selectedItem.GetType().GetProperty("Value");
+                if (valueProperty != null)
+                {
+                    currentMatch.Status = valueProperty.GetValue(selectedItem).ToString();
+                }
+            }
             
             try
             {
@@ -507,6 +574,14 @@ namespace Scoreboard
             {
                 return "Hiệp 1";
             }
+        }
+
+        // Helper method to convert status text to number
+        public static string GetStatusText(string status)
+        {
+            return status == "0" ? "Chưa bắt đầu" :
+                   status == "1" ? "Đang diễn ra" :
+                   status == "2" ? "Đã kết thúc" : "Không xác định";
         }
     }
 }

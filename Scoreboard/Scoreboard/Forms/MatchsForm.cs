@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
@@ -23,7 +24,6 @@ namespace Scoreboard
         private MaterialButton btnSearch;
         private ListView lvToggle;
         private Label lblViewToggle;
-        private MaterialButton btnAddActive;
         private DataGridView dgvDetail;
         private Label label1;
         private MaterialButton btnDeleteMatch;
@@ -44,7 +44,6 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn id2;
         private DataGridViewTextBoxColumn MatchId;
         private DataGridViewTextBoxColumn Status2;
-        private DataGridViewCheckBoxColumn ShowToggle;
         private DataGridViewTextBoxColumn tournamentname;
         private DataGridViewTextBoxColumn Team1;
         private DataGridViewTextBoxColumn Team2;
@@ -75,16 +74,7 @@ namespace Scoreboard
             this.lvToggle = new System.Windows.Forms.ListView();
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblViewToggle = new System.Windows.Forms.Label();
-            this.btnAddActive = new MaterialSkin.Controls.MaterialButton();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
-            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteMatch = new MaterialSkin.Controls.MaterialButton();
             this.btnAddMatch = new MaterialSkin.Controls.MaterialButton();
@@ -95,7 +85,14 @@ namespace Scoreboard
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.BtnUp = new MaterialSkin.Controls.MaterialButton();
             this.BtnDown = new MaterialSkin.Controls.MaterialButton();
-            this.ShowToggle = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tournamentname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Team1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Team2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,8 +109,8 @@ namespace Scoreboard
             // 
             this.dgGiaiDau.AllowUserToAddRows = false;
             this.dgGiaiDau.AllowUserToDeleteRows = false;
-            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgGiaiDau.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -126,7 +123,6 @@ namespace Scoreboard
             this.dgGiaiDau.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgGiaiDau.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgGiaiDau.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ShowToggle,
             this.tournamentname,
             this.Team1,
             this.Team2,
@@ -313,32 +309,11 @@ namespace Scoreboard
             this.lblViewToggle.Text = "Hiển thị led";
             this.lblViewToggle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btnAddActive
-            // 
-            this.btnAddActive.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddActive.AutoSize = false;
-            this.btnAddActive.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnAddActive.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnAddActive.Depth = 0;
-            this.btnAddActive.HighEmphasis = true;
-            this.btnAddActive.Icon = null;
-            this.btnAddActive.Location = new System.Drawing.Point(969, 295);
-            this.btnAddActive.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnAddActive.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnAddActive.Name = "btnAddActive";
-            this.btnAddActive.Size = new System.Drawing.Size(26, 36);
-            this.btnAddActive.TabIndex = 20;
-            this.btnAddActive.Text = ">>";
-            this.btnAddActive.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnAddActive.UseAccentColor = false;
-            this.btnAddActive.UseVisualStyleBackColor = true;
-            this.btnAddActive.Click += new System.EventHandler(this.btnAddActive_Click);
-            // 
             // dgvDetail
             // 
             this.dgvDetail.AllowUserToAddRows = false;
             this.dgvDetail.AllowUserToDeleteRows = false;
-            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDetail.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -374,71 +349,6 @@ namespace Scoreboard
             this.dgvDetail.Size = new System.Drawing.Size(945, 141);
             this.dgvDetail.TabIndex = 24;
             this.dgvDetail.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetail_CellDoubleClick);
-            // 
-            // ClassSetsName
-            // 
-            this.ClassSetsName.DataPropertyName = "ClassSetsName";
-            this.ClassSetsName.HeaderText = "Hiệp/Set";
-            this.ClassSetsName.Name = "ClassSetsName";
-            this.ClassSetsName.ReadOnly = true;
-            this.ClassSetsName.Width = 284;
-            // 
-            // time
-            // 
-            this.time.DataPropertyName = "time";
-            this.time.HeaderText = "Time";
-            this.time.Name = "time";
-            this.time.Width = 120;
-            // 
-            // Score1detail
-            // 
-            this.Score1detail.DataPropertyName = "Score1";
-            this.Score1detail.HeaderText = "Score1";
-            this.Score1detail.Name = "Score1detail";
-            this.Score1detail.ReadOnly = true;
-            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Score1detail.Width = 90;
-            // 
-            // Score2detail
-            // 
-            this.Score2detail.DataPropertyName = "Score2";
-            this.Score2detail.HeaderText = "Score2";
-            this.Score2detail.Name = "Score2detail";
-            this.Score2detail.ReadOnly = true;
-            this.Score2detail.Width = 90;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
-            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 350;
-            // 
-            // id2
-            // 
-            this.id2.DataPropertyName = "Id";
-            this.id2.HeaderText = "Id";
-            this.id2.Name = "id2";
-            this.id2.ReadOnly = true;
-            this.id2.Visible = false;
-            this.id2.Width = 5;
-            // 
-            // MatchId
-            // 
-            this.MatchId.DataPropertyName = "MatchId";
-            this.MatchId.HeaderText = "Match_Id";
-            this.MatchId.Name = "MatchId";
-            this.MatchId.Visible = false;
-            this.MatchId.Width = 5;
-            // 
-            // Status2
-            // 
-            this.Status2.DataPropertyName = "Status";
-            this.Status2.HeaderText = "status";
-            this.Status2.Name = "Status2";
-            this.Status2.Visible = false;
-            this.Status2.Width = 5;
             // 
             // label1
             // 
@@ -529,7 +439,7 @@ namespace Scoreboard
             // lvActiveMatch
             // 
             this.lvActiveMatch.AllowDrop = true;
-            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvActiveMatch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
@@ -592,13 +502,67 @@ namespace Scoreboard
             this.BtnDown.UseVisualStyleBackColor = true;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
-            // ShowToggle
+            // ClassSetsName
             // 
-            this.ShowToggle.DataPropertyName = "ShowToggle";
-            this.ShowToggle.HeaderText = "";
-            this.ShowToggle.Name = "ShowToggle";
-            this.ShowToggle.ReadOnly = true;
-            this.ShowToggle.Width = 25;
+            this.ClassSetsName.DataPropertyName = "ClassSetsName";
+            this.ClassSetsName.HeaderText = "Hiệp/Set";
+            this.ClassSetsName.Name = "ClassSetsName";
+            this.ClassSetsName.ReadOnly = true;
+            this.ClassSetsName.Width = 284;
+            // 
+            // time
+            // 
+            this.time.DataPropertyName = "time";
+            this.time.HeaderText = "Thời gian";
+            this.time.Name = "time";
+            this.time.Width = 120;
+            // 
+            // Score1detail
+            // 
+            this.Score1detail.DataPropertyName = "Score1";
+            this.Score1detail.HeaderText = "Điểm đội 1";
+            this.Score1detail.Name = "Score1detail";
+            this.Score1detail.ReadOnly = true;
+            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Score2detail
+            // 
+            this.Score2detail.DataPropertyName = "Score2";
+            this.Score2detail.HeaderText = "Điểm đội 2";
+            this.Score2detail.Name = "Score2detail";
+            this.Score2detail.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // id2
+            // 
+            this.id2.DataPropertyName = "Id";
+            this.id2.HeaderText = "Id";
+            this.id2.Name = "id2";
+            this.id2.ReadOnly = true;
+            this.id2.Visible = false;
+            this.id2.Width = 5;
+            // 
+            // MatchId
+            // 
+            this.MatchId.DataPropertyName = "MatchId";
+            this.MatchId.HeaderText = "Match_Id";
+            this.MatchId.Name = "MatchId";
+            this.MatchId.Visible = false;
+            this.MatchId.Width = 5;
+            // 
+            // Status2
+            // 
+            this.Status2.DataPropertyName = "Status";
+            this.Status2.HeaderText = "Trạng thái";
+            this.Status2.Name = "Status2";
+            this.Status2.Width = 70;
             // 
             // tournamentname
             // 
@@ -606,40 +570,38 @@ namespace Scoreboard
             this.tournamentname.HeaderText = "Giải đấu";
             this.tournamentname.Name = "tournamentname";
             this.tournamentname.ReadOnly = true;
-            this.tournamentname.Width = 250;
+            this.tournamentname.Width = 200;
             // 
             // Team1
             // 
             this.Team1.DataPropertyName = "Team1";
-            this.Team1.HeaderText = "Team1";
+            this.Team1.HeaderText = "Đội 1";
             this.Team1.Name = "Team1";
             this.Team1.ReadOnly = true;
-            this.Team1.Width = 200;
+            this.Team1.Width = 150;
             // 
             // Team2
             // 
             this.Team2.DataPropertyName = "Team2";
-            this.Team2.HeaderText = "Team2";
+            this.Team2.HeaderText = "Đội 2";
             this.Team2.Name = "Team2";
             this.Team2.ReadOnly = true;
-            this.Team2.Width = 200;
+            this.Team2.Width = 150;
             // 
             // Score1
             // 
             this.Score1.DataPropertyName = "Score1";
-            this.Score1.HeaderText = "Score1";
+            this.Score1.HeaderText = "Điểm đội 1";
             this.Score1.Name = "Score1";
             this.Score1.ReadOnly = true;
             this.Score1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Score1.Width = 90;
             // 
             // Score2
             // 
             this.Score2.DataPropertyName = "Score2";
-            this.Score2.HeaderText = "Score2";
+            this.Score2.HeaderText = "Điểm đội 2";
             this.Score2.Name = "Score2";
             this.Score2.ReadOnly = true;
-            this.Score2.Width = 90;
             // 
             // Id
             // 
@@ -653,16 +615,15 @@ namespace Scoreboard
             // status
             // 
             this.status.DataPropertyName = "Status";
-            this.status.HeaderText = "status";
+            this.status.HeaderText = "Trạng thái";
             this.status.Name = "status";
             this.status.ReadOnly = true;
-            this.status.Visible = false;
-            this.status.Width = 5;
             // 
             // timeStart
             // 
+            this.timeStart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.timeStart.DataPropertyName = "time";
-            this.timeStart.HeaderText = "Thời gian";
+            this.timeStart.HeaderText = "Thời gian bắt đầu";
             this.timeStart.Name = "timeStart";
             this.timeStart.ReadOnly = true;
             // 
@@ -679,7 +640,6 @@ namespace Scoreboard
             this.Controls.Add(this.btnAddMatch);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dgvDetail);
-            this.Controls.Add(this.btnAddActive);
             this.Controls.Add(this.lblViewToggle);
             this.Controls.Add(this.lvToggle);
             this.Controls.Add(this.btnSearch);
@@ -711,6 +671,8 @@ namespace Scoreboard
                 cbMatchClass.DataSource = ml.OrderBy(element => element.Id).ToList();
                 cbMatchClass.DisplayMember = "Name";
                 cbMatchClass.ValueMember = "Id";
+                cbMatchClass.SelectedIndex = 0;
+                LoadTournaments((int)cbMatchClass.SelectedValue);
             }
             catch
             {
@@ -744,32 +706,16 @@ namespace Scoreboard
             dgvDetail.AutoGenerateColumns = false;
             user = us;
             LoadMatchClass();
-            LoadTournaments();
+            LoadListMatchActive();
+            LoadListMatchShowToggle();
+            btnSearch_Click(this, new EventArgs());
         }
 
         private void LoadAllMatches(string keyword = null)
         {
             try
             {
-                var matches = Repository.GetAllMatches();
-
-                if (cbMatchClass.SelectedValue is int classId)
-                {
-                    if (classId == 0)
-                    {
-                        matches = matches.ToList();
-                    }
-                    else
-                    {
-                        matches = matches.Where(m => m.MatchClassId == classId).ToList();
-                    }
-                }
-
-
-                if (cbTournaments.SelectedValue is int tournamentId && tournamentId > 0)
-                {
-                    matches = matches.Where(m => m.TournamentId == tournamentId).ToList();
-                }
+                var matches = Repository.GetMatchesByTournament((int)cbTournaments.SelectedValue);
 
                 string keywordTeam = txtTeam.Text.Trim().ToLower();
                 if (!string.IsNullOrEmpty(keywordTeam))
@@ -779,12 +725,32 @@ namespace Scoreboard
                         (m.Team2 ?? "").ToLower().Contains(keywordTeam)
                     ).ToList();
                 }
-
+                matches = matches.Select(m =>
+                {
+                    switch (m.Status)
+                    {
+                        case "0":
+                            m.Status = "Chưa diễn ra";
+                            break;
+                        case "1":
+                            m.Status = "Đang diễn ra";
+                            break;
+                        case "2":
+                            m.Status = "Đã kết thúc";
+                            break;
+                        default:
+                            m.Status = m.Status;
+                            break;
+                    }
+                    return m;
+                }).ToList();
                 dgGiaiDau.DataSource = matches;
 
                 if (dgGiaiDau.Rows.Count > 0)
                 {
+                    // Đảm bảo có ít nhất 1 dòng được chọn
                     dgGiaiDau.Rows[0].Selected = true;
+                    dgGiaiDau.CurrentCell = dgGiaiDau.Rows[0].Cells[0];
                     LoadDetailsForSelectedMatch();
                 }
                 else
@@ -799,8 +765,11 @@ namespace Scoreboard
         }
         private void DgTranDau_SelectionChanged(object sender, EventArgs e)
         {
-            int index = dgGiaiDau.CurrentRow.Index;
-            LoadDetailsForSelectedMatch(index);
+            if (dgGiaiDau.CurrentRow != null)
+            {
+                int index = dgGiaiDau.CurrentRow.Index;
+                LoadDetailsForSelectedMatch(index);
+            }
         }
         private void LoadDetailsForSelectedMatch(int index = -1)
         {
@@ -970,7 +939,7 @@ namespace Scoreboard
 
                 // 2Chuẩn bị danh sách hiển thị
                 List<(string Id, int ShowToggle)> showList = new List<(string, int)>();
-                lvActiveMatch.Items.Clear();
+                //lvActiveMatch.Items.Clear();
                 lvToggle.Items.Clear();
 
                 // 3Duyệt toàn bộ dòng trong dgGiaiDau
@@ -994,11 +963,11 @@ namespace Scoreboard
                         var mc = Repository.GetMatchById(id);
                         if (mc != null)
                         {
-                            var li = new ListViewItem($"{mc.Team1} vs {mc.Team2} - {mc.RefereeName}")
-                            {
-                                Tag = mc.Id
-                            };
-                            lvActiveMatch.Items.Add(li);
+                            //var li = new ListViewItem($"{mc.Team1} vs {mc.Team2} - {mc.RefereeName}")
+                            //{
+                            //    Tag = mc.Id
+                            //};
+                            //lvActiveMatch.Items.Add(li);
 
                             // Đánh dấu dòng bị khóa
                             row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
@@ -1029,6 +998,8 @@ namespace Scoreboard
                     };
                     lvToggle.Items.Add(li);
                 }
+                LoadListMatchActive();
+                LoadListMatchShowToggle();
             }
             catch (Exception ex)
             {
@@ -1106,6 +1077,7 @@ namespace Scoreboard
 
             // Cập nhật lại thứ tự
             UpdateShowToggleFromListView();
+            LoadListMatchShowToggle();
         }
         private void UpdateShowToggleFromListView()
         {
@@ -1175,11 +1147,11 @@ namespace Scoreboard
             }
 
             // Kiểm tra đã tồn tại trong lvActiveMatch chưa
-            if (lvActiveMatch.Items.Cast<ListViewItem>().Any(it => it.Tag?.ToString() == matchId))
-            {
-                MessageBox.Show("Trận đấu này đã có trong danh sách hoạt động.");
-                return;
-            }
+            //if (lvActiveMatch.Items.Cast<ListViewItem>().Any(it => it.Tag?.ToString() == matchId))
+            //{
+            //    MessageBox.Show("Trận đấu này đã có trong danh sách hoạt động.");
+            //    return;
+            //}
 
             // Lấy thông tin từ database
             var match = Repository.GetMatchById(matchId);
@@ -1202,81 +1174,80 @@ namespace Scoreboard
             }
 
             // Thêm vào lvActiveMatch
-            var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}") { Tag = match.Id };
-            lvActiveMatch.Items.Add(li);
+            //var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}") { Tag = match.Id };
+            //lvActiveMatch.Items.Add(li);
 
             // "Lock" dòng tương ứng trong dgGiaiDau (chặn sửa hoặc xóa)
             row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
             row.Tag = "locked";
-            row.Cells["status"].Value = "1";
-
+            row.Cells["status"].Value = "Đang diễn ra"; // status  = 1
             //btnSearch.Enabled = false;
         }
 
-        private void btnDelActive_Click(object sender, EventArgs e)
-        {
-            if (lvActiveMatch.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("Vui lòng chọn một trận đấu trong danh sách hoạt động để xóa.");
-                return;
-            }
+        //private void btnDelActive_Click(object sender, EventArgs e)
+        //{
+        //    if (lvActiveMatch.SelectedItems.Count == 0)
+        //    {
+        //        MessageBox.Show("Vui lòng chọn một trận đấu trong danh sách hoạt động để xóa.");
+        //        return;
+        //    }
 
-            var item = lvActiveMatch.SelectedItems[0];
-            string matchId = item.Tag?.ToString();
-            if (string.IsNullOrEmpty(matchId)) return;
+        //    var item = lvActiveMatch.SelectedItems[0];
+        //    string matchId = item.Tag?.ToString();
+        //    if (string.IsNullOrEmpty(matchId)) return;
 
-            // Xóa khỏi lvActiveMatch
-            lvActiveMatch.Items.Remove(item);
+        //    // Xóa khỏi lvActiveMatch
+        //    lvActiveMatch.Items.Remove(item);
 
-            // Lấy thông tin trận đấu
-            var match = Repository.GetMatchById(matchId);
-            if (match == null)
-                return;
-            if (match.Status == "2")
-                return;
-            // Nếu status != 2 thì cập nhật status = 0 (cho phép lại)
+        //    // Lấy thông tin trận đấu
+        //    var match = Repository.GetMatchById(matchId);
+        //    if (match == null)
+        //        return;
+        //    if (match.Status == "2")
+        //        return;
+        //    // Nếu status != 2 thì cập nhật status = 0 (cho phép lại)
 
-            List<MatchsetModel> ms = Repository.GetActiveMatchSetsByMatchId(matchId);
-            for (int i = 0; i < ms.Count - 1; i++)
-            {
-                ms[0].Status = "0";
-                Repository.UpdateMatchSetStatus(matchId, ms[0].Id, ms[0].Status);
-            }
+        //    List<MatchsetModel> ms = Repository.GetActiveMatchSetsByMatchId(matchId);
+        //    for (int i = 0; i < ms.Count - 1; i++)
+        //    {
+        //        ms[0].Status = "0";
+        //        Repository.UpdateMatchSetStatus(matchId, ms[0].Id, ms[0].Status);
+        //    }
 
-            foreach (ListViewItem lv in lvToggle.Items)
-            {
-                if (item.Tag?.ToString() == matchId)
-                {
-                    lvToggle.Items.Remove(lv);
-                    for (int i = 0; i <= dgGiaiDau.Rows.Count - 1; i++)
-                    {
-                        dgGiaiDau.Rows[i].Cells["ShowToggle"].Value = 0;
-                    }
-                    break;
-                }
-            }
+        //    foreach (ListViewItem lv in lvToggle.Items)
+        //    {
+        //        if (item.Tag?.ToString() == matchId)
+        //        {
+        //            lvToggle.Items.Remove(lv);
+        //            for (int i = 0; i <= dgGiaiDau.Rows.Count - 1; i++)
+        //            {
+        //                dgGiaiDau.Rows[i].Cells["ShowToggle"].Value = 0;
+        //            }
+        //            break;
+        //        }
+        //    }
 
-            match.Status = "0";
-            match.ShowToggle = 0;
-            Repository.UpdateMatch(match);
+        //    match.Status = "0";
+        //    match.ShowToggle = 0;
+        //    Repository.UpdateMatch(match);
 
-            // Mở khóa dòng tương ứng trong dgGiaiDau
-            foreach (DataGridViewRow row in dgGiaiDau.Rows)
-            {
-                var id = row.Cells["id"].Value?.ToString();
-                if (id == matchId)
-                {
-                    row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
-                    row.Tag = null;
-                    row.Cells["status"].Value = match.Status;
-                    break;
-                }
-            }
-            //if (lvActiveMatch.Items.Count == 0)
-            //{
-            //    btnSearch.Enabled = true;
-            //}     
-        }
+        //    // Mở khóa dòng tương ứng trong dgGiaiDau
+        //    foreach (DataGridViewRow row in dgGiaiDau.Rows)
+        //    {
+        //        var id = row.Cells["id"].Value?.ToString();
+        //        if (id == matchId)
+        //        {
+        //            row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
+        //            row.Tag = null;
+        //            row.Cells["status"].Value = match.Status;
+        //            break;
+        //        }
+        //    }
+        //    //if (lvActiveMatch.Items.Count == 0)
+        //    //{
+        //    //    btnSearch.Enabled = true;
+        //    //}     
+        //}
 
         private void btnExportExcel_Click(object sender, EventArgs e)
         {
@@ -1444,6 +1415,10 @@ namespace Scoreboard
             if (mgAdd.ShowDialog() == DialogResult.OK)
             {
                 LoadDetailsForSelectedMatch(index);
+                // reload data
+                btnSearch_Click(this, new EventArgs());
+                LoadListMatchActive();
+                LoadListMatchShowToggle();
             }
         }
 
@@ -1466,7 +1441,7 @@ namespace Scoreboard
             try
             {
                 Repository.DeleteMatchSet(Matchid, id);
-                if (dgGiaiDau.Rows.Count > 0)
+                if (dgGiaiDau.Rows.Count > 0 && dgGiaiDau.CurrentRow != null)
                 {
                     LoadDetailsForSelectedMatch(dgGiaiDau.CurrentRow.Index);
                 }
@@ -1527,5 +1502,46 @@ namespace Scoreboard
             LoadTournaments(classId);
         }
 
+        private void LoadListMatchActive()
+        {
+            try
+            {
+                lvActiveMatch.Items.Clear();
+                List<MatchModel> activeMatches = Repository.GetMatchesByStatus("1");
+                foreach (var match in activeMatches)
+                {
+                    var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}")
+                    {
+                        Tag = match.Id
+                    };
+                    lvActiveMatch.Items.Add(li);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải danh sách trận đấu hoạt động: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LoadListMatchShowToggle()
+        {
+            try
+            {
+                lvToggle.Items.Clear();
+                List<MatchModel> activeMatches = Repository.GetMatchesShowToggle();
+                foreach (var match in activeMatches)
+                {
+                    var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}")
+                    {
+                        Tag = match.Id
+                    };
+                    lvToggle.Items.Add(li);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải danh sách hiển thị led: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

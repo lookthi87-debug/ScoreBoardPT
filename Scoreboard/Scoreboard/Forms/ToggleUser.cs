@@ -75,8 +75,7 @@ namespace Scoreboard
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(1116, 21);
             this.lblNote.TabIndex = 1;
-            this.lblNote.Text = "Phím số : 1-Đ1+ | 2-Đ2+ | 3-Reset điểm |  5-Bắt đầu | 6-Dừng | 7-Reset TG | 8-Lưu" +
-    " | + Hiệp/Set | 0-Ẩn/Hiện";
+            this.lblNote.Text = "Phím số : 1-Đ1+ | 2-Đ2+ | 3-Reset điểm |  5-Bắt đầu | 6-Dừng | 7-Reset TG | 8-Lưu | + Hiệp/Set | 0-Ẩn/Hiện";
             this.lblNote.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel_BongDa

@@ -154,7 +154,7 @@ namespace Scoreboard
                 }
 
                 // Increment current period score
-                scoreTeam1++;
+            scoreTeam1++;
 
                 // Update current period score in match object
                 match.Score1 = scoreTeam1;
@@ -170,7 +170,7 @@ namespace Scoreboard
                 Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
 
                 // Update UI
-                UpdateScoreLabel();
+            UpdateScoreLabel();
             }
             catch (Exception ex)
             {
@@ -190,7 +190,7 @@ namespace Scoreboard
                 }
 
                 // Increment current period score
-                scoreTeam2++;
+            scoreTeam2++;
 
                 // Update current period score in match object
                 match.Score2 = scoreTeam2;
@@ -206,7 +206,7 @@ namespace Scoreboard
                 Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
 
                 // Update UI
-                UpdateScoreLabel();
+            UpdateScoreLabel();
             }
             catch (Exception ex)
             {
@@ -410,27 +410,27 @@ namespace Scoreboard
             try
             {
                 // Mark current set as finished
-                Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
+            Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
 
                 // Try to get next existing period first
-                var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
+            var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
 
                 if (next == null)
                 {
                     // No next period exists, create a new one
                     next = CreateNextPeriod();
-                    if (next == null)
-                    {
+            if (next == null)
+            {
                         MessageBox.Show("Không thể tạo hiệp mới!");
-                        return;
+                return;
                     }
-                }
+            }
 
                 // Activate next period
-                Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
+            Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
 
                 // Use the next period directly
-                match = next;
+            match = next;
 
                 // Reset current period scores to 0 (new period starts)
                 scoreTeam1 = 0;
@@ -459,20 +459,20 @@ namespace Scoreboard
                 // Force UI update
                 UpdateUI();
 
-                if (lblTime.Text != "00:00")
+            if (lblTime.Text != "00:00")
+            {
+                var parts = lblTime.Text.Split(':');
+                if (parts.Length == 2 &&
+                    int.TryParse(parts[0], out int hours) &&
+                    int.TryParse(parts[1], out int minutes))
                 {
-                    var parts = lblTime.Text.Split(':');
-                    if (parts.Length == 2 &&
-                        int.TryParse(parts[0], out int hours) &&
-                        int.TryParse(parts[1], out int minutes))
-                    {
                         elapsedMinutes = hours * 60 + minutes;
-                    }
                 }
-                else
-                {
-                    elapsedMinutes = 0;
-                }
+            }
+            else
+            {
+                elapsedMinutes = 0;
+            }
 
             }
             catch (Exception ex)
@@ -553,7 +553,20 @@ namespace Scoreboard
 
         private string DetermineNextPeriodName(List<MatchsetModel> allPeriods, MatchClassModel matchClass)
         {
-            // Count different types of periods
+            // Determine next period based on match class rules
+            switch (matchClass.PeriodType?.ToLower())
+            {
+                case "half": // Football/Soccer - Use complex logic with period classification
+                    return DetermineFootballNextPeriod(allPeriods, matchClass);
+
+                default: // All other sports - Simple increment
+                    return DetermineSimpleNextPeriod(allPeriods, matchClass);
+            }
+        }
+
+        private string DetermineFootballNextPeriod(List<MatchsetModel> allPeriods, MatchClassModel matchClass)
+        {
+            // Count different types of periods ONLY for football
             var regularPeriods = allPeriods.Where(p => p.ClassSetsName?.StartsWith("Hiệp ") == true && !p.ClassSetsName.Contains("phụ") && !p.ClassSetsName.Contains("penalty")).ToList();
             var overtimePeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("phụ") == true).ToList();
             var penaltyPeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("penalty") == true || p.ClassSetsName?.Contains("pen") == true).ToList();
@@ -563,25 +576,6 @@ namespace Scoreboard
             int team2Score = match.TotalScore2;
             bool isTied = team1Score == team2Score;
 
-            // Determine next period based on match class rules
-            switch (matchClass.PeriodType?.ToLower())
-            {
-                case "half": // Football/Soccer
-                    return DetermineFootballNextPeriod(regularPeriods, overtimePeriods, penaltyPeriods, isTied, matchClass);
-
-                case "set": // Volleyball, Badminton
-                    return DetermineSetBasedNextPeriod(regularPeriods, isTied, matchClass);
-
-                case "quarter": // Basketball
-                    return DetermineQuarterNextPeriod(regularPeriods, isTied, matchClass);
-
-                default:
-                    return DetermineDefaultNextPeriod(regularPeriods);
-            }
-        }
-
-        private string DetermineFootballNextPeriod(List<MatchsetModel> regularPeriods, List<MatchsetModel> overtimePeriods, List<MatchsetModel> penaltyPeriods, bool isTied, MatchClassModel matchClass)
-        {
             // Standard football: 2 regular periods
             if (regularPeriods.Count < matchClass.StandardPeriods)
             {
@@ -612,48 +606,28 @@ namespace Scoreboard
             return null;
         }
 
-        private string DetermineSetBasedNextPeriod(List<MatchsetModel> regularPeriods, bool isTied, MatchClassModel matchClass)
+        private string DetermineSimpleNextPeriod(List<MatchsetModel> allPeriods, MatchClassModel matchClass)
         {
-            // For set-based sports (volleyball, badminton), check if someone already won
-            if (regularPeriods.Count >= matchClass.PeriodsToWin)
+            // For all non-football sports: Simple increment (Set 1 -> Set 2 -> Set 3...)
+            // Just count all existing periods without complex classification
+            int currentPeriodCount = allPeriods.Count;
+            
+            // Check if we've reached the maximum allowed periods
+            if (currentPeriodCount >= matchClass.StandardPeriods)
             {
-                // Check if someone has won enough sets
-                int team1WonSets = CountWonSets(regularPeriods, match.Team1);
-                int team2WonSets = CountWonSets(regularPeriods, match.Team2);
-
-                if (team1WonSets >= matchClass.PeriodsToWin || team2WonSets >= matchClass.PeriodsToWin)
-                {
-                    ShowMatchResult();
-                    return null; // Match finished
-                }
+                return null; // No more periods allowed
             }
-
-            // Continue with more sets if no one has won yet
-            if (regularPeriods.Count < matchClass.StandardPeriods)
+            
+            // Return next period name based on PeriodType
+            switch (matchClass.PeriodType?.ToLower())
             {
-                return $"Set {regularPeriods.Count + 1}";
+                case "set":
+                    return $"Set {currentPeriodCount + 1}";
+                case "quarter":
+                    return $"Hiệp nhỏ {currentPeriodCount + 1}";
+                default:
+                    return $"Hiệp {currentPeriodCount + 1}";
             }
-
-            // No more sets allowed
-            return null;
-        }
-
-        private string DetermineQuarterNextPeriod(List<MatchsetModel> regularPeriods, bool isTied, MatchClassModel matchClass)
-        {
-            // For quarter-based sports (basketball)
-            if (regularPeriods.Count < matchClass.StandardPeriods)
-            {
-                return $"Hiệp phụ {regularPeriods.Count + 1}";
-            }
-
-            // No more quarters allowed
-            return null;
-        }
-
-        private string DetermineDefaultNextPeriod(List<MatchsetModel> regularPeriods)
-        {
-            // Default: just increment period number
-            return $"Hiệp {regularPeriods.Count + 1}";
         }
 
         private int CountWonSets(List<MatchsetModel> periods, string teamName)
@@ -782,7 +756,7 @@ namespace Scoreboard
             if (matchTimer == null)
             {
                 matchTimer = new Timer();
-                matchTimer.Interval = 1000;
+                matchTimer.Interval = 1000; 
                 matchTimer.Tick += (s, e) =>
                 {
                     if (!isPaused)
