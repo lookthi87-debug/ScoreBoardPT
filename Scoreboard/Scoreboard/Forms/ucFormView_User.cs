@@ -252,7 +252,7 @@ namespace Scoreboard
         private void UpdateScoreLabel()
         {
            
-            var dataClass = Repository.GetMatchClassById(match.Id);
+            var dataClass = Repository.GetMatchClassById((int) match.MatchClassId);
             if (dataClass.PeriodType.ToLower() == "half")
             {
                 var list = Repository.GetMatchSetsByMatchId(match.MatchId);

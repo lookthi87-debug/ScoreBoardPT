@@ -252,14 +252,13 @@ namespace Scoreboard
             // 
             // txtClasssetsname
             // 
-            this.txtClasssetsname.AutoSize = true;
             this.txtClasssetsname.Depth = 0;
             this.txtClasssetsname.Font = new System.Drawing.Font("Roboto", 34F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
             this.txtClasssetsname.FontType = MaterialSkin.MaterialSkinManager.fontType.H4;
-            this.txtClasssetsname.Location = new System.Drawing.Point(400, 117);
+            this.txtClasssetsname.Location = new System.Drawing.Point(27, 117);
             this.txtClasssetsname.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtClasssetsname.Name = "txtClasssetsname";
-            this.txtClasssetsname.Size = new System.Drawing.Size(70, 41);
+            this.txtClasssetsname.Size = new System.Drawing.Size(733, 41);
             this.txtClasssetsname.TabIndex = 40;
             this.txtClasssetsname.Text = "Hiệp";
             this.txtClasssetsname.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
