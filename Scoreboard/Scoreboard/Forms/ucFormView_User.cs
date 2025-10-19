@@ -1,12 +1,13 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using Scoreboard.Data;
+using Scoreboard.Models;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using ClosedXML.Excel;
-using Scoreboard.Data;
-using Scoreboard.Models;
 
 namespace Scoreboard
 {
@@ -89,20 +90,6 @@ namespace Scoreboard
                 AttachFocusHandler(child);
         }
 
-        //protected override void OnPaint(PaintEventArgs e)
-        //{
-        //    base.OnPaint(e);
-        //    if (this.Focused)
-        //    {
-        //        using (Pen pen = new Pen(Color.Green, 4))
-        //        {
-        //            Rectangle rect = this.ClientRectangle;
-        //            rect.Width -= 1;
-        //            rect.Height -= 1;
-        //            e.Graphics.DrawRectangle(pen, rect);
-        //        }
-        //    }
-        //}
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -227,8 +214,8 @@ namespace Scoreboard
             // Update database
             Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
             Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
-            Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
-            Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
+            //Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
+            //Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
 
             UpdateScoreLabel();
         }
@@ -266,10 +253,21 @@ namespace Scoreboard
 
         private void UpdateScoreLabel()
         {
-            var list = Repository.GetMatchSetsByMatchId(match.MatchId);
-            // Display total scores (sum of all periods)
-            lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
-            lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
+           
+            var dataClass = Repository.GetMatchClassById(match.Id);
+            if (dataClass.PeriodType.ToLower() == "half")
+            {
+                var list = Repository.GetMatchSetsByMatchId(match.MatchId);
+                // Display total scores (sum of all periods)
+                lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
+                lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
+            }
+            else
+            {
+                var data = Repository.GetMatchSetByMatchAndId(match.MatchId, match.Id);
+                lblScoreTeam1.Text = data.Score1.ToString();
+                lblScoreTeam2.Text = data.Score2.ToString();
+            }
         }
 
         public void UpdateMatchTime(string time)
@@ -405,9 +403,12 @@ namespace Scoreboard
             {
                 // Mark current set as finished
                 Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
+
+                // update score match
+                UpdateScoreMatch(match.MatchId, match.Id);
+
                 // Try to get next existing period first
                 var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
-
                 if (next == null)
                 {
                     // No next period exists, create a new one
@@ -443,9 +444,6 @@ namespace Scoreboard
                 TotalscoreTeam1 = match.TotalScore1;
                 TotalscoreTeam2 = match.TotalScore2;
 
-                // Update match totals in database
-                Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
-                Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
 
                 UpdateScoreLabel();
 
@@ -669,31 +667,6 @@ namespace Scoreboard
             }
         }
 
-        private string GetPeriodName(int periodNumber)
-        {
-            // Get match class info to determine period type
-            var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
-
-            if (matchClass != null)
-            {
-                switch (matchClass.PeriodType?.ToLower())
-                {
-                    case "half":
-                        return $"Hiệp {periodNumber}";
-                    case "quarter":
-                        return $"Hiệp phụ {periodNumber}";
-                    case "set":
-                        return $"Set {periodNumber}";
-                    default:
-                        return $"Hiệp {periodNumber}";
-                }
-            }
-            else
-            {
-                return $"Hiệp {periodNumber}";
-            }
-        }
-
         private void UpdateUI()
         {
             try
@@ -702,15 +675,23 @@ namespace Scoreboard
                 {
                     return;
                 }
-                var list = Repository.GetMatchSetsByMatchId(match.MatchId);
-
+                var matchSet = Repository.GetMatchClassById(match.Id);
                 // Update UI elements
                 lblTitle.Text = match.TournamentName ?? "";
                 lblHiepDau.Text = match.ClassSetsName ?? "";
                 lblTeam1.Text = match.Team1 ?? "";
                 lblTeam2.Text = match.Team2 ?? "";
-                lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
-                lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
+                if (matchSet.PeriodType.ToLower() == "half")
+                {
+                    var list = Repository.GetMatchSetsByMatchId(match.MatchId);
+                    lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
+                    lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
+                } else
+                {
+                    var data = Repository.GetMatchSetByMatchAndId(match.MatchId, match.Id);
+                    lblScoreTeam1.Text = data.Score1.ToString();
+                    lblScoreTeam2.Text = data.Score2.ToString();
+                }
                 lblTime.Text = match.Time ?? "00:00";
 
                 // Force UI refresh
@@ -745,8 +726,24 @@ namespace Scoreboard
             matchTimer.Start();
         }
 
-        public void StartClock() => isPaused = false;
-        public void StopClock() => isPaused = true;
+        public void StartClock()
+        {
+            var matchSet = Repository.GetMatchSetByMatchAndId(match.MatchId, match.Id);
+            if (isPaused == true)
+            {
+                isPaused = false;
+                Repository.StartMatchSet(match.MatchId, match.Id);
+            }
+        }
+        public void StopClock()
+        {
+            var matchSet = Repository.GetMatchSetByMatchAndId(match.MatchId, match.Id);
+            if (isPaused == false)
+            {
+                isPaused = true;
+                Repository.EndMatchSet(match.MatchId, match.Id);
+            }
+        }
 
         public void ResetClock()
         {
@@ -755,6 +752,34 @@ namespace Scoreboard
         }
 
         public MatchsetModel Matchset => match;
+
+        public void UpdateScoreMatch(string matchId, int idMatchset)
+        {
+            var match = Repository.GetMatchById(matchId);
+            var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+            var matchSet = Repository.GetMatchSetByMatchAndId(matchId, idMatchset);
+            if (matchClass.PeriodType.ToLower() == "half")
+            {
+                // Update match totals in database
+                Repository.UpdateMatchScore1(matchId, matchSet.Score1);
+                Repository.UpdateMatchScore2(matchId, matchSet.Score2);
+                return;
+            } else
+            {
+                if ((match.Score1 + match.Score2) == matchClass.StandardPeriods) return;
+                if (matchSet.Score1 > matchSet.Score2)
+                {
+                    // Update match totals in database
+                    Repository.UpdateMatchScore1(matchId, match.Score1 + 1);
+                }
+                if (matchSet.Score1 < matchSet.Score2)
+                {
+                    // Update match totals in database
+                    Repository.UpdateMatchScore2(matchId, match.Score2 + 1);
+                }
+            }
+
+        }
 
     }
 }

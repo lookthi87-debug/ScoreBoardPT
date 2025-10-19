@@ -1333,7 +1333,7 @@ namespace Scoreboard.Data
                             TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
                             MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
                             MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18),
-                            Start = dr.IsDBNull(2) ? (DateTime?)null : dr.GetDateTime(19),
+                            Start = dr.IsDBNull(19) ? (DateTime?)null : dr.GetDateTime(19),
                         };
                     }
                 }
@@ -1780,6 +1780,18 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@mid", matchId);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static int CountMatchSetByMatchSetId(string matchSetId)
+        {
+            string countSql = "SELECT COUNT(*) FROM Matchsets WHERE id = @id";
+
+            using (var cmdCount = new NpgsqlCommand(countSql, Conn))
+            {
+                int count = Convert.ToInt32(cmdCount.ExecuteScalar());
+
+                return count;
             }
         }
     }
