@@ -23,5 +23,7 @@ namespace Scoreboard.Models
         public string TournamentName { get; set; }
         public int? MatchClassId { get; set; }
         public string MatchClassName { get; set; }
+        public DateTime? Start { get; set; }
+        public DateTime? End { get; set; }
     }
 }

@@ -154,7 +154,7 @@ namespace Scoreboard
                 }
 
                 // Increment current period score
-            scoreTeam1++;
+                scoreTeam1++;
 
                 // Update current period score in match object
                 match.Score1 = scoreTeam1;
@@ -166,11 +166,8 @@ namespace Scoreboard
                 match.TotalScore1 = CalculateTotalScore1();
                 TotalscoreTeam1 = match.TotalScore1;
 
-                // Update match total in database
-                Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
-
                 // Update UI
-            UpdateScoreLabel();
+                UpdateScoreLabel();
             }
             catch (Exception ex)
             {
@@ -190,7 +187,7 @@ namespace Scoreboard
                 }
 
                 // Increment current period score
-            scoreTeam2++;
+                scoreTeam2++;
 
                 // Update current period score in match object
                 match.Score2 = scoreTeam2;
@@ -202,11 +199,8 @@ namespace Scoreboard
                 match.TotalScore2 = CalculateTotalScore2();
                 TotalscoreTeam2 = match.TotalScore2;
 
-                // Update match total in database
-                Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
-
                 // Update UI
-            UpdateScoreLabel();
+                UpdateScoreLabel();
             }
             catch (Exception ex)
             {
@@ -410,27 +404,26 @@ namespace Scoreboard
             try
             {
                 // Mark current set as finished
-            Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
-
+                Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
                 // Try to get next existing period first
-            var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
+                var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
 
                 if (next == null)
                 {
                     // No next period exists, create a new one
                     next = CreateNextPeriod();
-            if (next == null)
-            {
+                    if (next == null)
+                    {
                         MessageBox.Show("Không thể tạo hiệp mới!");
-                return;
+                        return;
                     }
-            }
+                }
 
                 // Activate next period
-            Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
+                Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
 
                 // Use the next period directly
-            match = next;
+                match = next;
 
                 // Reset current period scores to 0 (new period starts)
                 scoreTeam1 = 0;
@@ -459,20 +452,20 @@ namespace Scoreboard
                 // Force UI update
                 UpdateUI();
 
-            if (lblTime.Text != "00:00")
-            {
-                var parts = lblTime.Text.Split(':');
-                if (parts.Length == 2 &&
-                    int.TryParse(parts[0], out int hours) &&
-                    int.TryParse(parts[1], out int minutes))
+                if (lblTime.Text != "00:00")
                 {
+                    var parts = lblTime.Text.Split(':');
+                    if (parts.Length == 2 &&
+                        int.TryParse(parts[0], out int hours) &&
+                        int.TryParse(parts[1], out int minutes))
+                    {
                         elapsedMinutes = hours * 60 + minutes;
+                    }
                 }
-            }
-            else
-            {
-                elapsedMinutes = 0;
-            }
+                else
+                {
+                    elapsedMinutes = 0;
+                }
 
             }
             catch (Exception ex)
@@ -611,13 +604,13 @@ namespace Scoreboard
             // For all non-football sports: Simple increment (Set 1 -> Set 2 -> Set 3...)
             // Just count all existing periods without complex classification
             int currentPeriodCount = allPeriods.Count;
-            
+
             // Check if we've reached the maximum allowed periods
             if (currentPeriodCount >= matchClass.StandardPeriods)
             {
                 return null; // No more periods allowed
             }
-            
+
             // Return next period name based on PeriodType
             switch (matchClass.PeriodType?.ToLower())
             {
@@ -628,26 +621,6 @@ namespace Scoreboard
                 default:
                     return $"Hiệp {currentPeriodCount + 1}";
             }
-        }
-
-        private int CountWonSets(List<MatchsetModel> periods, string teamName)
-        {
-            int wonSets = 0;
-            foreach (var period in periods)
-            {
-                if (period.Status == "2") // Finished period
-                {
-                    if (teamName == match.Team1 && period.Score1 > period.Score2)
-                    {
-                        wonSets++;
-                    }
-                    else if (teamName == match.Team2 && period.Score2 > period.Score1)
-                    {
-                        wonSets++;
-                    }
-                }
-            }
-            return wonSets;
         }
 
         private void ShowMatchResult()
@@ -756,7 +729,7 @@ namespace Scoreboard
             if (matchTimer == null)
             {
                 matchTimer = new Timer();
-                matchTimer.Interval = 1000; 
+                matchTimer.Interval = 1000;
                 matchTimer.Tick += (s, e) =>
                 {
                     if (!isPaused)

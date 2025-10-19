@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -335,7 +335,7 @@ namespace Scoreboard.Data
                         };
                     }
                 }
-            }     
+            }
             return null;
         }
 
@@ -528,10 +528,10 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
                         };
-                        
+
                         // Parse multiple referees from note field if exists
                         ParseMultipleRefereesFromNote(match);
-                        
+
                         list.Add(match);
                     }
                 }
@@ -581,10 +581,10 @@ namespace Scoreboard.Data
                         TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
                         TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
                     };
-                    
+
                     // Parse multiple referees from note field if exists
                     ParseMultipleRefereesFromNote(match);
-                    
+
                     list.Add(match);
                 }
             }
@@ -635,10 +635,10 @@ namespace Scoreboard.Data
                             TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
                             TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
                         };
-                        
+
                         // Parse multiple referees from note field if exists
                         ParseMultipleRefereesFromNote(match);
-                        
+
                         return match;
                     }
                 }
@@ -646,7 +646,7 @@ namespace Scoreboard.Data
 
             return null;
         }
-        
+
         // Helper method to parse multiple referees from note field
         private static void ParseMultipleRefereesFromNote(MatchModel match)
         {
@@ -657,12 +657,12 @@ namespace Scoreboard.Data
                     // Extract referee info from note field
                     int startIndex = match.Note.IndexOf("[Referees:");
                     int endIndex = match.Note.IndexOf("]", startIndex);
-                    
+
                     if (startIndex >= 0 && endIndex > startIndex)
                     {
                         string refereesInfo = match.Note.Substring(startIndex + 10, endIndex - startIndex - 10);
                         match.Note = match.Note.Substring(0, startIndex).Trim(); // Remove referee info from note
-                        
+
                         // Parse referee IDs and names
                         var parts = refereesInfo.Split('|');
                         foreach (var part in parts)
@@ -688,12 +688,12 @@ namespace Scoreboard.Data
                 match.RefereeNames.Add(match.RefereeName ?? "");
             }
         }
-        
+
         // Helper method to prepare note field with multiple referees
         private static string PrepareNoteWithReferees(MatchModel m)
         {
             string note = m.Note ?? "";
-            
+
             if (m.RefereeIds != null && m.RefereeIds.Count > 0 && m.RefereeNames != null && m.RefereeNames.Count > 0)
             {
                 // Add referee info to note field
@@ -705,7 +705,7 @@ namespace Scoreboard.Data
                 string refereesInfo = "[Referees:" + string.Join("|", refereePairs) + "]";
                 note = note + " " + refereesInfo;
             }
-            
+
             return note.Trim();
         }
 
@@ -945,7 +945,7 @@ namespace Scoreboard.Data
                 {
                     if (dr.Read())
                     {
-                        result =new MatchsetModel
+                        result = new MatchsetModel
                         {
                             Id = dr.GetInt32(0),
                             MatchId = dr.GetString(1),
@@ -1292,7 +1292,8 @@ namespace Scoreboard.Data
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
-                    mtl.name as MatchClassName
+                    mtl.name as MatchClassName,
+                    ms.start
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -1331,7 +1332,8 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
                             TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
                             MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
-                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
+                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18),
+                            Start = dr.IsDBNull(2) ? (DateTime?)null : dr.GetDateTime(19),
                         };
                     }
                 }
@@ -1392,8 +1394,8 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@s1", m.Score1);
                 cmd.Parameters.AddWithValue("@s2", m.Score2);
                 cmd.Parameters.AddWithValue("@t", m.Time);
-                cmd.Parameters.AddWithValue("@note",m.Note);
-               cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@note", m.Note);
+                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
 
@@ -1749,7 +1751,37 @@ namespace Scoreboard.Data
 
             AddMatchSet(penaltySet);
         }
+        public static void StartMatchSet(string matchId, int id)
+        {
+            string sql = @"
+                UPDATE MatchSets 
+                SET status = '1', start = NOW()
+                WHERE match_id = @mid AND id = @id;
+            ";
 
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@mid", matchId);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void EndMatchSet(string matchId, int id)
+        {
+            string sql = @"
+                UPDATE MatchSets 
+                SET status = '2', ""end"" = NOW()
+                WHERE match_id = @mid AND id = @id;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@mid", matchId);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 
 }

@@ -264,18 +264,27 @@ namespace Scoreboard
             // Set title with user name
             this.Text = "Thông tin " + (currentUser?.Fullname ?? "User");
 
-            if (currentUser?.RoleId == 2)
+            if (currentUser?.RoleId == 2) // role trọng tài
             {
                 var match = Repository.GetActiveMatchSetsByUser(currentUser.Id);
                 if (match != null & match.Count > 0)
                 {
-                    this.Text = "Thông tin " + match[0].RefereeName;
                     txtTitle.Text = match[0].TournamentName;
                     txtTeam1.Text = match[0].Team1;
                     txtTeam2.Text = match[0].Team2;
-                    nScore1.Value = match[0].TotalScore1;
-                    nScore2.Value = match[0].TotalScore2;
-                    txtTime.Text = match[0].Time;
+                    var matchClass = Repository.GetMatchClassById((int)match[0].MatchClassId);
+                    if (matchClass.PeriodType.ToLower() == "half")
+                    {
+                        nScore1.Value = match[0].TotalScore1;
+                        nScore2.Value = match[0].TotalScore2;
+                    } 
+                    else
+                    {
+                        nScore1.Value = match[0].Score1;
+                        nScore2.Value = match[0].Score2;
+                    }
+
+                        txtTime.Text = match[0].Time;
                     lblMessage.Text = "";
                     btnStart.Enabled = true;
                 }
