@@ -166,6 +166,8 @@ namespace Scoreboard
             this.clbReferees.Name = "clbReferees";
             this.clbReferees.Size = new System.Drawing.Size(426, 109);
             this.clbReferees.TabIndex = 7;
+            this.clbReferees.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbReferees_ItemCheck);
+            this.clbReferees.Click += new System.EventHandler(this.clbReferees_Click);
             // 
             // lblMatch_Id
             // 
@@ -335,10 +337,10 @@ namespace Scoreboard
                 }
             }
 
-            // Handle multiple referees
+            // Handle single referee selection
             if (m.RefereeIds != null && m.RefereeIds.Count > 0)
             {
-                // Select referees in the CheckedListBox based on RefereeIds
+                // Select only the first referee in the CheckedListBox
                 for (int i = 0; i < clbReferees.Items.Count; i++)
                 {
                     if (clbReferees.Items[i] is UserModel user)
@@ -346,6 +348,7 @@ namespace Scoreboard
                         if (m.RefereeIds.Contains(user.Id))
                         {
                             clbReferees.SetItemChecked(i, true);
+                            break; // Only select the first match
                         }
                     }
                 }
@@ -436,7 +439,7 @@ namespace Scoreboard
             
             if (selectedReferees.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn ít nhất một trọng tài cho trận đấu", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một trọng tài cho trận đấu", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 clbReferees.Focus();
                 return;
             }
@@ -544,6 +547,34 @@ namespace Scoreboard
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
+        }
+
+        private void clbReferees_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            // If the user is checking an item, uncheck all other items
+            if (e.NewValue == CheckState.Checked)
+            {
+                for (int i = 0; i < clbReferees.Items.Count; i++)
+                {
+                    if (i != e.Index && clbReferees.GetItemChecked(i))
+                    {
+                        clbReferees.SetItemChecked(i, false);
+                    }
+                }
+            }
+        }
+
+        private void clbReferees_Click(object sender, EventArgs e)
+        {
+            // Get the index of the clicked item
+            int index = clbReferees.IndexFromPoint(clbReferees.PointToClient(Cursor.Position));
+            
+            if (index >= 0)
+            {
+                // Toggle the checked state of the clicked item
+                bool isCurrentlyChecked = clbReferees.GetItemChecked(index);
+                clbReferees.SetItemChecked(index, !isCurrentlyChecked);
+            }
         }
 
         private void btnUpdateTime_Click(object sender, EventArgs e)

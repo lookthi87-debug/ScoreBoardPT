@@ -415,7 +415,7 @@ namespace Scoreboard.Data
             try
             {
                 //Kiểm tra có trận nào status != 0 hay không
-                string checkSql = "SELECT COUNT(*) FROM Matches WHERE Tournament_Id = @id AND status <> 0";
+                string checkSql = "SELECT COUNT(*) FROM Matches WHERE Tournament_Id = @id AND status <> '0'";
                 using (var checkCmd = new NpgsqlCommand(checkSql, Conn))
                 {
                     checkCmd.Parameters.AddWithValue("@id", id);
@@ -1778,6 +1778,36 @@ namespace Scoreboard.Data
             using (var cmd = new NpgsqlCommand(sql, Conn))
             {
                 cmd.Parameters.AddWithValue("@mid", matchId);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void StartMatch(string id)
+        {
+            string sql = @"
+                UPDATE Matches 
+                SET status = '1', start = NOW()
+                WHERE id = @id;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void EndMatch(string id)
+        {
+            string sql = @"
+                UPDATE Matches 
+                SET status = '2', ""end"" = NOW()
+                WHERE id = @id;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }

@@ -338,6 +338,7 @@ namespace Scoreboard
             if (res != DialogResult.Yes) return;
 
             Repository.DeleteTournament(id);
+            LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
 
         private void dgUser_DoubleClick(object sender, EventArgs e)

@@ -214,8 +214,6 @@ namespace Scoreboard
             // Update database
             Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
             Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
-            //Repository.UpdateMatchScore1(match.MatchId, match.TotalScore1);
-            //Repository.UpdateMatchScore2(match.MatchId, match.TotalScore2);
 
             UpdateScoreLabel();
         }
@@ -415,7 +413,9 @@ namespace Scoreboard
                     next = CreateNextPeriod();
                     if (next == null)
                     {
-                        MessageBox.Show("Không thể tạo hiệp mới!");
+                        // set match as ended
+                        Repository.EndMatch(match.MatchId);
+                        MessageBox.Show("Trận đấu kết thúc!");
                         return;
                     }
                 }
@@ -675,7 +675,7 @@ namespace Scoreboard
                 {
                     return;
                 }
-                var matchSet = Repository.GetMatchClassById(match.Id);
+                var matchSet = Repository.GetMatchClassById((int) match.MatchClassId);
                 // Update UI elements
                 lblTitle.Text = match.TournamentName ?? "";
                 lblHiepDau.Text = match.ClassSetsName ?? "";
@@ -728,7 +728,11 @@ namespace Scoreboard
 
         public void StartClock()
         {
-            var matchSet = Repository.GetMatchSetByMatchAndId(match.MatchId, match.Id);
+            var currentMatch = Repository.GetMatchById(match.MatchId);
+            if (currentMatch.Start == null)
+            {
+                Repository.StartMatch(match.MatchId);
+            }
             if (isPaused == true)
             {
                 isPaused = false;

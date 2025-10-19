@@ -52,9 +52,9 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn Id;
         private DataGridViewTextBoxColumn status;
         private DataGridViewTextBoxColumn timeStart;
+        private DataGridViewTextBoxColumn timeEnd;
 
         private UserModel user { get; set; }
-        private List<MatchModel> currentMatchList = new List<MatchModel>();
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -75,6 +75,14 @@ namespace Scoreboard
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblViewToggle = new System.Windows.Forms.Label();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
+            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteMatch = new MaterialSkin.Controls.MaterialButton();
             this.btnAddMatch = new MaterialSkin.Controls.MaterialButton();
@@ -85,14 +93,6 @@ namespace Scoreboard
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.BtnUp = new MaterialSkin.Controls.MaterialButton();
             this.BtnDown = new MaterialSkin.Controls.MaterialButton();
-            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tournamentname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Team1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Team2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -101,6 +101,7 @@ namespace Scoreboard
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.timeStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timeEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgGiaiDau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.SuspendLayout();
@@ -130,7 +131,8 @@ namespace Scoreboard
             this.Score2,
             this.Id,
             this.status,
-            this.timeStart});
+            this.timeStart,
+            this.timeEnd});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -350,6 +352,67 @@ namespace Scoreboard
             this.dgvDetail.TabIndex = 24;
             this.dgvDetail.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetail_CellDoubleClick);
             // 
+            // ClassSetsName
+            // 
+            this.ClassSetsName.DataPropertyName = "ClassSetsName";
+            this.ClassSetsName.HeaderText = "Hiệp/Set";
+            this.ClassSetsName.Name = "ClassSetsName";
+            this.ClassSetsName.ReadOnly = true;
+            this.ClassSetsName.Width = 284;
+            // 
+            // time
+            // 
+            this.time.DataPropertyName = "time";
+            this.time.HeaderText = "Thời gian";
+            this.time.Name = "time";
+            this.time.Width = 120;
+            // 
+            // Score1detail
+            // 
+            this.Score1detail.DataPropertyName = "Score1";
+            this.Score1detail.HeaderText = "Điểm đội 1";
+            this.Score1detail.Name = "Score1detail";
+            this.Score1detail.ReadOnly = true;
+            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Score2detail
+            // 
+            this.Score2detail.DataPropertyName = "Score2";
+            this.Score2detail.HeaderText = "Điểm đội 2";
+            this.Score2detail.Name = "Score2detail";
+            this.Score2detail.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // id2
+            // 
+            this.id2.DataPropertyName = "Id";
+            this.id2.HeaderText = "Id";
+            this.id2.Name = "id2";
+            this.id2.ReadOnly = true;
+            this.id2.Visible = false;
+            this.id2.Width = 5;
+            // 
+            // MatchId
+            // 
+            this.MatchId.DataPropertyName = "MatchId";
+            this.MatchId.HeaderText = "Match_Id";
+            this.MatchId.Name = "MatchId";
+            this.MatchId.Visible = false;
+            this.MatchId.Width = 5;
+            // 
+            // Status2
+            // 
+            this.Status2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Status2.DataPropertyName = "Status";
+            this.Status2.HeaderText = "Trạng thái";
+            this.Status2.Name = "Status2";
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -502,75 +565,13 @@ namespace Scoreboard
             this.BtnDown.UseVisualStyleBackColor = true;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
-            // ClassSetsName
-            // 
-            this.ClassSetsName.DataPropertyName = "ClassSetsName";
-            this.ClassSetsName.HeaderText = "Hiệp/Set";
-            this.ClassSetsName.Name = "ClassSetsName";
-            this.ClassSetsName.ReadOnly = true;
-            this.ClassSetsName.Width = 284;
-            // 
-            // time
-            // 
-            this.time.DataPropertyName = "time";
-            this.time.HeaderText = "Thời gian";
-            this.time.Name = "time";
-            this.time.Width = 120;
-            // 
-            // Score1detail
-            // 
-            this.Score1detail.DataPropertyName = "Score1";
-            this.Score1detail.HeaderText = "Điểm đội 1";
-            this.Score1detail.Name = "Score1detail";
-            this.Score1detail.ReadOnly = true;
-            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Score2detail
-            // 
-            this.Score2detail.DataPropertyName = "Score2";
-            this.Score2detail.HeaderText = "Điểm đội 2";
-            this.Score2detail.Name = "Score2detail";
-            this.Score2detail.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
-            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // id2
-            // 
-            this.id2.DataPropertyName = "Id";
-            this.id2.HeaderText = "Id";
-            this.id2.Name = "id2";
-            this.id2.ReadOnly = true;
-            this.id2.Visible = false;
-            this.id2.Width = 5;
-            // 
-            // MatchId
-            // 
-            this.MatchId.DataPropertyName = "MatchId";
-            this.MatchId.HeaderText = "Match_Id";
-            this.MatchId.Name = "MatchId";
-            this.MatchId.Visible = false;
-            this.MatchId.Width = 5;
-            // 
-            // Status2
-            // 
-            this.Status2.DataPropertyName = "Status";
-            this.Status2.HeaderText = "Trạng thái";
-            this.Status2.Name = "Status2";
-            this.Status2.Width = 70;
-            // 
             // tournamentname
             // 
             this.tournamentname.DataPropertyName = "tournamentname";
             this.tournamentname.HeaderText = "Giải đấu";
             this.tournamentname.Name = "tournamentname";
             this.tournamentname.ReadOnly = true;
-            this.tournamentname.Width = 200;
+            this.tournamentname.Width = 150;
             // 
             // Team1
             // 
@@ -578,7 +579,7 @@ namespace Scoreboard
             this.Team1.HeaderText = "Đội 1";
             this.Team1.Name = "Team1";
             this.Team1.ReadOnly = true;
-            this.Team1.Width = 150;
+            this.Team1.Width = 140;
             // 
             // Team2
             // 
@@ -586,7 +587,7 @@ namespace Scoreboard
             this.Team2.HeaderText = "Đội 2";
             this.Team2.Name = "Team2";
             this.Team2.ReadOnly = true;
-            this.Team2.Width = 150;
+            this.Team2.Width = 140;
             // 
             // Score1
             // 
@@ -621,11 +622,17 @@ namespace Scoreboard
             // 
             // timeStart
             // 
-            this.timeStart.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.timeStart.DataPropertyName = "time";
+            this.timeStart.DataPropertyName = "Start";
             this.timeStart.HeaderText = "Thời gian bắt đầu";
             this.timeStart.Name = "timeStart";
             this.timeStart.ReadOnly = true;
+            // 
+            // timeEnd
+            // 
+            this.timeEnd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.timeEnd.DataPropertyName = "End";
+            this.timeEnd.HeaderText = "Thời gian kết  thúc";
+            this.timeEnd.Name = "timeEnd";
             // 
             // MatchsForm
             // 
@@ -803,7 +810,25 @@ namespace Scoreboard
 
                 // Lấy danh sách chi tiết hiệp đấu
                 var details = Repository.GetMatchSetsByMatchId(matchId);
-
+                details = details.Select(m =>
+                {
+                    switch (m.Status)
+                    {
+                        case "0":
+                            m.Status = "Chưa diễn ra";
+                            break;
+                        case "1":
+                            m.Status = "Đang diễn ra";
+                            break;
+                        case "2":
+                            m.Status = "Đã kết thúc";
+                            break;
+                        default:
+                            m.Status = m.Status;
+                            break;
+                    }
+                    return m;
+                }).ToList();
                 // Gán vào dgvDetail
                 dgvDetail.DataSource = details;
 
@@ -1531,7 +1556,7 @@ namespace Scoreboard
                 List<MatchModel> activeMatches = Repository.GetMatchesShowToggle();
                 foreach (var match in activeMatches)
                 {
-                    var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}")
+                    var li = new ListViewItem($"{match.Team1} vs {match.Team2} - {match.RefereeName}")
                     {
                         Tag = match.Id
                     };

@@ -22,6 +22,7 @@ namespace Scoreboard
         private Label lblTenTranDau;
         private MaterialButton btnCancel;
         private MaterialButton btnStart;
+        private MaterialButton btnRefresh;
         private Label lblMessage;
         private UserModel currentUser;
         public UserInfoForm(UserModel u)
@@ -33,6 +34,7 @@ namespace Scoreboard
         private void InitializeComponent()
         {
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
+            this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
             this.txtTime = new System.Windows.Forms.TextBox();
             this.nScore2 = new System.Windows.Forms.NumericUpDown();
             this.nScore1 = new System.Windows.Forms.NumericUpDown();
@@ -59,17 +61,37 @@ namespace Scoreboard
             this.btnStart.Depth = 0;
             this.btnStart.HighEmphasis = true;
             this.btnStart.Icon = null;
-            this.btnStart.Location = new System.Drawing.Point(585, 265);
+            this.btnStart.Location = new System.Drawing.Point(626, 265);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnStart.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(158, 36);
+            this.btnStart.Size = new System.Drawing.Size(117, 36);
             this.btnStart.TabIndex = 2;
             this.btnStart.Text = "Bắt đầu";
             this.btnStart.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnStart.UseAccentColor = false;
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.AutoSize = false;
+            this.btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnRefresh.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnRefresh.Depth = 0;
+            this.btnRefresh.HighEmphasis = true;
+            this.btnRefresh.Icon = null;
+            this.btnRefresh.Location = new System.Drawing.Point(516, 265);
+            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnRefresh.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(102, 36);
+            this.btnRefresh.TabIndex = 3;
+            this.btnRefresh.Text = "Làm mới";
+            this.btnRefresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnRefresh.UseAccentColor = false;
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // txtTime
             // 
@@ -204,11 +226,11 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(419, 265);
+            this.btnCancel.Location = new System.Drawing.Point(409, 265);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(158, 36);
+            this.btnCancel.Size = new System.Drawing.Size(99, 36);
             this.btnCancel.TabIndex = 39;
             this.btnCancel.Text = "Thoát";
             this.btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
@@ -220,9 +242,9 @@ namespace Scoreboard
             // 
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblMessage.Location = new System.Drawing.Point(22, 265);
+            this.lblMessage.Location = new System.Drawing.Point(22, 297);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(352, 42);
+            this.lblMessage.Size = new System.Drawing.Size(208, 26);
             this.lblMessage.TabIndex = 40;
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -232,6 +254,7 @@ namespace Scoreboard
             this.ClientSize = new System.Drawing.Size(762, 326);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.txtTime);
             this.Controls.Add(this.nScore2);
             this.Controls.Add(this.nScore1);
@@ -256,7 +279,6 @@ namespace Scoreboard
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
 
         }
         private void LoadUserInfo()
@@ -306,6 +328,11 @@ namespace Scoreboard
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadUserInfo();
         }
 
         private void UserInfoForm_FormClosed(object sender, FormClosedEventArgs e)
