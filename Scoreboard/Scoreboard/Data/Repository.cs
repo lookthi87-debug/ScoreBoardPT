@@ -972,18 +972,30 @@ namespace Scoreboard.Data
             }
             return result;
         }
-        public static List<MatchModel> GetMatchesByStatus(string status)
+        public static List<MatchModel> GetMatchesByStatus(string status, bool isEqual)
         {
             var list = new List<MatchModel>();
-            string sql = @"
+            
+            // Build WHERE clause based on isEqual parameter
+            string whereClause;
+            if (isEqual == true)
+            {
+                whereClause = "WHERE m.status=@status";
+            }
+            else
+            {
+                whereClause = "WHERE (m.status !=@status OR m.status IS NULL)";
+            }
+            
+            string sql = $@"
                 SELECT 
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
-                    m.time, m.referee_id, u.name AS referee_name, 
+                    m.time, m.referee_id, u.fullname AS referee_name, 
                     m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
-                WHERE m.status=@status;
+                {whereClause};
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))

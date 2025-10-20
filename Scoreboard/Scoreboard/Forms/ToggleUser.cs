@@ -174,17 +174,17 @@ namespace Scoreboard
                     activeUc.ResetScore();
                     break;
 
-                case Keys.D4:  // Cập nhật thời gian
-                    {
-                        activeUc.StopClock();
-                        var updateForm = new UpdateTime();
-                        updateForm.MatchsetModel.Time = activeUc.Matchset.Time;
-                        if (updateForm.ShowDialog() == DialogResult.OK)
-                        {
-                            activeUc.UpdateMatchTime(updateForm.MatchsetModel.Time);
-                        }
-                        break;
-                    }
+                //case Keys.D4:  // Cập nhật thời gian
+                //    {
+                //        activeUc.StopClock();
+                //        var updateForm = new UpdateTime();
+                //        updateForm.MatchsetModel.Time = activeUc.Matchset.Time;
+                //        if (updateForm.ShowDialog() == DialogResult.OK)
+                //        {
+                //            activeUc.UpdateMatchTime(updateForm.MatchsetModel.Time);
+                //        }
+                //        break;
+                //    }
 
                 case Keys.D5:  // Start clock
                     activeUc.StartClock();

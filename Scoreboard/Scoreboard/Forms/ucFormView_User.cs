@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Scoreboard.Data;
 using Scoreboard.Models;
+using Scoreboard.Config;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -381,7 +382,7 @@ namespace Scoreboard
 
                     wb.SaveAs(sfd.FileName);
                     Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
-                    Repository.UpdateMatchStatus(match.MatchId, "2");
+                    Repository.UpdateMatchStatus(match.MatchId, MatchStatusConfig.Status.Finished);
                     MessageBox.Show($"Đã xuất file:\n{sfd.FileName}", "Xuất Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     wb.Dispose();
                 }
@@ -407,6 +408,23 @@ namespace Scoreboard
 
                 // update score match
                 UpdateScoreMatch(match.MatchId, match.Id);
+
+                // Check if we need to ask for overtime creation
+                if (ShouldAskForOvertime())
+                {
+                    var result = MessageBox.Show("Kết quả hiện tại đang hòa.\nBạn có muốn tạo hiệp phụ không?", 
+                                               "Xác nhận tạo hiệp phụ", 
+                                               MessageBoxButtons.YesNo, 
+                                               MessageBoxIcon.Question);
+                    
+                    if (result == DialogResult.No)
+                    {
+                        // End the match without creating overtime
+                        Repository.EndMatch(match.MatchId);
+                        MessageBox.Show("Trận đấu kết thúc với kết quả hòa!");
+                        return;
+                    }
+                }
 
                 // Try to get next existing period first
                 var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
@@ -759,6 +777,51 @@ namespace Scoreboard
         }
 
         public MatchsetModel Matchset => match;
+
+        private bool ShouldAskForOvertime()
+        {
+            try
+            {
+                // Check if this is football (half periods)
+                var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+                if (matchClass == null || matchClass.PeriodType?.ToLower() != "half")
+                {
+                    return false; // Not football, no overtime logic
+                }
+
+                // Get all periods for this match
+                var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
+                
+                // Count regular periods (Hiệp 1, Hiệp 2)
+                var regularPeriods = allPeriods.Where(p => 
+                    p.ClassSetsName?.StartsWith("Hiệp ") == true && 
+                    !p.ClassSetsName.Contains("phụ") && 
+                    !p.ClassSetsName.Contains("penalty")).ToList();
+
+                // Check if we're finishing the second regular period
+                if (regularPeriods.Count == 2)
+                {
+                    // Check if current period is "Hiệp 2"
+                    bool isSecondHalf = match.ClassSetsName?.Contains("Hiệp 2") == true;
+                    
+                    if (isSecondHalf)
+                    {
+                        // Check if scores are tied
+                        int team1TotalScore = CalculateTotalScore1();
+                        int team2TotalScore = CalculateTotalScore2();
+                        
+                        return team1TotalScore == team2TotalScore;
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                // If any error occurs, don't show overtime dialog
+                return false;
+            }
+        }
 
         public void UpdateScoreMatch(string matchId, int idMatchset)
         {

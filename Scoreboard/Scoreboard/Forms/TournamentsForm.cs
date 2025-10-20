@@ -28,6 +28,7 @@ namespace Scoreboard
         {
             InitializeComponent();
             user = us;
+            this.FormClosed += TournamentsForm_FormClosed;
         }
         private void InitializeComponent()
         {
@@ -357,6 +358,10 @@ namespace Scoreboard
         {
             MatchsForm frm = new MatchsForm(user);
             frm.ShowDialog();
+        }
+        private void TournamentsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

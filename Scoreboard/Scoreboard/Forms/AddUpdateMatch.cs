@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
+using Scoreboard.Config;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Collections.Generic;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
@@ -159,7 +160,7 @@ namespace Scoreboard
             // 
             // clbReferees
             // 
-            this.clbReferees.DisplayMember = "Name";
+            this.clbReferees.DisplayMember = "Fullname";
             this.clbReferees.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.clbReferees.FormattingEnabled = true;
             this.clbReferees.Location = new System.Drawing.Point(148, 158);
@@ -280,17 +281,13 @@ namespace Scoreboard
                 allUsers = Repository.GetAllUsers().Where(u => u.RoleName != "Admin").ToList(); // Store all users for reference
                 clbReferees.Items.Clear();
                 
-                // Set the DisplayMember to show the Name property
-                clbReferees.DisplayMember = "Name";
+                // Set the DisplayMember to show the Fullname property
+                clbReferees.DisplayMember = "Fullname";
                 
                 foreach (var user in allUsers)
+ 
                 {
                     clbReferees.Items.Add(user, false); // Add user object with unchecked state
-                }
-                
-                if (clbReferees.Items.Count > 0)
-                {
-                    clbReferees.SelectedIndex = 0;
                 }
             }
             catch {
@@ -303,9 +300,14 @@ namespace Scoreboard
         private void LoadStatus()
         {
             cbStatus.Items.Clear();
-            cbStatus.Items.Add(new { Text = "Chưa bắt đầu", Value = "0" });
-            cbStatus.Items.Add(new { Text = "Đang diễn ra", Value = "1" });
-            cbStatus.Items.Add(new { Text = "Đã kết thúc", Value = "2" });
+            
+            // Use the centralized status configuration
+            var statusOptions = MatchStatusConfig.GetStatusOptions();
+            foreach (var option in statusOptions)
+            {
+                cbStatus.Items.Add(option);
+            }
+            
             cbStatus.DisplayMember = "Text";
             cbStatus.ValueMember = "Value";
             cbStatus.SelectedIndex = 0; // Default to "Chưa bắt đầu"
@@ -622,13 +624,6 @@ namespace Scoreboard
                 return "Hiệp 1";
             }
         }
-
-        // Helper method to convert status text to number
-        public static string GetStatusText(string status)
-        {
-            return status == "0" ? "Chưa bắt đầu" :
-                   status == "1" ? "Đang diễn ra" :
-                   status == "2" ? "Đã kết thúc" : "Không xác định";
-        }
     }
 }
+
