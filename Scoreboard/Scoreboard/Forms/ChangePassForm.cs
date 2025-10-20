@@ -224,7 +224,7 @@ namespace Scoreboard
                 txtUserName.Focus();
                 return;
             }
-            if (Security.VerifyPassword(txtPassWord.Text, User.Password))
+            if (!Security.VerifyPassword(txtPassWord.Text, User.Password))
             {
                 MessageBox.Show("Sai mật khẩu!");
                 txtPassWord.Clear();

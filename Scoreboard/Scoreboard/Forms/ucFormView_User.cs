@@ -152,7 +152,7 @@ namespace Scoreboard
                 // Calculate total score from database (sum of all periods with same match_id)
                 match.TotalScore1 = CalculateTotalScore1();
                 TotalscoreTeam1 = match.TotalScore1;
-
+                Repository.UpdateMatchScore1(match.MatchId, TotalscoreTeam1);
                 // Update UI
                 UpdateScoreLabel();
             }
@@ -185,7 +185,7 @@ namespace Scoreboard
                 // Calculate total score from database (sum of all periods with same match_id)
                 match.TotalScore2 = CalculateTotalScore2();
                 TotalscoreTeam2 = match.TotalScore2;
-
+                Repository.UpdateMatchScore2(match.MatchId, TotalscoreTeam2);
                 // Update UI
                 UpdateScoreLabel();
             }
@@ -326,12 +326,10 @@ namespace Scoreboard
                     ws.Cell(row, 1).Value = "Giải đấu";
                     ws.Cell(row, 2).Value = "Thời gian";
                     ws.Cell(row, 3).Value = "Set";
-                    ws.Cell(row, 4).Value = "Đội 1";
-                    ws.Cell(row, 5).Value = "Đội 2";
-                    ws.Cell(row, 6).Value = "Score 1";
-                    ws.Cell(row, 7).Value = "Score 2";
+                    ws.Cell(row, 4).Value = match.Team1;
+                    ws.Cell(row, 5).Value = match.Team2;
 
-                    ws.Range(row, 1, row, 7).Style
+                    ws.Range(row, 1, row, 5).Style
                         .Font.SetBold()
                         .Font.SetFontSize(12)
                         .Fill.SetBackgroundColor(XLColor.LightGray)
@@ -350,13 +348,17 @@ namespace Scoreboard
                         ws.Cell(row, 1).Value = m.TournamentName;
                         ws.Cell(row, 2).Value = m.Time ?? "00:00";
                         ws.Cell(row, 3).Value = m.ClassSetsName;
-                        ws.Cell(row, 4).Value = $"{m.Team1} ({m.Score1})";
-                        ws.Cell(row, 5).Value = $"{m.Team2} ({m.Score2})";
+                        ws.Cell(row, 4).Value = m.Score1;
+                        ws.Cell(row, 5).Value = m.Score2;
                         ws.Range(row, 1, row, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         row++;
                     }
-                    ws.Cell(row, 4).Value = $"{match.Team1} ({match.TotalScore1})";
-                    ws.Cell(row, 5).Value = $"{match.Team2} ({match.TotalScore2})";
+                    ws.Cell(row, 4).Value = match.TotalScore1;
+                    ws.Cell(row, 4).Style.Font.SetBold();
+                    ws.Cell(row, 4).Style.Font.FontColor = XLColor.Red;
+                    ws.Cell(row, 5).Value = match.TotalScore2;
+                    ws.Cell(row, 5).Style.Font.SetBold();
+                    ws.Cell(row, 5).Style.Font.FontColor = XLColor.Red;
                     ws.Range(row, 1, row, 5).Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                     row++;
 
@@ -381,6 +383,7 @@ namespace Scoreboard
                     Repository.UpdateMatchSetStatus(match.MatchId, match.Id, "2");
                     Repository.UpdateMatchStatus(match.MatchId, "2");
                     MessageBox.Show($"Đã xuất file:\n{sfd.FileName}", "Xuất Excel", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    wb.Dispose();
                 }
             }
             catch (Exception ex)
