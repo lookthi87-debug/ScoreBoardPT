@@ -1824,6 +1824,59 @@ namespace Scoreboard.Data
                 return count;
             }
         }
+
+        // ====================================================
+        // REFEREE AVAILABILITY CHECK
+        // ====================================================
+        public static bool IsRefereeBusy(int refereeId)
+        {
+            string sql = @"
+                SELECT COUNT(*) 
+                FROM MatchSets 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+                UNION ALL
+                SELECT COUNT(*) 
+                FROM Matches 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@refereeId", refereeId);
+                
+                int busyCount = 0;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        busyCount += reader.GetInt32(0);
+                    }
+                }
+                
+                return busyCount > 0;
+            }
+        }
+
+        public static List<string> GetBusyRefereesInfo(List<int> refereeIds)
+        {
+            var busyReferees = new List<string>();
+            
+            foreach (var refereeId in refereeIds)
+            {
+                if (IsRefereeBusy(refereeId))
+                {
+                    var user = GetUserById(refereeId);
+                    if (user != null)
+                    {
+                        busyReferees.Add(user.Name);
+                    }
+                }
+            }
+            
+            return busyReferees;
+        }
     }
 
 }

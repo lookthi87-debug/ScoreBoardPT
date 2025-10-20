@@ -443,6 +443,22 @@ namespace Scoreboard
                 clbReferees.Focus();
                 return;
             }
+
+            // Check if any selected referee is currently busy (only for new matches)
+            if (string.IsNullOrWhiteSpace(currentMatch.Id))
+            {
+                var selectedRefereeIds = selectedReferees.Select(r => r.Id).ToList();
+                var busyReferees = Repository.GetBusyRefereesInfo(selectedRefereeIds);
+                
+                if (busyReferees.Count > 0)
+                {
+                    string busyNames = string.Join(", ", busyReferees);
+                    MessageBox.Show($"Trọng tài {busyNames} đang bận bắt trận đấu khác. Vui lòng chọn trọng tài khác.", 
+                                  "Trọng tài đang bận", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clbReferees.Focus();
+                    return;
+                }
+            }
             
             // map
             currentMatch.Team1 = txtTeam1.Text.Trim();
