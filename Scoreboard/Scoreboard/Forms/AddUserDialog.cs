@@ -271,6 +271,7 @@ namespace Scoreboard
                 cbRole.DataSource = roles;
                 cbRole.DisplayMember = "name";
                 cbRole.ValueMember = "Id";
+                cbRole.SelectedValue = 2;
             }
             catch
             {

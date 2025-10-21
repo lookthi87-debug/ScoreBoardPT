@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Office.Word;
@@ -500,7 +504,7 @@ namespace Scoreboard.Data
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
-                WHERE m.tournament_id=@tid ORDER BY m.id;
+                WHERE m.tournament_id=@tid ORDER BY m.status, m.id;
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -834,6 +838,73 @@ namespace Scoreboard.Data
         // ====================================================
         // MATCHSETS
         // ====================================================
+        public static List<MatchsetModel> GetAllMatchSetsByUser(int userId)
+        {
+            var list = new List<MatchsetModel>();
+            string sql = @"
+                SELECT 
+                    ms.id,
+                    ms.match_id,
+                    m.team1,
+                    m.team2,
+                    m.score1 AS total_score1,
+                    m.score2 AS total_score2,
+                    ms.time,
+                    ms.note,
+                    m.status,
+                    ms.referee_id,
+                    u.name AS referee_name,
+                    ms.ClassSets_id,
+                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    m.tournament_id,
+                    t.name AS tournament_name,
+                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.name as MatchClassName
+                FROM MatchSets ms
+                INNER JOIN Matches m ON ms.match_id = m.id
+                LEFT JOIN Users u ON ms.referee_id = u.id
+                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
+                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN Tournaments t ON m.tournament_id = t.id
+                WHERE ms.status = '1'
+                  AND ms.referee_id = @uid
+                ORDER BY ms.status desc, m.id, ms.id;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@uid", userId);
+
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new MatchsetModel
+                        {
+                            Id = dr.GetInt32(0),
+                            MatchId = dr.GetString(1),
+                            Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
+                            Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
+                            TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Time = dr.IsDBNull(6) ? null : dr.GetString(6),
+                            Note = dr.IsDBNull(7) ? null : dr.GetString(7),
+                            Status = dr.IsDBNull(8) ? null : dr.GetString(8),
+                            RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
+                            RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
+                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
+                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
+                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                        });
+                    }
+                }
+            }
+
+            return list;
+        }
         public static List<MatchsetModel> GetActiveMatchSetsByUser(int userId)
         {
             var list = new List<MatchsetModel>();
@@ -862,7 +933,7 @@ namespace Scoreboard.Data
                 LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
                 LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
-                WHERE ms.status = '1'
+                WHERE m.status = '1' AND ms.status = '1'
                   AND ms.referee_id = @uid
                 ORDER BY m.id, ms.id;
             ";
@@ -1229,7 +1300,7 @@ namespace Scoreboard.Data
                     ms.note,
                     ms.status,
                     ms.referee_id,
-                    u.name AS referee_name,
+                    u.fullname AS referee_name,
                     ms.ClassSets_id,
                     COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
                     m.tournament_id,
@@ -1888,6 +1959,149 @@ namespace Scoreboard.Data
             }
             
             return busyReferees;
+        }
+        // ====================================================
+        // SYSTEMSECRS
+        // ====================================================
+        public static string GetLicenseHash()
+        {
+            using (var cmd = new NpgsqlCommand("SELECT license_hash FROM systemsecrs ORDER BY id DESC LIMIT 1", Conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.Read() && !reader.IsDBNull(0))
+                    return reader.GetString(0);
+            }
+            return "";
+        }
+        public static string GetLicenseData()
+        {
+            using (var cmd = new NpgsqlCommand("SELECT license_data FROM systemsecrs ORDER BY id DESC LIMIT 1", Conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.Read() && !reader.IsDBNull(0))
+                    return reader.GetString(0);
+            }
+            return null;
+        }
+        public static void UpdateSystemLicense(string licenseData, string newHash, int adminId)
+        {
+            using (var cmd = new NpgsqlCommand(@"
+                INSERT INTO systemsecrs (license_data, license_hash, last_update, updated_by)
+                VALUES (@d, @h, NOW(), @u);
+            ", Conn))
+            {
+                cmd.Parameters.AddWithValue("@d", (object)licenseData ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@h", (object)newHash ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@u", adminId);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static string GetFileHash(string path)
+        {
+            if (!File.Exists(path)) return "";
+            using (var sha = SHA256.Create())
+            using (var fs = File.OpenRead(path))
+            {
+                var hashBytes = sha.ComputeHash(fs);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            }
+        }
+        // ====================================================
+        // ACTIVITIES
+        // ====================================================
+        public static void LogUserActivity(int userId)
+        {
+            //Ghi lại khi user đăng nhập thành công
+            string machine = Environment.MachineName;
+            string ip = System.Net.Dns.GetHostAddresses(System.Net.Dns.GetHostName())
+                     .FirstOrDefault(a => a.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)?
+                     .ToString() ?? "127.0.0.1";
+
+            using (var cmd = new NpgsqlCommand(@"
+                INSERT INTO activities (user_id, machine_name, ip_address, login_time, last_ping, is_active)
+                VALUES (@u, @m, @ip, NOW(), NOW(), TRUE)
+                ON CONFLICT (user_id, machine_name, ip_address)
+                DO UPDATE SET 
+                    login_time = NOW(),
+                    last_ping = NOW(),
+                    is_active = TRUE;
+            ", Conn))
+            {
+                cmd.Parameters.AddWithValue("@u", userId);
+                cmd.Parameters.AddWithValue("@m", machine);
+                cmd.Parameters.AddWithValue("@ip", ip);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static void UpdateUserActivityPing(int userId)
+        {
+            //Cập nhật ping (khi ứng dụng đang chạy)
+            string machine = Environment.MachineName;
+            using (var cmd = new NpgsqlCommand(@"
+                UPDATE activities 
+                SET last_ping = NOW() 
+                WHERE user_id = @uid AND machine_name = @m AND is_active = TRUE
+            ", Conn))
+            {
+                cmd.Parameters.AddWithValue("uid", userId);
+                cmd.Parameters.AddWithValue("m", machine);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static void ClearUserActivity(int userId)
+        {
+            //Xóa log khi user thoát
+            string machine = Environment.MachineName;
+            using (var cmd = new NpgsqlCommand(@"
+                UPDATE activities 
+                SET is_active = FALSE 
+                WHERE user_id = @uid AND machine_name = @m
+            ", Conn))
+            {
+                cmd.Parameters.AddWithValue("uid", userId);
+                cmd.Parameters.AddWithValue("m", machine);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static void CleanupInactiveSessions()
+        {
+            //Dọn dẹp log cũ (khi bị cúp điện, app không thoát đúng)
+            using (var cmd = new NpgsqlCommand(@"
+                UPDATE activities
+                SET is_active = FALSE
+                WHERE last_ping < NOW() - INTERVAL '15 minutes'
+            ", Conn))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public static int CountActiveMachines()
+        {
+            //Đếm số máy đang hoạt động
+            using (var cmd = new NpgsqlCommand(@"
+                SELECT COUNT(DISTINCT ROW(user_id, machine_name, ip_address))
+                FROM activities
+                WHERE is_active = TRUE AND last_ping > NOW() - INTERVAL '5 minutes'
+            ", Conn))
+            {
+                var result = cmd.ExecuteScalar();
+                return result == null ? 0 : Convert.ToInt32(result);
+            }
+        }
+        private static string GetLocalIPAddress()
+        {
+            try
+            {
+                string hostName = Dns.GetHostName();
+                var ip = Dns.GetHostAddresses(hostName);
+                foreach (var item in ip)
+                {
+                    if (item.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                        return item.ToString();
+                }
+            }
+            catch { }
+            return "Unknown";
         }
     }
 

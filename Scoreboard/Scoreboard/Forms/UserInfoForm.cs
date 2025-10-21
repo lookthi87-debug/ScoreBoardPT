@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
+using Scoreboard.Config;
 using Scoreboard.Data;
 using Scoreboard.Models;
 
@@ -81,7 +83,7 @@ namespace Scoreboard
             this.btnRefresh.Depth = 0;
             this.btnRefresh.HighEmphasis = true;
             this.btnRefresh.Icon = null;
-            this.btnRefresh.Location = new System.Drawing.Point(516, 265);
+            this.btnRefresh.Location = new System.Drawing.Point(515, 265);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRefresh.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRefresh.Name = "btnRefresh";
@@ -226,7 +228,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(409, 265);
+            this.btnCancel.Location = new System.Drawing.Point(408, 265);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -274,6 +276,7 @@ namespace Scoreboard
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thông tin";
+            this.Activated += new System.EventHandler(this.UserInfoForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserInfoForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).EndInit();
@@ -284,11 +287,11 @@ namespace Scoreboard
         private void LoadUserInfo()
         {
             // Set title with user name
-            this.Text = "Thông tin " + (currentUser?.Fullname ?? "User");
+            this.Text = currentUser?.Fullname ?? "";
 
             if (currentUser?.RoleId == 2) // role trọng tài
             {
-                var match = Repository.GetActiveMatchSetsByUser(currentUser.Id);
+                var match = Repository.GetAllMatchSetsByUser(currentUser.Id);
                 if (match != null & match.Count > 0)
                 {
                     txtTitle.Text = match[0].TournamentName;
@@ -323,6 +326,7 @@ namespace Scoreboard
             var frmMain = new MainForm(currentUser);
             this.Hide();
             frmMain.FormClosed += (s, ev) => this.Show();
+            LoadUserInfo();
             frmMain.Show();
         }
         private void btnCancel_Click(object sender, EventArgs e)
@@ -338,6 +342,11 @@ namespace Scoreboard
         private void UserInfoForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
+        }
+
+        private void UserInfoForm_Activated(object sender, EventArgs e)
+        {
+            LoadUserInfo();
         }
     }
 }

@@ -487,7 +487,7 @@ namespace Scoreboard
                 }
 
             }
-            catch (Exception ex)
+            catch
             {
                 // Silent error handling
             }
@@ -557,7 +557,7 @@ namespace Scoreboard
 
                 return createdSet;
             }
-            catch (Exception ex)
+            catch
             {
                 return null;
             }
@@ -719,7 +719,7 @@ namespace Scoreboard
                 this.Invalidate();
                 this.Update();
             }
-            catch (Exception ex)
+            catch
             {
                 // Silent error handling
             }
@@ -816,7 +816,7 @@ namespace Scoreboard
 
                 return false;
             }
-            catch (Exception ex)
+            catch
             {
                 // If any error occurs, don't show overtime dialog
                 return false;

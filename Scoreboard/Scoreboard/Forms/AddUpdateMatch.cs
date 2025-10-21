@@ -455,6 +455,7 @@ namespace Scoreboard
                 if (busyReferees.Count > 0)
                 {
                     string busyNames = string.Join(", ", busyReferees);
+
                     MessageBox.Show($"Trọng tài {busyNames} đang bận bắt trận đấu khác. Vui lòng chọn trọng tài khác.", 
                                   "Trọng tài đang bận", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     clbReferees.Focus();

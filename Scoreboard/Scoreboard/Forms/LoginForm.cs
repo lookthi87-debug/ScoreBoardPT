@@ -1,8 +1,10 @@
 using System;
+using System.IO;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace Scoreboard
 {
@@ -18,6 +20,8 @@ namespace Scoreboard
         private MaterialButton btnLogin;
         private PictureBox pDB;
         private UserModel User;
+        private LinkLabel lblLicense;
+        private Timer pingTimer = new Timer();
         public LoginForm()
         {
             InitializeComponent();
@@ -35,6 +39,7 @@ namespace Scoreboard
             this.linkMiss = new System.Windows.Forms.LinkLabel();
             this.linkChangePass = new System.Windows.Forms.LinkLabel();
             this.pDB = new System.Windows.Forms.PictureBox();
+            this.lblLicense = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pDB)).BeginInit();
             this.SuspendLayout();
             // 
@@ -152,9 +157,22 @@ namespace Scoreboard
             this.pDB.TabStop = false;
             this.pDB.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
+            // lblLicense
+            // 
+            this.lblLicense.AutoSize = true;
+            this.lblLicense.LinkColor = System.Drawing.Color.Gray;
+            this.lblLicense.Location = new System.Drawing.Point(4, 277);
+            this.lblLicense.Name = "lblLicense";
+            this.lblLicense.Size = new System.Drawing.Size(86, 13);
+            this.lblLicense.TabIndex = 8;
+            this.lblLicense.TabStop = true;
+            this.lblLicense.Text = "Cập nhật license";
+            this.lblLicense.Click += new System.EventHandler(this.lblLicense_Click);
+            // 
             // LoginForm
             // 
             this.ClientSize = new System.Drawing.Size(571, 293);
+            this.Controls.Add(this.lblLicense);
             this.Controls.Add(this.pDB);
             this.Controls.Add(this.linkChangePass);
             this.Controls.Add(this.linkMiss);
@@ -171,6 +189,8 @@ namespace Scoreboard
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pDB)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -233,19 +253,37 @@ namespace Scoreboard
                     MessageBox.Show("Sai mật khẩu!");
                     return;
                 }
+
                 if (User.RoleId.HasValue)
                 {
-                    var role = Repository.GetRoleById(User.RoleId.Value);
-                    if (role != null && role.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                    string jsonText = Repository.GetLicenseData();
+                    if (string.IsNullOrEmpty(jsonText))
                     {
-                        new AdminForm(User).Show();
-                        this.Hide();
+                        try
+                        {
+                            string licPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "license.licx");
+                            LicenseVerifier.SyncLicenseFileToDB(licPath, User.Id);
+                        }
+                        catch
+                        { 
+                        }
                     }
-                    else
+
+                    //------------------------------------------
+                    if (checklicense(User) == true)
                     {
-                        new UserInfoForm(User).Show();
-                        this.Hide();
-                    }
+                        var role = Repository.GetRoleById(User.RoleId.Value);
+                        if (role != null && role.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase))
+                        {
+                            new AdminForm(User).Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            new UserInfoForm(User).Show();
+                            this.Hide();
+                        }
+                    }    
                 }
                 else
                 {
@@ -258,6 +296,42 @@ namespace Scoreboard
                 pDB.Focus();
             }
 
+        }
+        private bool checklicense(UserModel user)
+        {
+
+            Repository.CleanupInactiveSessions(); // dọn các session cũ
+
+            if (!LicenseVerifier.TryVerifyLicense(out int totalMachines, out DateTime expiryDate, out string msg))
+            {
+                MessageBox.Show(msg, "License Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            int daysLeft = (expiryDate - DateTime.Now).Days;
+            if (daysLeft < 0)
+            {
+                MessageBox.Show("License đã hết hạn. Vui lòng liên hệ quản trị!", "License Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            int active = Repository.CountActiveMachines();
+            if (active >= totalMachines)
+            {
+                MessageBox.Show($"Đã vượt quá số máy được phép ({totalMachines}).", "License Error");
+                return false;
+            }
+            // Ghi log và login thành công
+            MessageBox.Show($"Đăng nhập thành công: {user.Fullname}");
+            Repository.LogUserActivity(user.Id);
+            Program.CurrentUserId = user.Id;
+
+            var days = (expiryDate - DateTime.Now).TotalDays;
+            if (days <= 10)
+                MessageBox.Show($"License còn {Math.Ceiling(days)} ngày nữa hết hạn ({expiryDate:yyyy-MM-dd}).",
+                    "License Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            return true;
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -301,6 +375,104 @@ namespace Scoreboard
         {
             ConfigDatabase configDatabase = new ConfigDatabase();
             configDatabase.ShowDialog();
+        }
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            pingTimer = new Timer();
+            pingTimer.Interval = 10 * 60 * 500; // 5 phút
+            pingTimer.Tick += PingTimer_Tick;
+            pingTimer.Start();
+        }
+        private void PingTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (User == null)
+                {
+                    return;
+                }
+                if (User.RoleId.HasValue)
+                {
+                    Repository.UpdateUserActivityPing(User.Id);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                pingTimer?.Stop();
+                if (User == null)
+                {
+                    return;
+                }
+                if (User.RoleId.HasValue)
+                {
+                    Repository.ClearUserActivity(User.Id);
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void lblLicense_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                try
+                {
+                    User = Repository.GetUserByName(txtUserName.Text.Trim());
+
+                    // Chọn file license
+                    using (var ofd = new OpenFileDialog())
+                    {
+                        ofd.Filter = "License file (*.licx)|*.licx";
+                        ofd.Title = "Chọn file license mới";
+                        if (ofd.ShowDialog() != DialogResult.OK)
+                            return;
+
+                        string selectedPath = ofd.FileName;
+                        string appPath = AppDomain.CurrentDomain.BaseDirectory;
+                        string targetPath = Path.Combine(appPath, "license.licx");
+
+                        // Đọc file và kiểm tra hợp lệ
+                        string json = File.ReadAllText(selectedPath);
+                        if (!LicenseVerifier.TryVerifyLicense(json, out int totalMachines, out DateTime expiry))
+                        {
+                            MessageBox.Show("File license không hợp lệ hoặc bị chỉnh sửa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        // Copy file vào thư mục chương trình (ghi đè nếu có)
+                        File.Copy(selectedPath, targetPath, overwrite: true);
+
+                        // Gọi SyncLicenseFileToDB để cập nhật xuống DB (chỉ update nếu license mới hơn)
+                        LicenseVerifier.SyncLicenseFileToDB(targetPath, User.Id);
+
+                        // Thông báo thành công
+                        MessageBox.Show(
+                            $"Đã cập nhật license mới!\n" +
+                            $"Số máy: {totalMachines}\n" +
+                            $"Hết hạn: {expiry:yyyy-MM-dd}",
+                            "Cập nhật License", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch 
+                {
+                    MessageBox.Show("Vui lòng cấu hình Database", "Thông báo");
+                    pDB.Focus();
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi cập nhật license: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
