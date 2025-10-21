@@ -5,4 +5,4 @@ export:
 import: t?n user login v?o ?ang l?  postgres
         t?n DB l?                   mydb_restore
         c? the thay doi ten tren tuy theo y minh
-    psql -U postgres -d mydb_restore -f "D:\backup_mydb.sql
+    psql -U postgres -d DB_Scoreboard -f "D:\BongDa\202510_11\GitHub_Source\DB\DB_Scoreboard.sql"
