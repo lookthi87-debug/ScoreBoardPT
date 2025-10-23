@@ -141,6 +141,18 @@ namespace Scoreboard
                     return;
                 }
 
+                // Show confirmation dialog
+                DialogResult result = MessageBox.Show(
+                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team1}?\n\nĐiểm hiện tại: {CalculateTotalScore1()}",
+                    "Xác nhận cộng điểm",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                {
+                    return; // User clicked No, don't add points
+                }
+
                 // Increment current period score
                 scoreTeam1++;
 
@@ -172,6 +184,18 @@ namespace Scoreboard
                 {
                     MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
+                }
+
+                // Show confirmation dialog
+                DialogResult result = MessageBox.Show(
+                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team2}?\n\nĐiểm hiện tại: {CalculateTotalScore2()}",
+                    "Xác nhận cộng điểm",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                {
+                    return; // User clicked No, don't add points
                 }
 
                 // Increment current period score
