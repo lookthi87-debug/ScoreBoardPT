@@ -307,7 +307,7 @@ namespace Scoreboard
                 clbReferees.Items.Clear();
                 
                 // Set the DisplayMember to show the Name property
-                clbReferees.DisplayMember = "Name";
+                clbReferees.DisplayMember = "fullname";
 
                 foreach (var user in users)
                 {

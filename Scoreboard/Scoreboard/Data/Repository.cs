@@ -600,7 +600,7 @@ namespace Scoreboard.Data
             string sql = @"
                 SELECT 
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
-                    m.time, m.referee_id, u.name AS referee_name, 
+                    m.time, m.referee_id, u.fullname AS referee_name, 
                     m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name, t.match_class_id,ms.name as matchclassname,
                     t.start as tournament_start, t.""end"" as tournament_end
                 FROM Matches m

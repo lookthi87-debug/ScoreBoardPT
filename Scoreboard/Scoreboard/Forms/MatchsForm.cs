@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 using MaterialSkin.Controls;
 using Scoreboard.Config;
 using Scoreboard.Data;
@@ -36,14 +37,6 @@ namespace Scoreboard
         private MaterialButton BtnDown;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
-        private DataGridViewTextBoxColumn tournamentname;
-        private DataGridViewTextBoxColumn Team1;
-        private DataGridViewTextBoxColumn Team2;
-        private DataGridViewTextBoxColumn Score1;
-        private DataGridViewTextBoxColumn Score2;
-        private DataGridViewTextBoxColumn Id;
-        private DataGridViewTextBoxColumn status;
-        private DataGridViewTextBoxColumn timeStart;
         private DataGridViewTextBoxColumn ClassSetsName;
         private DataGridViewTextBoxColumn time;
         private DataGridViewTextBoxColumn Score1detail;
@@ -51,8 +44,18 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private DataGridViewTextBoxColumn id2;
         private DataGridViewTextBoxColumn MatchId;
+        private DataGridViewTextBoxColumn tournamentname;
+        private DataGridViewTextBoxColumn Team1;
+        private DataGridViewTextBoxColumn Team2;
+        private DataGridViewTextBoxColumn Score1;
+        private DataGridViewTextBoxColumn Score2;
+        private DataGridViewTextBoxColumn Id;
+        private DataGridViewTextBoxColumn status;
+        private DataGridViewTextBoxColumn Start;
+        private DataGridViewTextBoxColumn End;
+        private DataGridViewTextBoxColumn time2;
+        private MaterialButton btnExportExcel;
         private DataGridViewTextBoxColumn Status2;
-        private DataGridViewTextBoxColumn timeEnd;
 
         private UserModel user { get; set; }
         private void InitializeComponent()
@@ -70,8 +73,9 @@ namespace Scoreboard
             this.Score2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timeEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Start = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.End = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.time2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnAddMatchset = new MaterialSkin.Controls.MaterialButton();
             this.btnDeleteMatchset = new MaterialSkin.Controls.MaterialButton();
             this.cbMatchClass = new System.Windows.Forms.ComboBox();
@@ -83,6 +87,14 @@ namespace Scoreboard
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblViewToggle = new System.Windows.Forms.Label();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
+            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteMatch = new MaterialSkin.Controls.MaterialButton();
             this.btnAddMatch = new MaterialSkin.Controls.MaterialButton();
@@ -93,14 +105,7 @@ namespace Scoreboard
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.BtnUp = new MaterialSkin.Controls.MaterialButton();
             this.BtnDown = new MaterialSkin.Controls.MaterialButton();
-            this.ClassSetsName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score1detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Score2detail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MatchId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Status2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnExportExcel = new MaterialSkin.Controls.MaterialButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgGiaiDau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             this.SuspendLayout();
@@ -130,8 +135,9 @@ namespace Scoreboard
             this.Score2,
             this.Id,
             this.status,
-            this.timeStart,
-            this.timeEnd});
+            this.Start,
+            this.End,
+            this.time2});
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -204,19 +210,27 @@ namespace Scoreboard
             this.status.Name = "status";
             this.status.ReadOnly = true;
             // 
-            // timeStart
+            // Start
             // 
-            this.timeStart.DataPropertyName = "Start";
-            this.timeStart.HeaderText = "Thời gian bắt đầu";
-            this.timeStart.Name = "timeStart";
-            this.timeStart.ReadOnly = true;
+            this.Start.DataPropertyName = "Start";
+            this.Start.HeaderText = "Thời gian bắt đầu";
+            this.Start.Name = "Start";
+            this.Start.ReadOnly = true;
             // 
-            // timeEnd
+            // End
             // 
-            this.timeEnd.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.timeEnd.DataPropertyName = "End";
-            this.timeEnd.HeaderText = "Thời gian kết  thúc";
-            this.timeEnd.Name = "timeEnd";
+            this.End.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.End.DataPropertyName = "End";
+            this.End.HeaderText = "Thời gian kết  thúc";
+            this.End.Name = "End";
+            // 
+            // time2
+            // 
+            this.time2.DataPropertyName = "time";
+            this.time2.HeaderText = "time";
+            this.time2.Name = "time2";
+            this.time2.Visible = false;
+            this.time2.Width = 5;
             // 
             // btnAddMatchset
             // 
@@ -399,6 +413,67 @@ namespace Scoreboard
             this.dgvDetail.TabIndex = 24;
             this.dgvDetail.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetail_CellDoubleClick);
             // 
+            // ClassSetsName
+            // 
+            this.ClassSetsName.DataPropertyName = "ClassSetsName";
+            this.ClassSetsName.HeaderText = "Hiệp/Set";
+            this.ClassSetsName.Name = "ClassSetsName";
+            this.ClassSetsName.ReadOnly = true;
+            this.ClassSetsName.Width = 284;
+            // 
+            // time
+            // 
+            this.time.DataPropertyName = "time";
+            this.time.HeaderText = "Thời gian";
+            this.time.Name = "time";
+            this.time.Width = 120;
+            // 
+            // Score1detail
+            // 
+            this.Score1detail.DataPropertyName = "Score1";
+            this.Score1detail.HeaderText = "Điểm đội 1";
+            this.Score1detail.Name = "Score1detail";
+            this.Score1detail.ReadOnly = true;
+            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // Score2detail
+            // 
+            this.Score2detail.DataPropertyName = "Score2";
+            this.Score2detail.HeaderText = "Điểm đội 2";
+            this.Score2detail.Name = "Score2detail";
+            this.Score2detail.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn6
+            // 
+            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
+            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
+            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
+            this.dataGridViewTextBoxColumn6.ReadOnly = true;
+            // 
+            // id2
+            // 
+            this.id2.DataPropertyName = "Id";
+            this.id2.HeaderText = "Id";
+            this.id2.Name = "id2";
+            this.id2.ReadOnly = true;
+            this.id2.Visible = false;
+            this.id2.Width = 5;
+            // 
+            // MatchId
+            // 
+            this.MatchId.DataPropertyName = "MatchId";
+            this.MatchId.HeaderText = "Match_Id";
+            this.MatchId.Name = "MatchId";
+            this.MatchId.Visible = false;
+            this.MatchId.Width = 5;
+            // 
+            // Status2
+            // 
+            this.Status2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Status2.DataPropertyName = "Status";
+            this.Status2.HeaderText = "Trạng thái";
+            this.Status2.Name = "Status2";
+            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -551,70 +626,31 @@ namespace Scoreboard
             this.BtnDown.UseVisualStyleBackColor = true;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
-            // ClassSetsName
+            // btnExportExcel
             // 
-            this.ClassSetsName.DataPropertyName = "ClassSetsName";
-            this.ClassSetsName.HeaderText = "Hiệp/Set";
-            this.ClassSetsName.Name = "ClassSetsName";
-            this.ClassSetsName.ReadOnly = true;
-            this.ClassSetsName.Width = 284;
-            // 
-            // time
-            // 
-            this.time.DataPropertyName = "time";
-            this.time.HeaderText = "Thời gian";
-            this.time.Name = "time";
-            this.time.Width = 120;
-            // 
-            // Score1detail
-            // 
-            this.Score1detail.DataPropertyName = "Score1";
-            this.Score1detail.HeaderText = "Điểm đội 1";
-            this.Score1detail.Name = "Score1detail";
-            this.Score1detail.ReadOnly = true;
-            this.Score1detail.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            // 
-            // Score2detail
-            // 
-            this.Score2detail.DataPropertyName = "Score2";
-            this.Score2detail.HeaderText = "Điểm đội 2";
-            this.Score2detail.Name = "Score2detail";
-            this.Score2detail.ReadOnly = true;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "refereename";
-            this.dataGridViewTextBoxColumn6.HeaderText = "Trọng tài";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            // 
-            // id2
-            // 
-            this.id2.DataPropertyName = "Id";
-            this.id2.HeaderText = "Id";
-            this.id2.Name = "id2";
-            this.id2.ReadOnly = true;
-            this.id2.Visible = false;
-            this.id2.Width = 5;
-            // 
-            // MatchId
-            // 
-            this.MatchId.DataPropertyName = "MatchId";
-            this.MatchId.HeaderText = "Match_Id";
-            this.MatchId.Name = "MatchId";
-            this.MatchId.Visible = false;
-            this.MatchId.Width = 5;
-            // 
-            // Status2
-            // 
-            this.Status2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Status2.DataPropertyName = "Status";
-            this.Status2.HeaderText = "Trạng thái";
-            this.Status2.Name = "Status2";
+            this.btnExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportExcel.AutoSize = false;
+            this.btnExportExcel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnExportExcel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnExportExcel.Depth = 0;
+            this.btnExportExcel.HighEmphasis = true;
+            this.btnExportExcel.Icon = null;
+            this.btnExportExcel.Location = new System.Drawing.Point(804, 790);
+            this.btnExportExcel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnExportExcel.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnExportExcel.Name = "btnExportExcel";
+            this.btnExportExcel.Size = new System.Drawing.Size(158, 36);
+            this.btnExportExcel.TabIndex = 45;
+            this.btnExportExcel.Text = "Xuất excel";
+            this.btnExportExcel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnExportExcel.UseAccentColor = false;
+            this.btnExportExcel.UseVisualStyleBackColor = true;
+            this.btnExportExcel.Click += new System.EventHandler(this.btnExportExcel_Click);
             // 
             // MatchsForm
             // 
             this.ClientSize = new System.Drawing.Size(1368, 843);
+            this.Controls.Add(this.btnExportExcel);
             this.Controls.Add(this.BtnDown);
             this.Controls.Add(this.BtnUp);
             this.Controls.Add(this.label6);
@@ -783,6 +819,19 @@ namespace Scoreboard
                 var idObj = row.Cells["Id"]?.Value;
                 if (idObj == null) return;
 
+                var mTemp = Repository.GetMatchById(idObj.ToString());
+
+                if (mTemp.Status == MatchStatusConfig.Status.Finished)
+                {
+                    btnDeleteMatch.Enabled = false;
+                    btnDeleteMatchset.Enabled = false;
+                }
+                else
+                {
+                    btnDeleteMatch.Enabled = true;
+                    btnDeleteMatchset.Enabled = true;
+                }
+
                 string matchId = idObj.ToString();
 
                 // Lấy danh sách chi tiết hiệp đấu
@@ -795,7 +844,14 @@ namespace Scoreboard
                             m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
                             break;
                         case MatchStatusConfig.Status.InProgress:
-                            m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress);
+                            if (mTemp.Status == MatchStatusConfig.Status.NotStarted)
+                            {
+                                m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
+                            }
+                            else
+                            {
+                                m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress);
+                            }
                             break;
                         case MatchStatusConfig.Status.Finished:
                             m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished);
@@ -1195,7 +1251,7 @@ namespace Scoreboard
                 {
                     sfd.Filter = "Excel Files (*.xlsx)|*.xlsx";
                     sfd.Title = "Chọn nơi lưu file Excel";
-                    sfd.FileName = "DanhSachGiaiDau.xlsx";
+                    sfd.FileName = $"{DateTime.Now:yyyyMMdd}_{cbMatchClass.Text}.xlsx";
 
                     if (sfd.ShowDialog() != DialogResult.OK)
                         return;
@@ -1203,33 +1259,12 @@ namespace Scoreboard
                     Excel.Application excelApp = new Excel.Application();
                     Excel.Workbook wb = excelApp.Workbooks.Add(Missing.Value);
                     Excel.Worksheet ws = (Excel.Worksheet)wb.ActiveSheet;
-                    ws.Name = "Danh sách giải đấu";
+                    ws.Name = "Giải đấu";
 
                     int currentRow = 1;
 
                     // ====== TIÊU ĐỀ CHÍNH ======
-                    ws.Cells[currentRow, 1] = "DANH SÁCH GIẢI ĐẤU VÀ HIỆP ĐẤU";
-                    Excel.Range titleRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, 8]];
-                    titleRange.Merge();
-                    titleRange.Font.Bold = true;
-                    titleRange.Font.Size = 16;
-                    titleRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                    currentRow += 2;
-
-                    // ====== TIÊU ĐỀ CÁC CỘT ======
-                    string[] headers = { "ID", "Giải đấu", "Đội 1", "Đội 2", "Trọng tài", "Trạng thái", "Điểm đội 1", "Điểm đội 2" };
-                    for (int i = 0; i < headers.Length; i++)
-                    {
-                        ws.Cells[currentRow, i + 1] = headers[i];
-                    }
-
-                    Excel.Range headerRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, headers.Length]];
-                    headerRange.Font.Bold = true;
-                    headerRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightSkyBlue);
-                    headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                    headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
-                    currentRow++;
-
+                    int stt = 0;
                     // ====== GHI DỮ LIỆU ======
                     foreach (DataGridViewRow gRow in dgGiaiDau.Rows)
                     {
@@ -1238,60 +1273,83 @@ namespace Scoreboard
                         string matchId = gRow.Cells["id"].Value?.ToString();
                         var match = Repository.GetMatchById(matchId);
                         if (match == null) continue;
+                        if (stt == 0)
+                        {
+                            ws.Cells[currentRow, 1] = match.TournamentName;
+                            Excel.Range headerRange2 = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, 8]];
+                            headerRange2.Font.Bold = true;
+                            headerRange2.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
+                            headerRange2.Font.Size = 16;
+                            headerRange2.Merge();
 
+                            currentRow++;
+
+                            // ====== TIÊU ĐỀ CÁC CỘT ======
+                            string[] headers = { "STT", "Đội", "Điểm", "Thời gian", "Bắt đầu", "Kết thúc", "Trọng tài", "Trạng thái" };
+                            for (int i = 0; i < headers.Length; i++)
+                            {
+                                ws.Cells[currentRow, i + 1] = headers[i];
+                            }
+                            ((Excel.Range)ws.Cells[currentRow, 2]).EntireColumn.ColumnWidth = 250;
+                            Excel.Range headerRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, headers.Length]];
+                            headerRange.Font.Bold = true;
+                            headerRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightSkyBlue);
+                            headerRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+                            currentRow++;
+                        }
+
+                        stt ++;
                         // Ghi dòng chính (trận đấu)
-                        ws.Cells[currentRow, 1] = match.Id;
-                        ws.Cells[currentRow, 2] = match.TournamentName ?? "";
-                        ws.Cells[currentRow, 3] = match.Team1 ?? "";
-                        ws.Cells[currentRow, 4] = match.Team2 ?? "";
-                        ws.Cells[currentRow, 5] = match.RefereeName ?? "";
-                        ws.Cells[currentRow, 6] = match.Status == "0" ? "Chưa cấp phép" :
-                                                  match.Status == "1" ? "Đang hoạt động" :
-                                                  match.Status == "2" ? "Đã kết thúc" : match.Status;
-                        ws.Cells[currentRow, 7] = match.Score1;
-                        ws.Cells[currentRow, 8] = match.Score2;
+                        ws.Cells[currentRow, 1] = stt;
+                        ws.Cells[currentRow, 2] = (match.Team1 ?? "") + " vs " + (match.Team2 ?? "");
+                        ws.Cells[currentRow, 3] = match.Score1 + " - " + match.Score2;
+                        ws.Cells[currentRow, 4] = match.Time ?? "";
+                        ws.Cells[currentRow, 5] = match.Start;
+                        ws.Cells[currentRow, 6] = match.End;
+                        ws.Cells[currentRow, 7] = match.RefereeName ?? "";
+                        ws.Cells[currentRow, 8] = match.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                  match.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                  match.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished): match.Status;
+
+
 
                         // Tô viền cho dòng chính
                         Excel.Range matchRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, 8]];
                         matchRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                        matchRange.Font.Bold = true;
+                        matchRange.Font.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.Blue);
                         currentRow++;
 
                         // ====== HIỆP ĐẤU CỦA TRẬN NÀY ======
                         var details = Repository.GetMatchSetsByMatchId(matchId);
                         if (details != null && details.Count > 0)
                         {
-                            // Tiêu đề chi tiết
-                            ws.Cells[currentRow, 3] = "Hiệp";
-                            ws.Cells[currentRow, 4] = "Thời gian";
-                            ws.Cells[currentRow, 5] = "Điểm đội 1";
-                            ws.Cells[currentRow, 6] = "Điểm đội 2";
-                            ws.Cells[currentRow, 7] = "Trạng thái";
-                            Excel.Range subHeaderRange = ws.Range[ws.Cells[currentRow, 3], ws.Cells[currentRow, 7]];
-                            subHeaderRange.Font.Bold = true;
-                            subHeaderRange.Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.LightYellow);
-                            subHeaderRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                            currentRow++;
-
                             // Ghi từng hiệp
                             foreach (var d in details)
                             {
-                                if (d.Time != "00:00")
+                                ws.Cells[currentRow, 2] = d.ClassSetsName ?? "";
+                                ws.Cells[currentRow, 3] = match.Score1 + " - " + match.Score2;
+                                ws.Cells[currentRow, 4] = d.Time ?? "";
+                                ws.Cells[currentRow, 5] = d.Start;
+                                ws.Cells[currentRow, 6] = d.End;
+                                ws.Cells[currentRow, 7] = d.RefereeName;
+                                if (match.Status == MatchStatusConfig.Status.NotStarted)
                                 {
-                                    ws.Cells[currentRow, 3] = d.ClassSetsName ?? "";
-                                    ws.Cells[currentRow, 4] = d.Time ?? "";
-                                    ws.Cells[currentRow, 5] = d.Score1;
-                                    ws.Cells[currentRow, 6] = d.Score2;
-                                    ws.Cells[currentRow, 7] = d.Status == "0" ? "Chưa bắt đầu" :
-                                                              d.Status == "1" ? "Đang diễn ra" :
-                                                              d.Status == "2" ? "Đã kết thúc" : d.Status;
-                                    Excel.Range detailRange = ws.Range[ws.Cells[currentRow, 3], ws.Cells[currentRow, 7]];
-                                    detailRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
-                                    currentRow++;
+                                    ws.Cells[currentRow, 8] = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
                                 }
+                                else 
+                                { 
+                                    ws.Cells[currentRow, 8] = d.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                              d.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                              d.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished) : d.Status;
+                                }
+                                    
+                                Excel.Range detailRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, 8]];
+                                detailRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
+                                currentRow++;
                             }
                         }
-                        // Dòng trống giữa các trận
-                        currentRow++;
                     }
 
                     // ====== ĐỊNH DẠNG TOÀN TRANG ======
