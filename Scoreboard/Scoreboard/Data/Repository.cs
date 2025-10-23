@@ -695,6 +695,23 @@ namespace Scoreboard.Data
             return note.Trim();
         }
 
+        // Helper method to update referee information in all MatchSets for a match
+        private static void UpdateMatchSetsReferee(string matchId, int? refereeId, string refereeName)
+        {
+            string sql = @"
+                UPDATE MatchSets 
+                SET referee_id = @rid
+                WHERE match_id = @mid;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@mid", matchId);
+                cmd.Parameters.AddWithValue("@rid", refereeId.HasValue ? (object)refereeId.Value : DBNull.Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void AddMatch(MatchModel m)
         {
             string sql = @"
@@ -758,6 +775,9 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
+
+            // Update referee_id in all MatchSets for this match
+            UpdateMatchSetsReferee(m.Id, m.RefereeId, m.RefereeName);
         }
         public static void UpdateMatchStatus(string id, string status)
         {
@@ -1924,7 +1944,83 @@ namespace Scoreboard.Data
                     var user = GetUserById(refereeId);
                     if (user != null)
                     {
-                        busyReferees.Add(user.Name);
+                        busyReferees.Add(user.Fullname);
+                    }
+                }
+            }
+            
+            return busyReferees;
+        }
+
+        /// <summary>
+        /// Kiểm tra trọng tài có bận trong khoảng thời gian cụ thể không
+        /// </summary>
+        /// <param name="refereeId">ID trọng tài</param>
+        /// <param name="startTime">Thời gian bắt đầu</param>
+        /// <param name="endTime">Thời gian kết thúc</param>
+        /// <returns>True nếu trọng tài bận trong khoảng thời gian này</returns>
+        public static bool IsRefereeBusyInTimeRange(int refereeId, DateTime startTime, DateTime endTime)
+        {
+            string sql = @"
+                SELECT COUNT(*) 
+                FROM MatchSets 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+                  AND (
+                      (start <= @startTime AND ""end"" >= @startTime) OR
+                      (start <= @endTime AND ""end"" >= @endTime) OR
+                      (start >= @startTime AND ""end"" <= @endTime)
+                  )
+                UNION ALL
+                SELECT COUNT(*) 
+                FROM Matches 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+                  AND (
+                      (start <= @startTime AND ""end"" >= @startTime) OR
+                      (start <= @endTime AND ""end"" >= @endTime) OR
+                      (start >= @startTime AND ""end"" <= @endTime)
+                  )
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@refereeId", refereeId);
+                cmd.Parameters.AddWithValue("@startTime", startTime);
+                cmd.Parameters.AddWithValue("@endTime", endTime);
+                
+                int busyCount = 0;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        busyCount += reader.GetInt32(0);
+                    }
+                }
+                
+                return busyCount > 0;
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh sách trọng tài bận trong khoảng thời gian cụ thể
+        /// </summary>
+        /// <param name="refereeIds">Danh sách ID trọng tài</param>
+        /// <param name="startTime">Thời gian bắt đầu</param>
+        /// <param name="endTime">Thời gian kết thúc</param>
+        /// <returns>Danh sách tên trọng tài bận</returns>
+        public static List<string> GetBusyRefereesInfoInTimeRange(List<int> refereeIds, DateTime startTime, DateTime endTime)
+        {
+            var busyReferees = new List<string>();
+            
+            foreach (var refereeId in refereeIds)
+            {
+                if (IsRefereeBusyInTimeRange(refereeId, startTime, endTime))
+                {
+                    var user = GetUserById(refereeId);
+                    if (user != null)
+                    {
+                        busyReferees.Add(user.Fullname);
                     }
                 }
             }

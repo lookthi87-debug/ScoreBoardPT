@@ -420,7 +420,6 @@ namespace Scoreboard
                     if (result == DialogResult.No)
                     {
                         // End the match without creating overtime
-                        Repository.EndMatch(match.MatchId);
                         MessageBox.Show("Trận đấu kết thúc với kết quả hòa!");
                         return;
                     }
@@ -435,7 +434,6 @@ namespace Scoreboard
                     if (next == null)
                     {
                         // set match as ended
-                        Repository.EndMatch(match.MatchId);
                         MessageBox.Show("Trận đấu kết thúc!");
                         return;
                     }

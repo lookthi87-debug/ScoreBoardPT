@@ -820,7 +820,7 @@ namespace Scoreboard
                 if (idObj == null) return;
 
                 var mTemp = Repository.GetMatchById(idObj.ToString());
-
+                if (mTemp == null) return;
                 if (mTemp.Status == MatchStatusConfig.Status.Finished)
                 {
                     btnDeleteMatch.Enabled = false;
@@ -1510,7 +1510,7 @@ namespace Scoreboard
                 List<MatchModel> activeMatches = Repository.GetMatchesByStatus("2", false);
                 foreach (var match in activeMatches)
                 {
-                    var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}")
+                    var li = new ListViewItem($"{match.Team1} vs {match.Team2} - {match.RefereeName} - {match.Start.Value: dd/MM HH:mm}")
                     {
                         Tag = match.Id
                     };

@@ -309,7 +309,7 @@ namespace Scoreboard
                         nScore2.Value = match[0].Score2;
                     }
 
-                        txtTime.Text = match[0].Time;
+                    txtTime.Text = match[0].Time;
                     lblMessage.Text = "";
                     btnStart.Enabled = true;
                 }

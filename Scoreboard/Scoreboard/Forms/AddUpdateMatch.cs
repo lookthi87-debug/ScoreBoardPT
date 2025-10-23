@@ -32,8 +32,10 @@ namespace Scoreboard
         private System.Windows.Forms.TextBox txtnote;
         private MatchModel currentMatch;
         private List<UserModel> allUsers; // Store all users for reference
-		private Label lblStartTime;
-		private DateTimePicker dtpStartTime;
+		private Label lblStartDateTime;
+		private DateTimePicker dtpStartDateTime;
+		private Label lblEndDateTime;
+		private DateTimePicker dtpEndDateTime;
         private Label lblStatus;
         private System.Windows.Forms.ComboBox cbStatus;
 
@@ -52,8 +54,10 @@ namespace Scoreboard
             this.lblMatch_Id = new System.Windows.Forms.Label();
             this.lblNote = new System.Windows.Forms.Label();
             this.txtnote = new System.Windows.Forms.TextBox();
-            this.lblStartTime = new System.Windows.Forms.Label();
-            this.dtpStartTime = new System.Windows.Forms.DateTimePicker();
+            this.lblStartDateTime = new System.Windows.Forms.Label();
+            this.dtpStartDateTime = new System.Windows.Forms.DateTimePicker();
+            this.lblEndDateTime = new System.Windows.Forms.Label();
+            this.dtpEndDateTime = new System.Windows.Forms.DateTimePicker();
             this.lblStatus = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
@@ -116,7 +120,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(252, 465);
+            this.btnCancel.Location = new System.Drawing.Point(254, 454);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -136,7 +140,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(426, 465);
+            this.btnSave.Location = new System.Drawing.Point(428, 454);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -185,7 +189,7 @@ namespace Scoreboard
             // lblNote
             // 
             this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(32, 325);
+            this.lblNote.Location = new System.Drawing.Point(34, 314);
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(110, 29);
             this.lblNote.TabIndex = 37;
@@ -195,37 +199,58 @@ namespace Scoreboard
             // txtnote
             // 
             this.txtnote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtnote.Location = new System.Drawing.Point(148, 325);
+            this.txtnote.Location = new System.Drawing.Point(150, 314);
             this.txtnote.Multiline = true;
             this.txtnote.Name = "txtnote";
             this.txtnote.Size = new System.Drawing.Size(621, 94);
             this.txtnote.TabIndex = 9;
             // 
-            // lblStartTime
+            // lblStartDateTime
             // 
-            this.lblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartTime.Location = new System.Drawing.Point(32, 290);
-            this.lblStartTime.Name = "lblStartTime";
-            this.lblStartTime.Size = new System.Drawing.Size(110, 29);
-            this.lblStartTime.TabIndex = 36;
-            this.lblStartTime.Text = "Thời gian";
-            this.lblStartTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStartDateTime.Location = new System.Drawing.Point(34, 276);
+            this.lblStartDateTime.Name = "lblStartDateTime";
+            this.lblStartDateTime.Size = new System.Drawing.Size(110, 29);
+            this.lblStartDateTime.TabIndex = 39;
+            this.lblStartDateTime.Text = "Bắt đầu";
+            this.lblStartDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // dtpStartTime
+            // dtpStartDateTime
             // 
-            this.dtpStartTime.CustomFormat = "HH:mm";
-            this.dtpStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.dtpStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStartTime.Location = new System.Drawing.Point(148, 290);
-            this.dtpStartTime.Name = "dtpStartTime";
-            this.dtpStartTime.ShowUpDown = true;
-            this.dtpStartTime.Size = new System.Drawing.Size(108, 26);
-            this.dtpStartTime.TabIndex = 8;
+            this.dtpStartDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtpStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dtpStartDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpStartDateTime.Location = new System.Drawing.Point(150, 276);
+            this.dtpStartDateTime.Name = "dtpStartDateTime";
+            this.dtpStartDateTime.Size = new System.Drawing.Size(180, 26);
+            this.dtpStartDateTime.TabIndex = 7;
+            this.dtpStartDateTime.ValueChanged += new System.EventHandler(this.dtpStartDateTime_ValueChanged);
+            // 
+            // lblEndDateTime
+            // 
+            this.lblEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEndDateTime.Location = new System.Drawing.Point(352, 276);
+            this.lblEndDateTime.Name = "lblEndDateTime";
+            this.lblEndDateTime.Size = new System.Drawing.Size(110, 29);
+            this.lblEndDateTime.TabIndex = 40;
+            this.lblEndDateTime.Text = "Kết thúc";
+            this.lblEndDateTime.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // dtpEndDateTime
+            // 
+            this.dtpEndDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dtpEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.dtpEndDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpEndDateTime.Location = new System.Drawing.Point(468, 276);
+            this.dtpEndDateTime.Name = "dtpEndDateTime";
+            this.dtpEndDateTime.Size = new System.Drawing.Size(180, 26);
+            this.dtpEndDateTime.TabIndex = 8;
+            this.dtpEndDateTime.ValueChanged += new System.EventHandler(this.dtpEndDateTime_ValueChanged);
             // 
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(32, 425);
+            this.lblStatus.Location = new System.Drawing.Point(34, 414);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(110, 29);
             this.lblStatus.TabIndex = 38;
@@ -237,19 +262,21 @@ namespace Scoreboard
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(148, 425);
+            this.cbStatus.Location = new System.Drawing.Point(150, 414);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(200, 28);
             this.cbStatus.TabIndex = 10;
             // 
             // AddUpdateMatch
             // 
-            this.ClientSize = new System.Drawing.Size(787, 520);
+            this.ClientSize = new System.Drawing.Size(787, 516);
             this.Controls.Add(this.cbStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblNote);
-            this.Controls.Add(this.dtpStartTime);
-            this.Controls.Add(this.lblStartTime);
+            this.Controls.Add(this.dtpEndDateTime);
+            this.Controls.Add(this.lblEndDateTime);
+            this.Controls.Add(this.dtpStartDateTime);
+            this.Controls.Add(this.lblStartDateTime);
             this.Controls.Add(this.txtnote);
             this.Controls.Add(this.lblMatch_Id);
             this.Controls.Add(this.clbReferees);
@@ -301,16 +328,74 @@ namespace Scoreboard
         {
             cbStatus.Items.Clear();
             
-            // Use the centralized status configuration
-            var statusOptions = MatchStatusConfig.GetStatusOptions();
-            foreach (var option in statusOptions)
-            {
-                cbStatus.Items.Add(option);
-            }
+            // Kiểm tra xem có phải tạo mới hay không
+            bool isNewMatch = string.IsNullOrWhiteSpace(currentMatch.Id);
             
+            if (isNewMatch)
+            {
+                // Tạo mới: chỉ có 1 option "Chưa bắt đầu"
+                cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.NotStarted, Value = MatchStatusConfig.Status.NotStarted });
+            }
+            else
+            {
+                // Edit mode: load status options dựa trên trạng thái hiện tại
+                string currentStatus = currentMatch.Status ?? MatchStatusConfig.Status.NotStarted;
+                
+                switch (currentStatus)
+                {
+                    case MatchStatusConfig.Status.NotStarted:
+                        // Nếu đang ở "Chưa bắt đầu" thì có thể chuyển sang "Đang diễn ra"
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.NotStarted, Value = MatchStatusConfig.Status.NotStarted });
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.InProgress, Value = MatchStatusConfig.Status.InProgress });
+                        break;
+                        
+                    case MatchStatusConfig.Status.InProgress:
+                        // Nếu đang ở "Đang diễn ra" thì có thể chuyển sang "Đã kết thúc"
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.InProgress, Value = MatchStatusConfig.Status.InProgress });
+                        
+                        // Kiểm tra nếu trận đấu có nhiều hơn 2 record thì không cho chuyển status "Đã kết thúc"
+                        var matchSetsCount = Repository.GetMatchSetsByMatchId(currentMatch.Id).Count;
+                        if (matchSetsCount == 1)
+                        {
+                            cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.Finished, Value = MatchStatusConfig.Status.Finished });
+                        }
+                        break;
+                        
+                    case MatchStatusConfig.Status.Finished:
+                        // Nếu đang ở "Đã kết thúc" thì chỉ có thể giữ nguyên
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.Finished, Value = MatchStatusConfig.Status.Finished });
+                        break;
+                        
+                    default:
+                        // Fallback: hiển thị tất cả options
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.NotStarted, Value = MatchStatusConfig.Status.NotStarted });
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.InProgress, Value = MatchStatusConfig.Status.InProgress });
+                        cbStatus.Items.Add(new { Text = MatchStatusConfig.StatusText.Finished, Value = MatchStatusConfig.Status.Finished });
+                        break;
+                }
+            }
+
             cbStatus.DisplayMember = "Text";
             cbStatus.ValueMember = "Value";
-            cbStatus.SelectedIndex = 0; // Default to "Chưa bắt đầu"
+            
+            // Set selected index dựa trên trạng thái hiện tại
+            if (!isNewMatch && !string.IsNullOrEmpty(currentMatch.Status))
+            {
+                for (int i = 0; i < cbStatus.Items.Count; i++)
+                {
+                    var item = cbStatus.Items[i];
+                    var valueProperty = item.GetType().GetProperty("Value");
+                    if (valueProperty != null && valueProperty.GetValue(item).ToString() == currentMatch.Status)
+                    {
+                        cbStatus.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                cbStatus.SelectedIndex = 0; // Default to first option
+            }
         }
         
         private void PopulateFromModel(MatchModel m)
@@ -321,24 +406,16 @@ namespace Scoreboard
             //nScore1.Value = m.Score1;
             //nScore2.Value = m.Score2;
             
-            // Time: store HH:mm only
-            currentMatch.Time = dtpStartTime.Value.ToString("HH:mm");
-
-            // Set status
-            if (!string.IsNullOrEmpty(m.Status))
+            // Load start and end datetime
+            if (m.Start.HasValue)
             {
-                for (int i = 0; i < cbStatus.Items.Count; i++)
-                {
-                    var item = cbStatus.Items[i];
-                    var valueProperty = item.GetType().GetProperty("Value");
-                    if (valueProperty != null && valueProperty.GetValue(item).ToString() == m.Status)
-                    {
-                        cbStatus.SelectedIndex = i;
-                        break;
-                    }
-                }
+                dtpStartDateTime.Value = m.Start.Value;
             }
-
+            if (m.End.HasValue)
+            {
+                dtpEndDateTime.Value = m.End.Value;
+            }
+            
             // Handle single referee selection
             if (m.RefereeIds != null && m.RefereeIds.Count > 0)
             {
@@ -372,30 +449,39 @@ namespace Scoreboard
             }
             
             txtnote.Text = m.Note;
-            // Always set time to 00:00
-            dtpStartTime.Value = DateTime.Today;
             this.Text = "Thông tin trận đấu: " + txtTeam1.Text + " - " + txtTeam2.Text;
+            var matchSetsCount = Repository.GetMatchSetsByMatchId(currentMatch.Id).Count;
+            if (matchSetsCount >= 2)
+            {
+                clbReferees.Enabled = false;
+            }
         }
 
         public AddUpdateMatch(int tournament_id, string id = "")
         {
             InitializeComponent();
-            // Set default time to 00:00
-            dtpStartTime.Value = DateTime.Today;
+            // Set default start datetime to current time
+            dtpStartDateTime.Value = DateTime.Now;
+            // Set default end datetime to 4 hours later
+            dtpEndDateTime.Value = DateTime.Now.AddHours(4);
             LoadUsers();
-            LoadStatus();
+            
             if (id != "")
             {
                 // edit mode
                 currentMatch = Repository.GetMatchById(id);
                 if (currentMatch != null)
+                {
                     PopulateFromModel(currentMatch);
+                    LoadStatus(); // Load status after setting currentMatch
+                }
                 else
                 {
                     MessageBox.Show("Không tìm thấy trận đấu.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     currentMatch = new MatchModel();
                     currentMatch.TournamentId = tournament_id;
                     lblMatch_Id.Text = "";
+                    LoadStatus(); // Load status after setting currentMatch
                 }
             }
             else
@@ -404,6 +490,7 @@ namespace Scoreboard
                 currentMatch = new MatchModel();
                 currentMatch.TournamentId = tournament_id;
                 lblMatch_Id.Text = "";
+                LoadStatus(); // Load status after setting currentMatch
             }
         }
 
@@ -446,17 +533,41 @@ namespace Scoreboard
                 return;
             }
 
-            // Check if any selected referee is currently busy (only for new matches)
+            // Kiểm tra thời gian bắt đầu và kết thúc có nằm trong khoảng thời gian của giải đấu không
+            if (currentMatch.TournamentId.HasValue)
+            {
+                var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
+                if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
+                {
+                    if (dtpStartDateTime.Value < tournament.Start.Value || dtpStartDateTime.Value > tournament.End.Value)
+                    {
+                        MessageBox.Show($"Thời gian bắt đầu ({dtpStartDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
+                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        dtpStartDateTime.Focus();
+                        return;
+                    }
+                    
+                    if (dtpEndDateTime.Value < tournament.Start.Value || dtpEndDateTime.Value > tournament.End.Value)
+                    {
+                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
+                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        dtpEndDateTime.Focus();
+                        return;
+                    }
+                }
+            }
+
+            // Check if any selected referee is busy during the match time period
             if (string.IsNullOrWhiteSpace(currentMatch.Id))
             {
                 var selectedRefereeIds = selectedReferees.Select(r => r.Id).ToList();
-                var busyReferees = Repository.GetBusyRefereesInfo(selectedRefereeIds);
+                var busyReferees = Repository.GetBusyRefereesInfoInTimeRange(selectedRefereeIds, dtpStartDateTime.Value, dtpEndDateTime.Value);
                 
                 if (busyReferees.Count > 0)
                 {
                     string busyNames = string.Join(", ", busyReferees);
 
-                    MessageBox.Show($"Trọng tài {busyNames} đang bận bắt trận đấu khác. Vui lòng chọn trọng tài khác.", 
+                    MessageBox.Show($"Trọng tài {busyNames} đang bận bắt trận đấu khác trong thời gian từ {dtpStartDateTime.Value:dd/MM/yyyy HH:mm} đến {dtpEndDateTime.Value:dd/MM/yyyy HH:mm}. Vui lòng chọn trọng tài khác.", 
                                   "Trọng tài đang bận", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     clbReferees.Focus();
                     return;
@@ -470,6 +581,10 @@ namespace Scoreboard
             //currentMatch.Score2 = int.Parse(nScore2.Value.ToString());
             // Always save time as 00:00
             currentMatch.Time = "00:00";
+            
+            // Set start and end datetime
+            currentMatch.Start = dtpStartDateTime.Value;
+            currentMatch.End = dtpEndDateTime.Value;
             
             // Handle multiple referees
             currentMatch.RefereeIds = new List<int>();
@@ -551,6 +666,20 @@ namespace Scoreboard
                 }
                 else
                 {
+                    // Kiểm tra nếu chuyển sang trạng thái "Đã kết thúc"
+                    if (currentMatch.Status == MatchStatusConfig.Status.Finished)
+                    {
+                        // Cập nhật tất cả MatchSets của trận đấu này sang trạng thái "Đã kết thúc"
+                        var allMatchSets = Repository.GetMatchSetsByMatchId(currentMatch.Id);
+                        foreach (var matchSet in allMatchSets)
+                        {
+                            if (matchSet.Status != MatchStatusConfig.Status.Finished)
+                            {
+                                Repository.UpdateMatchSetStatus(currentMatch.Id, matchSet.Id, MatchStatusConfig.Status.Finished);
+                            }
+                        }
+                    }
+                    
                     Repository.UpdateMatch(currentMatch);
                     MessageBox.Show("Cập nhật thành công.", "OK", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -623,6 +752,74 @@ namespace Scoreboard
             else
             {
                 return "Hiệp 1";
+            }
+        }
+
+        private void dtpStartDateTime_ValueChanged(object sender, EventArgs e)
+        {
+            // Kiểm tra xem currentMatch có null không để tránh lỗi khi form đang khởi tạo
+            if (currentMatch == null)
+                return;
+                
+            // Khi thay đổi thời gian bắt đầu, tự động cập nhật thời gian kết thúc (+4 tiếng)
+            var newEndTime = dtpStartDateTime.Value.AddHours(4);
+            
+            // Kiểm tra xem thời gian kết thúc có vượt quá phạm vi giải đấu không
+            if (currentMatch.TournamentId.HasValue)
+            {
+                var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
+                if (tournament != null && tournament.End.HasValue)
+                {
+                    if (newEndTime > tournament.End.Value)
+                    {
+                        // Nếu vượt quá, đặt thời gian kết thúc = thời gian kết thúc của giải đấu
+                        dtpEndDateTime.Value = tournament.End.Value;
+                        return;
+                    }
+                }
+            }
+            
+            dtpEndDateTime.Value = newEndTime;
+        }
+
+        private void dtpEndDateTime_ValueChanged(object sender, EventArgs e)
+        {
+            // Kiểm tra xem currentMatch có null không để tránh lỗi khi form đang khởi tạo
+            if (currentMatch == null)
+                return;
+                
+            // Kiểm tra xem thời gian kết thúc có nằm trong khoảng thời gian của giải đấu không
+            if (currentMatch.TournamentId.HasValue)
+            {
+                var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
+                if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
+                {
+                    if (dtpEndDateTime.Value < tournament.Start.Value || dtpEndDateTime.Value > tournament.End.Value)
+                    {
+                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
+                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        
+                        // Reset về thời gian kết thúc của giải đấu nếu vượt quá
+                        if (dtpEndDateTime.Value > tournament.End.Value)
+                        {
+                            dtpEndDateTime.Value = tournament.End.Value;
+                        }
+                        else if (dtpEndDateTime.Value < tournament.Start.Value)
+                        {
+                            dtpEndDateTime.Value = tournament.Start.Value.AddHours(1); // Ít nhất 1 tiếng
+                        }
+                        return;
+                    }
+                }
+            }
+            
+            // Kiểm tra xem thời gian kết thúc có sau thời gian bắt đầu không
+            if (dtpEndDateTime.Value <= dtpStartDateTime.Value)
+            {
+                MessageBox.Show("Thời gian kết thúc phải sau thời gian bắt đầu", 
+                              "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpEndDateTime.Value = dtpStartDateTime.Value.AddHours(1); // Ít nhất 1 tiếng sau
+                return;
             }
         }
     }
