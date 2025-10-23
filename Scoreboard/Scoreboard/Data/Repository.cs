@@ -55,24 +55,6 @@ namespace Scoreboard.Data
             }
         }
 
-        public static void UpdateRole(RoleModel r)
-        {
-            using (var cmd = new NpgsqlCommand("UPDATE Roles SET name=@n WHERE id=@id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@id", r.Id);
-                cmd.Parameters.AddWithValue("@n", r.Name);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public static void DeleteRole(int id)
-        {
-            using (var cmd = new NpgsqlCommand("DELETE FROM Roles WHERE id=@id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
-        }
 
         // ====================================================
         // USERS
@@ -1896,17 +1878,6 @@ namespace Scoreboard.Data
             }
         }
 
-        public static int CountMatchSetByMatchSetId(string matchSetId)
-        {
-            string countSql = "SELECT COUNT(*) FROM Matchsets WHERE id = @id";
-
-            using (var cmdCount = new NpgsqlCommand(countSql, Conn))
-            {
-                int count = Convert.ToInt32(cmdCount.ExecuteScalar());
-
-                return count;
-            }
-        }
 
         // ====================================================
         // REFEREE AVAILABILITY CHECK
@@ -1960,6 +1931,42 @@ namespace Scoreboard.Data
             
             return busyReferees;
         }
+        // ====================================================
+        // AUTO MATCH TIMEOUT MANAGEMENT
+        // ====================================================
+        /// <summary>
+        /// Tự động chuyển các trận đấu đang hoạt động quá 4 tiếng về trạng thái "Đã kết thúc"
+        /// </summary>
+        public static void AutoEndMatchesAfterTimeout()
+        {
+            try
+            {
+                // Tìm các trận đấu đang hoạt động (status = '1') và đã bắt đầu quá 4 tiếng
+                string sql = @"
+                    UPDATE Matches 
+                    SET status = '2', ""end"" = NOW()
+                    WHERE status = '1' 
+                      AND start IS NOT NULL 
+                      AND start <= NOW() - INTERVAL '4 hours';
+                ";
+
+                using (var cmd = new NpgsqlCommand(sql, Conn))
+                {
+                    int affectedRows = cmd.ExecuteNonQuery();
+                    
+                    if (affectedRows > 0)
+                    {
+                        // Log hoạt động này
+                        System.Diagnostics.Debug.WriteLine($"Đã tự động chuyển {affectedRows} trận đấu về trạng thái 'Đã kết thúc' sau 4 tiếng");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi tự động kết thúc trận đấu: {ex.Message}");
+            }
+        }
+
         // ====================================================
         // SYSTEMSECRS
         // ====================================================
