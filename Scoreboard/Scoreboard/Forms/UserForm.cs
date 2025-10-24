@@ -33,18 +33,18 @@ namespace Scoreboard
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgUser = new System.Windows.Forms.DataGridView();
-            this.btnAdd = new MaterialSkin.Controls.MaterialButton();
-            this.btnDelete = new MaterialSkin.Controls.MaterialButton();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.lblSearch = new System.Windows.Forms.Label();
-            this.btnSearch = new MaterialSkin.Controls.MaterialButton();
-            this.btnCancel = new MaterialSkin.Controls.MaterialButton();
             this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fullname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.phone = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.email = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.RoleName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnAdd = new MaterialSkin.Controls.MaterialButton();
+            this.btnDelete = new MaterialSkin.Controls.MaterialButton();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.btnSearch = new MaterialSkin.Controls.MaterialButton();
+            this.btnCancel = new MaterialSkin.Controls.MaterialButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgUser)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,6 +56,7 @@ namespace Scoreboard
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgUser.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dgUser.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -80,12 +81,64 @@ namespace Scoreboard
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgUser.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgUser.Location = new System.Drawing.Point(16, 124);
+            this.dgUser.Location = new System.Drawing.Point(15, 49);
             this.dgUser.Name = "dgUser";
             this.dgUser.RowHeadersVisible = false;
-            this.dgUser.Size = new System.Drawing.Size(1086, 351);
+            this.dgUser.Size = new System.Drawing.Size(1086, 282);
             this.dgUser.TabIndex = 6;
+            this.dgUser.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgUser.DoubleClick += new System.EventHandler(this.dgUser_DoubleClick);
+            // 
+            // name
+            // 
+            this.name.DataPropertyName = "name";
+            this.name.HeaderText = "Tài khoản";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            this.name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.name.FillWeight = 20;
+            // 
+            // fullname
+            // 
+            this.fullname.DataPropertyName = "fullname";
+            this.fullname.HeaderText = "Tên";
+            this.fullname.Name = "fullname";
+            this.fullname.ReadOnly = true;
+            this.fullname.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.fullname.FillWeight = 30;
+            // 
+            // phone
+            // 
+            this.phone.DataPropertyName = "Phone";
+            this.phone.HeaderText = "Điện thoại";
+            this.phone.Name = "phone";
+            this.phone.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.phone.FillWeight = 20;
+            // 
+            // email
+            // 
+            this.email.DataPropertyName = "email";
+            this.email.HeaderText = "Email";
+            this.email.Name = "email";
+            this.email.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.email.FillWeight = 25;
+            // 
+            // RoleName
+            // 
+            this.RoleName.DataPropertyName = "RoleName";
+            this.RoleName.HeaderText = "Quyền hạn";
+            this.RoleName.Name = "RoleName";
+            this.RoleName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.RoleName.FillWeight = 15;
+            // 
+            // id
+            // 
+            this.id.DataPropertyName = "id";
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            this.id.Width = 5;
             // 
             // btnAdd
             // 
@@ -96,7 +149,7 @@ namespace Scoreboard
             this.btnAdd.Depth = 0;
             this.btnAdd.HighEmphasis = true;
             this.btnAdd.Icon = null;
-            this.btnAdd.Location = new System.Drawing.Point(16, 484);
+            this.btnAdd.Location = new System.Drawing.Point(15, 340);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAdd.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnAdd.Name = "btnAdd";
@@ -117,7 +170,7 @@ namespace Scoreboard
             this.btnDelete.Depth = 0;
             this.btnDelete.HighEmphasis = true;
             this.btnDelete.Icon = null;
-            this.btnDelete.Location = new System.Drawing.Point(182, 484);
+            this.btnDelete.Location = new System.Drawing.Point(181, 340);
             this.btnDelete.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnDelete.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnDelete.Name = "btnDelete";
@@ -132,7 +185,7 @@ namespace Scoreboard
             // txtSearch
             // 
             this.txtSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtSearch.Location = new System.Drawing.Point(96, 78);
+            this.txtSearch.Location = new System.Drawing.Point(95, 3);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(425, 26);
             this.txtSearch.TabIndex = 2;
@@ -140,7 +193,7 @@ namespace Scoreboard
             // lblSearch
             // 
             this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSearch.Location = new System.Drawing.Point(12, 80);
+            this.lblSearch.Location = new System.Drawing.Point(11, 5);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(78, 23);
             this.lblSearch.TabIndex = 11;
@@ -155,7 +208,7 @@ namespace Scoreboard
             this.btnSearch.Depth = 0;
             this.btnSearch.HighEmphasis = true;
             this.btnSearch.Icon = null;
-            this.btnSearch.Location = new System.Drawing.Point(528, 78);
+            this.btnSearch.Location = new System.Drawing.Point(527, 3);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSearch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSearch.Name = "btnSearch";
@@ -176,7 +229,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(944, 484);
+            this.btnCancel.Location = new System.Drawing.Point(943, 340);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -188,55 +241,10 @@ namespace Scoreboard
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // name
-            // 
-            this.name.DataPropertyName = "name";
-            this.name.HeaderText = "Tài khoản";
-            this.name.Name = "name";
-            this.name.ReadOnly = true;
-            this.name.Width = 200;
-            // 
-            // fullname
-            // 
-            this.fullname.DataPropertyName = "fullname";
-            this.fullname.HeaderText = "Tên";
-            this.fullname.Name = "fullname";
-            this.fullname.ReadOnly = true;
-            this.fullname.Width = 350;
-            // 
-            // phone
-            // 
-            this.phone.DataPropertyName = "Phone";
-            this.phone.HeaderText = "Điện thoại";
-            this.phone.Name = "phone";
-            this.phone.Width = 180;
-            // 
-            // email
-            // 
-            this.email.DataPropertyName = "email";
-            this.email.HeaderText = "Email";
-            this.email.Name = "email";
-            this.email.Width = 200;
-            // 
-            // RoleName
-            // 
-            this.RoleName.DataPropertyName = "RoleName";
-            this.RoleName.HeaderText = "Quyền hạn";
-            this.RoleName.Name = "RoleName";
-            this.RoleName.Width = 150;
-            // 
-            // id
-            // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            this.id.Width = 5;
-            // 
             // UsersForm
             // 
-            this.ClientSize = new System.Drawing.Size(1118, 529);
+            this.ClientSize = new System.Drawing.Size(1118, 385);
+            this.ControlBox = false;
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
@@ -244,6 +252,8 @@ namespace Scoreboard
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.dgUser);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "UsersForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

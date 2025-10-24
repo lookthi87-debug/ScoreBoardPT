@@ -275,7 +275,7 @@ namespace Scoreboard
                         var role = Repository.GetRoleById(User.RoleId.Value);
                         if (role != null && role.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                         {
-                            new AdminForm(User).Show();
+                            new DashboardForm(User).Show();
                             this.Hide();
                         }
                         else
@@ -405,6 +405,7 @@ namespace Scoreboard
         {
             try
             {
+                Application.Exit();
                 pingTimer?.Stop();
                 if (User == null)
                 {

@@ -35,6 +35,7 @@ namespace Scoreboard
         private ListView lvActiveMatch;
         private MaterialButton BtnUp;
         private MaterialButton BtnDown;
+        private MaterialButton btnBack;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
         private DataGridViewTextBoxColumn ClassSetsName;
@@ -58,6 +59,7 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn Status2;
 
         private UserModel user { get; set; }
+        private TournamentsForm parentForm;
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -105,6 +107,7 @@ namespace Scoreboard
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.BtnUp = new MaterialSkin.Controls.MaterialButton();
             this.BtnDown = new MaterialSkin.Controls.MaterialButton();
+            this.btnBack = new MaterialSkin.Controls.MaterialButton();
             this.btnExportExcel = new MaterialSkin.Controls.MaterialButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgGiaiDau)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
@@ -146,11 +149,11 @@ namespace Scoreboard
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgGiaiDau.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dgGiaiDau.Location = new System.Drawing.Point(17, 190);
+            this.dgGiaiDau.Location = new System.Drawing.Point(16, 159);
             this.dgGiaiDau.Name = "dgGiaiDau";
             this.dgGiaiDau.RowHeadersVisible = false;
             this.dgGiaiDau.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgGiaiDau.Size = new System.Drawing.Size(945, 347);
+            this.dgGiaiDau.Size = new System.Drawing.Size(945, 219);
             this.dgGiaiDau.TabIndex = 1;
             this.dgGiaiDau.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgGiaiDau_CellDoubleClick);
             this.dgGiaiDau.SelectionChanged += new System.EventHandler(this.DgTranDau_SelectionChanged);
@@ -241,7 +244,7 @@ namespace Scoreboard
             this.btnAddMatchset.Depth = 0;
             this.btnAddMatchset.HighEmphasis = true;
             this.btnAddMatchset.Icon = null;
-            this.btnAddMatchset.Location = new System.Drawing.Point(17, 790);
+            this.btnAddMatchset.Location = new System.Drawing.Point(16, 651);
             this.btnAddMatchset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAddMatchset.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnAddMatchset.Name = "btnAddMatchset";
@@ -262,7 +265,7 @@ namespace Scoreboard
             this.btnDeleteMatchset.Depth = 0;
             this.btnDeleteMatchset.HighEmphasis = true;
             this.btnDeleteMatchset.Icon = null;
-            this.btnDeleteMatchset.Location = new System.Drawing.Point(183, 790);
+            this.btnDeleteMatchset.Location = new System.Drawing.Point(182, 651);
             this.btnDeleteMatchset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnDeleteMatchset.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnDeleteMatchset.Name = "btnDeleteMatchset";
@@ -279,7 +282,7 @@ namespace Scoreboard
             this.cbMatchClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMatchClass.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbMatchClass.FormattingEnabled = true;
-            this.cbMatchClass.Location = new System.Drawing.Point(172, 74);
+            this.cbMatchClass.Location = new System.Drawing.Point(171, 43);
             this.cbMatchClass.Name = "cbMatchClass";
             this.cbMatchClass.Size = new System.Drawing.Size(324, 28);
             this.cbMatchClass.TabIndex = 7;
@@ -288,7 +291,7 @@ namespace Scoreboard
             // lblClassMatch
             // 
             this.lblClassMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblClassMatch.Location = new System.Drawing.Point(12, 74);
+            this.lblClassMatch.Location = new System.Drawing.Point(11, 43);
             this.lblClassMatch.Name = "lblClassMatch";
             this.lblClassMatch.Size = new System.Drawing.Size(152, 29);
             this.lblClassMatch.TabIndex = 9;
@@ -298,7 +301,7 @@ namespace Scoreboard
             // txtTeam
             // 
             this.txtTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTeam.Location = new System.Drawing.Point(172, 142);
+            this.txtTeam.Location = new System.Drawing.Point(171, 111);
             this.txtTeam.MaxLength = 100;
             this.txtTeam.Name = "txtTeam";
             this.txtTeam.Size = new System.Drawing.Size(324, 26);
@@ -307,7 +310,7 @@ namespace Scoreboard
             // lblTeam
             // 
             this.lblTeam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTeam.Location = new System.Drawing.Point(73, 142);
+            this.lblTeam.Location = new System.Drawing.Point(72, 111);
             this.lblTeam.Name = "lblTeam";
             this.lblTeam.Size = new System.Drawing.Size(91, 29);
             this.lblTeam.TabIndex = 13;
@@ -322,7 +325,7 @@ namespace Scoreboard
             this.btnSearch.Depth = 0;
             this.btnSearch.HighEmphasis = true;
             this.btnSearch.Icon = null;
-            this.btnSearch.Location = new System.Drawing.Point(503, 139);
+            this.btnSearch.Location = new System.Drawing.Point(502, 108);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSearch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSearch.Name = "btnSearch";
@@ -346,9 +349,9 @@ namespace Scoreboard
             this.lvToggle.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvToggle.HideSelection = false;
             this.lvToggle.HoverSelection = true;
-            this.lvToggle.Location = new System.Drawing.Point(994, 576);
+            this.lvToggle.Location = new System.Drawing.Point(993, 461);
             this.lvToggle.Name = "lvToggle";
-            this.lvToggle.Size = new System.Drawing.Size(340, 204);
+            this.lvToggle.Size = new System.Drawing.Size(340, 181);
             this.lvToggle.TabIndex = 18;
             this.lvToggle.UseCompatibleStateImageBehavior = false;
             this.lvToggle.View = System.Windows.Forms.View.Details;
@@ -365,7 +368,7 @@ namespace Scoreboard
             this.lblViewToggle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblViewToggle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblViewToggle.ForeColor = System.Drawing.Color.Blue;
-            this.lblViewToggle.Location = new System.Drawing.Point(992, 550);
+            this.lblViewToggle.Location = new System.Drawing.Point(991, 427);
             this.lblViewToggle.Name = "lblViewToggle";
             this.lblViewToggle.Size = new System.Drawing.Size(152, 23);
             this.lblViewToggle.TabIndex = 19;
@@ -405,11 +408,11 @@ namespace Scoreboard
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDetail.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvDetail.Location = new System.Drawing.Point(17, 639);
+            this.dgvDetail.Location = new System.Drawing.Point(16, 461);
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.RowHeadersVisible = false;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetail.Size = new System.Drawing.Size(945, 141);
+            this.dgvDetail.Size = new System.Drawing.Size(945, 181);
             this.dgvDetail.TabIndex = 24;
             this.dgvDetail.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDetail_CellDoubleClick);
             // 
@@ -479,7 +482,7 @@ namespace Scoreboard
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(13, 613);
+            this.label1.Location = new System.Drawing.Point(12, 435);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(152, 23);
             this.label1.TabIndex = 25;
@@ -495,7 +498,7 @@ namespace Scoreboard
             this.btnDeleteMatch.Depth = 0;
             this.btnDeleteMatch.HighEmphasis = true;
             this.btnDeleteMatch.Icon = null;
-            this.btnDeleteMatch.Location = new System.Drawing.Point(183, 544);
+            this.btnDeleteMatch.Location = new System.Drawing.Point(182, 387);
             this.btnDeleteMatch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnDeleteMatch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnDeleteMatch.Name = "btnDeleteMatch";
@@ -516,7 +519,7 @@ namespace Scoreboard
             this.btnAddMatch.Depth = 0;
             this.btnAddMatch.HighEmphasis = true;
             this.btnAddMatch.Icon = null;
-            this.btnAddMatch.Location = new System.Drawing.Point(17, 544);
+            this.btnAddMatch.Location = new System.Drawing.Point(16, 387);
             this.btnAddMatch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnAddMatch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnAddMatch.Name = "btnAddMatch";
@@ -531,7 +534,7 @@ namespace Scoreboard
             // label5
             // 
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(12, 108);
+            this.label5.Location = new System.Drawing.Point(11, 77);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(152, 23);
             this.label5.TabIndex = 38;
@@ -543,7 +546,7 @@ namespace Scoreboard
             this.cbTournaments.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTournaments.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbTournaments.FormattingEnabled = true;
-            this.cbTournaments.Location = new System.Drawing.Point(172, 108);
+            this.cbTournaments.Location = new System.Drawing.Point(171, 77);
             this.cbTournaments.Name = "cbTournaments";
             this.cbTournaments.Size = new System.Drawing.Size(324, 28);
             this.cbTournaments.TabIndex = 39;
@@ -553,7 +556,7 @@ namespace Scoreboard
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.Color.Blue;
-            this.label6.Location = new System.Drawing.Point(992, 164);
+            this.label6.Location = new System.Drawing.Point(991, 133);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(152, 23);
             this.label6.TabIndex = 41;
@@ -572,9 +575,9 @@ namespace Scoreboard
             this.lvActiveMatch.GridLines = true;
             this.lvActiveMatch.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvActiveMatch.HideSelection = false;
-            this.lvActiveMatch.Location = new System.Drawing.Point(996, 190);
+            this.lvActiveMatch.Location = new System.Drawing.Point(995, 159);
             this.lvActiveMatch.Name = "lvActiveMatch";
-            this.lvActiveMatch.Size = new System.Drawing.Size(339, 347);
+            this.lvActiveMatch.Size = new System.Drawing.Size(339, 219);
             this.lvActiveMatch.TabIndex = 40;
             this.lvActiveMatch.UseCompatibleStateImageBehavior = false;
             this.lvActiveMatch.View = System.Windows.Forms.View.Details;
@@ -593,7 +596,7 @@ namespace Scoreboard
             this.BtnUp.Depth = 0;
             this.BtnUp.HighEmphasis = true;
             this.BtnUp.Icon = null;
-            this.BtnUp.Location = new System.Drawing.Point(1335, 577);
+            this.BtnUp.Location = new System.Drawing.Point(1334, 399);
             this.BtnUp.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.BtnUp.MouseState = MaterialSkin.MouseState.HOVER;
             this.BtnUp.Name = "BtnUp";
@@ -614,7 +617,7 @@ namespace Scoreboard
             this.BtnDown.Depth = 0;
             this.BtnDown.HighEmphasis = true;
             this.BtnDown.Icon = null;
-            this.BtnDown.Location = new System.Drawing.Point(1335, 604);
+            this.BtnDown.Location = new System.Drawing.Point(1334, 426);
             this.BtnDown.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.BtnDown.MouseState = MaterialSkin.MouseState.HOVER;
             this.BtnDown.Name = "BtnDown";
@@ -626,6 +629,26 @@ namespace Scoreboard
             this.BtnDown.UseVisualStyleBackColor = true;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
+            // btnBack
+            // 
+            this.btnBack.AutoSize = false;
+            this.btnBack.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnBack.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnBack.Depth = 0;
+            this.btnBack.HighEmphasis = true;
+            this.btnBack.Icon = null;
+            this.btnBack.Location = new System.Drawing.Point(16, 10);
+            this.btnBack.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnBack.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(43, 27);
+            this.btnBack.TabIndex = 46;
+            this.btnBack.Text = "◀";
+            this.btnBack.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnBack.UseAccentColor = false;
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            // 
             // btnExportExcel
             // 
             this.btnExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -635,7 +658,7 @@ namespace Scoreboard
             this.btnExportExcel.Depth = 0;
             this.btnExportExcel.HighEmphasis = true;
             this.btnExportExcel.Icon = null;
-            this.btnExportExcel.Location = new System.Drawing.Point(804, 790);
+            this.btnExportExcel.Location = new System.Drawing.Point(1175, 651);
             this.btnExportExcel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnExportExcel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnExportExcel.Name = "btnExportExcel";
@@ -649,7 +672,9 @@ namespace Scoreboard
             // 
             // MatchsForm
             // 
-            this.ClientSize = new System.Drawing.Size(1368, 843);
+            this.ClientSize = new System.Drawing.Size(1368, 696);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnBack);
             this.Controls.Add(this.btnExportExcel);
             this.Controls.Add(this.BtnDown);
             this.Controls.Add(this.BtnUp);
@@ -672,6 +697,8 @@ namespace Scoreboard
             this.Controls.Add(this.btnAddMatchset);
             this.Controls.Add(this.dgGiaiDau);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MatchsForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -719,12 +746,13 @@ namespace Scoreboard
                 MessageBox.Show("Không có dữ liệu trọng tài. Vui lòng tạo");
             }
         }
-        public MatchsForm(UserModel us)
+        public MatchsForm(UserModel us, TournamentsForm parent = null)
         {
             InitializeComponent();
             dgGiaiDau.AutoGenerateColumns = false;
             dgvDetail.AutoGenerateColumns = false;
             user = us;
+            parentForm = parent;
             LoadMatchClass();
             LoadListMatchActive();
             LoadListMatchShowToggle();
@@ -1235,6 +1263,14 @@ namespace Scoreboard
             row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
             row.Tag = "locked";
             row.Cells["status"].Value = "Đang diễn ra"; // status  = 1
+        }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            if (parentForm != null)
+            {
+                parentForm.ReturnToTournaments();
+            }
         }
 
         private void btnExportExcel_Click(object sender, EventArgs e)

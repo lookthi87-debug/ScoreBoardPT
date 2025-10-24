@@ -25,6 +25,7 @@ namespace Scoreboard
         private MaterialButton btnCancel;
         private MaterialButton btnStart;
         private MaterialButton btnRefresh;
+        private MaterialButton btnLogout;
         private Label lblMessage;
         private UserModel currentUser;
         public UserInfoForm(UserModel u)
@@ -37,6 +38,7 @@ namespace Scoreboard
         {
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
             this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
+            this.btnLogout = new MaterialSkin.Controls.MaterialButton();
             this.txtTime = new System.Windows.Forms.TextBox();
             this.nScore2 = new System.Windows.Forms.NumericUpDown();
             this.nScore1 = new System.Windows.Forms.NumericUpDown();
@@ -94,6 +96,26 @@ namespace Scoreboard
             this.btnRefresh.UseAccentColor = false;
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnLogout
+            // 
+            this.btnLogout.AutoSize = false;
+            this.btnLogout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnLogout.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnLogout.Depth = 0;
+            this.btnLogout.HighEmphasis = true;
+            this.btnLogout.Icon = null;
+            this.btnLogout.Location = new System.Drawing.Point(350, 265);
+            this.btnLogout.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnLogout.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(50, 36);
+            this.btnLogout.TabIndex = 40;
+            this.btnLogout.Text = "🚪";
+            this.btnLogout.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnLogout.UseAccentColor = false;
+            this.btnLogout.UseVisualStyleBackColor = true;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
             // 
             // txtTime
             // 
@@ -256,6 +278,7 @@ namespace Scoreboard
             this.ClientSize = new System.Drawing.Size(762, 326);
             this.Controls.Add(this.lblMessage);
             this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnLogout);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.txtTime);
             this.Controls.Add(this.nScore2);
@@ -341,12 +364,38 @@ namespace Scoreboard
 
         private void UserInfoForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Application.Exit();
+            // Don't exit application, just show login form
+            var loginForm = new LoginForm();
+            loginForm.Show();
         }
 
         private void UserInfoForm_Activated(object sender, EventArgs e)
         {
             LoadUserInfo();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất?", "Xác nhận đăng xuất", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            
+            if (result == DialogResult.Yes)
+            {
+                // Clear user activity
+                try
+                {
+                    if (currentUser?.Id > 0)
+                    {
+                        Data.Repository.ClearUserActivity(currentUser.Id);
+                    }
+                }
+                catch { }
+
+                // Show login form and hide current form
+                var loginForm = new LoginForm();
+                loginForm.Show();
+                this.Hide();
+            }
         }
     }
 }
