@@ -32,11 +32,12 @@ namespace Scoreboard
             this.tabUsers = new System.Windows.Forms.TabPage();
             this.lblWelcome = new System.Windows.Forms.Label();
             this.headerPanel = new System.Windows.Forms.Panel();
+            this.btnLogout = new System.Windows.Forms.Button();
             this.avatarPanel = new System.Windows.Forms.Panel();
             this.avatarLabel = new System.Windows.Forms.Label();
-            this.btnLogout = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.headerPanel.SuspendLayout();
+            this.avatarPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -98,6 +99,22 @@ namespace Scoreboard
             this.headerPanel.Size = new System.Drawing.Size(1194, 53);
             this.headerPanel.TabIndex = 0;
             // 
+            // btnLogout
+            // 
+            this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
+            this.btnLogout.FlatAppearance.BorderSize = 0;
+            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLogout.ForeColor = System.Drawing.Color.White;
+            this.btnLogout.Location = new System.Drawing.Point(1078, 15);
+            this.btnLogout.Name = "btnLogout";
+            this.btnLogout.Size = new System.Drawing.Size(42, 25);
+            this.btnLogout.TabIndex = 2;
+            this.btnLogout.Text = "🚪 Logout";
+            this.btnLogout.UseVisualStyleBackColor = false;
+            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
+            // 
             // avatarPanel
             // 
             this.avatarPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -123,22 +140,6 @@ namespace Scoreboard
             this.avatarLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.avatarLabel.Paint += new System.Windows.Forms.PaintEventHandler(this.avatarLabel_Paint);
             // 
-            // btnLogout
-            // 
-            this.btnLogout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLogout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(67)))), ((int)(((byte)(54)))));
-            this.btnLogout.FlatAppearance.BorderSize = 0;
-            this.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogout.ForeColor = System.Drawing.Color.White;
-            this.btnLogout.Location = new System.Drawing.Point(1050, 15);
-            this.btnLogout.Name = "btnLogout";
-            this.btnLogout.Size = new System.Drawing.Size(70, 25);
-            this.btnLogout.TabIndex = 2;
-            this.btnLogout.Text = "🚪 Logout";
-            this.btnLogout.UseVisualStyleBackColor = false;
-            this.btnLogout.Click += new System.EventHandler(this.btnLogout_Click);
-            // 
             // DashboardForm
             // 
             this.ClientSize = new System.Drawing.Size(1200, 700);
@@ -154,6 +155,7 @@ namespace Scoreboard
             this.tabControl.ResumeLayout(false);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
+            this.avatarPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
