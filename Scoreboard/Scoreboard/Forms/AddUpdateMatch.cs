@@ -13,6 +13,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
 using System.Globalization;
+using System.IO;
+using System.Drawing;
 
 namespace Scoreboard
 {
@@ -38,6 +40,11 @@ namespace Scoreboard
 		private DateTimePicker dtpEndDateTime;
         private Label lblStatus;
         private System.Windows.Forms.ComboBox cbStatus;
+        private PictureBox pbTeam1Flag;
+        private System.Windows.Forms.Button btnSelectTeam1Flag;
+        private PictureBox pbTeam2Flag;
+        private System.Windows.Forms.Button btnSelectTeam2Flag;
+        private OpenFileDialog openFileDialog;
 
         private void InitializeComponent()
         {
@@ -60,6 +67,13 @@ namespace Scoreboard
             this.dtpEndDateTime = new System.Windows.Forms.DateTimePicker();
             this.lblStatus = new System.Windows.Forms.Label();
             this.cbStatus = new System.Windows.Forms.ComboBox();
+            this.pbTeam1Flag = new System.Windows.Forms.PictureBox();
+            this.btnSelectTeam1Flag = new System.Windows.Forms.Button();
+            this.pbTeam2Flag = new System.Windows.Forms.PictureBox();
+            this.btnSelectTeam2Flag = new System.Windows.Forms.Button();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTeam1Flag)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTeam2Flag)).BeginInit();
             this.SuspendLayout();
             // 
             // txtTeam1
@@ -120,7 +134,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(254, 454);
+            this.btnCancel.Location = new System.Drawing.Point(252, 494);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -140,7 +154,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(428, 454);
+            this.btnSave.Location = new System.Drawing.Point(426, 494);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -155,7 +169,7 @@ namespace Scoreboard
             // lblTrongTai
             // 
             this.lblTrongTai.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrongTai.Location = new System.Drawing.Point(32, 158);
+            this.lblTrongTai.Location = new System.Drawing.Point(32, 200);
             this.lblTrongTai.Name = "lblTrongTai";
             this.lblTrongTai.Size = new System.Drawing.Size(110, 29);
             this.lblTrongTai.TabIndex = 20;
@@ -167,7 +181,7 @@ namespace Scoreboard
             this.clbReferees.DisplayMember = "Fullname";
             this.clbReferees.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.clbReferees.FormattingEnabled = true;
-            this.clbReferees.Location = new System.Drawing.Point(148, 158);
+            this.clbReferees.Location = new System.Drawing.Point(148, 200);
             this.clbReferees.Name = "clbReferees";
             this.clbReferees.Size = new System.Drawing.Size(426, 109);
             this.clbReferees.TabIndex = 7;
@@ -189,7 +203,7 @@ namespace Scoreboard
             // lblNote
             // 
             this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(34, 314);
+            this.lblNote.Location = new System.Drawing.Point(32, 354);
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(110, 29);
             this.lblNote.TabIndex = 37;
@@ -199,7 +213,7 @@ namespace Scoreboard
             // txtnote
             // 
             this.txtnote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtnote.Location = new System.Drawing.Point(150, 314);
+            this.txtnote.Location = new System.Drawing.Point(148, 354);
             this.txtnote.Multiline = true;
             this.txtnote.Name = "txtnote";
             this.txtnote.Size = new System.Drawing.Size(621, 94);
@@ -208,7 +222,7 @@ namespace Scoreboard
             // lblStartDateTime
             // 
             this.lblStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartDateTime.Location = new System.Drawing.Point(34, 276);
+            this.lblStartDateTime.Location = new System.Drawing.Point(32, 322);
             this.lblStartDateTime.Name = "lblStartDateTime";
             this.lblStartDateTime.Size = new System.Drawing.Size(110, 29);
             this.lblStartDateTime.TabIndex = 39;
@@ -220,7 +234,7 @@ namespace Scoreboard
             this.dtpStartDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dtpStartDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStartDateTime.Location = new System.Drawing.Point(150, 276);
+            this.dtpStartDateTime.Location = new System.Drawing.Point(148, 322);
             this.dtpStartDateTime.Name = "dtpStartDateTime";
             this.dtpStartDateTime.Size = new System.Drawing.Size(180, 26);
             this.dtpStartDateTime.TabIndex = 7;
@@ -229,7 +243,7 @@ namespace Scoreboard
             // lblEndDateTime
             // 
             this.lblEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEndDateTime.Location = new System.Drawing.Point(352, 276);
+            this.lblEndDateTime.Location = new System.Drawing.Point(350, 322);
             this.lblEndDateTime.Name = "lblEndDateTime";
             this.lblEndDateTime.Size = new System.Drawing.Size(110, 29);
             this.lblEndDateTime.TabIndex = 40;
@@ -241,7 +255,7 @@ namespace Scoreboard
             this.dtpEndDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dtpEndDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEndDateTime.Location = new System.Drawing.Point(468, 276);
+            this.dtpEndDateTime.Location = new System.Drawing.Point(466, 322);
             this.dtpEndDateTime.Name = "dtpEndDateTime";
             this.dtpEndDateTime.Size = new System.Drawing.Size(180, 26);
             this.dtpEndDateTime.TabIndex = 8;
@@ -250,7 +264,7 @@ namespace Scoreboard
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(34, 414);
+            this.lblStatus.Location = new System.Drawing.Point(32, 454);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(110, 29);
             this.lblStatus.TabIndex = 38;
@@ -262,14 +276,62 @@ namespace Scoreboard
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(150, 414);
+            this.cbStatus.Location = new System.Drawing.Point(148, 454);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(200, 28);
             this.cbStatus.TabIndex = 10;
             // 
+            // pbTeam1Flag
+            // 
+            this.pbTeam1Flag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbTeam1Flag.Location = new System.Drawing.Point(148, 154);
+            this.pbTeam1Flag.Name = "pbTeam1Flag";
+            this.pbTeam1Flag.Size = new System.Drawing.Size(60, 40);
+            this.pbTeam1Flag.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbTeam1Flag.TabIndex = 41;
+            this.pbTeam1Flag.TabStop = false;
+            // 
+            // btnSelectTeam1Flag
+            // 
+            this.btnSelectTeam1Flag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.btnSelectTeam1Flag.Location = new System.Drawing.Point(214, 154);
+            this.btnSelectTeam1Flag.Name = "btnSelectTeam1Flag";
+            this.btnSelectTeam1Flag.Size = new System.Drawing.Size(75, 40);
+            this.btnSelectTeam1Flag.TabIndex = 42;
+            this.btnSelectTeam1Flag.Text = "Chọn cờ";
+            this.btnSelectTeam1Flag.UseVisualStyleBackColor = true;
+            this.btnSelectTeam1Flag.Click += new System.EventHandler(this.btnSelectTeam1Flag_Click);
+            // 
+            // pbTeam2Flag
+            // 
+            this.pbTeam2Flag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbTeam2Flag.Location = new System.Drawing.Point(466, 154);
+            this.pbTeam2Flag.Name = "pbTeam2Flag";
+            this.pbTeam2Flag.Size = new System.Drawing.Size(60, 40);
+            this.pbTeam2Flag.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbTeam2Flag.TabIndex = 43;
+            this.pbTeam2Flag.TabStop = false;
+            // 
+            // btnSelectTeam2Flag
+            // 
+            this.btnSelectTeam2Flag.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.btnSelectTeam2Flag.Location = new System.Drawing.Point(532, 154);
+            this.btnSelectTeam2Flag.Name = "btnSelectTeam2Flag";
+            this.btnSelectTeam2Flag.Size = new System.Drawing.Size(75, 40);
+            this.btnSelectTeam2Flag.TabIndex = 44;
+            this.btnSelectTeam2Flag.Text = "Chọn cờ";
+            this.btnSelectTeam2Flag.UseVisualStyleBackColor = true;
+            this.btnSelectTeam2Flag.Click += new System.EventHandler(this.btnSelectTeam2Flag_Click);
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.png, *.gif, *.bmp)|*.jpg;*.jpeg;*.png;*.gif;*.bmp|A" +
+    "ll files (*.*)|*.*";
+            this.openFileDialog.Title = "Chọn hình ảnh lá cờ";
+            // 
             // AddUpdateMatch
             // 
-            this.ClientSize = new System.Drawing.Size(787, 516);
+            this.ClientSize = new System.Drawing.Size(787, 547);
             this.Controls.Add(this.cbStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblNote);
@@ -288,6 +350,10 @@ namespace Scoreboard
             this.Controls.Add(this.lblTeam2);
             this.Controls.Add(this.txtTeam1);
             this.Controls.Add(this.lblTeam1);
+            this.Controls.Add(this.pbTeam1Flag);
+            this.Controls.Add(this.btnSelectTeam1Flag);
+            this.Controls.Add(this.pbTeam2Flag);
+            this.Controls.Add(this.btnSelectTeam2Flag);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -297,6 +363,8 @@ namespace Scoreboard
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thông tin trận đấu";
+            ((System.ComponentModel.ISupportInitialize)(this.pbTeam1Flag)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTeam2Flag)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -455,6 +523,9 @@ namespace Scoreboard
             {
                 clbReferees.Enabled = false;
             }
+
+            // Load flag images if they exist
+            LoadFlagImages(m);
         }
 
         public AddUpdateMatch(int tournament_id, string id = "")
@@ -820,6 +891,95 @@ namespace Scoreboard
                               "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 dtpEndDateTime.Value = dtpStartDateTime.Value.AddHours(1); // Ít nhất 1 tiếng sau
                 return;
+            }
+        }
+
+        private void btnSelectTeam1Flag_Click(object sender, EventArgs e)
+        {
+            SelectFlagImage(1);
+        }
+
+        private void btnSelectTeam2Flag_Click(object sender, EventArgs e)
+        {
+            SelectFlagImage(2);
+        }
+
+        private void SelectFlagImage(int teamNumber)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string selectedFilePath = openFileDialog.FileName;
+                    string fileName = Path.GetFileName(selectedFilePath);
+                    string fileExtension = Path.GetExtension(fileName);
+                    
+                    // Tạo tên file mới với timestamp để tránh trùng lặp
+                    string newFileName = $"team{teamNumber}_{DateTime.Now:yyyyMMddHHmmss}{fileExtension}";
+                    string flagsDirectory = Path.Combine(Application.StartupPath, "Resources", "Flags");
+                    
+                    // Tạo thư mục nếu chưa tồn tại
+                    if (!Directory.Exists(flagsDirectory))
+                    {
+                        Directory.CreateDirectory(flagsDirectory);
+                    }
+                    
+                    string destinationPath = Path.Combine(flagsDirectory, newFileName);
+                    
+                    // Copy file ảnh vào thư mục Flags
+                    File.Copy(selectedFilePath, destinationPath, true);
+                    
+                    // Hiển thị ảnh trong PictureBox
+                    if (teamNumber == 1)
+                    {
+                        pbTeam1Flag.Image = Image.FromFile(destinationPath);
+                        currentMatch.Team1Flag = newFileName;
+                    }
+                    else
+                    {
+                        pbTeam2Flag.Image = Image.FromFile(destinationPath);
+                        currentMatch.Team2Flag = newFileName;
+                    }
+                    
+                    MessageBox.Show($"Đã chọn và lưu hình ảnh lá cờ cho đội {teamNumber}", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi chọn hình ảnh: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void LoadFlagImages(MatchModel match)
+        {
+            try
+            {
+                string flagsDirectory = Path.Combine(Application.StartupPath, "Resources", "Flags");
+                
+                // Load Team1 flag
+                if (!string.IsNullOrEmpty(match.Team1Flag))
+                {
+                    string team1FlagPath = Path.Combine(flagsDirectory, match.Team1Flag);
+                    if (File.Exists(team1FlagPath))
+                    {
+                        pbTeam1Flag.Image = Image.FromFile(team1FlagPath);
+                    }
+                }
+                
+                // Load Team2 flag
+                if (!string.IsNullOrEmpty(match.Team2Flag))
+                {
+                    string team2FlagPath = Path.Combine(flagsDirectory, match.Team2Flag);
+                    if (File.Exists(team2FlagPath))
+                    {
+                        pbTeam2Flag.Image = Image.FromFile(team2FlagPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Silently handle errors when loading flag images
+                // This prevents the form from crashing if flag images are missing
             }
         }
     }

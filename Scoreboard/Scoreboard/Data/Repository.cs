@@ -482,7 +482,7 @@ namespace Scoreboard.Data
                 SELECT 
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                     m.time, m.referee_id, u.name AS referee_name, 
-                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
+                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name, m.team1_flag, m.team2_flag
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -512,7 +512,9 @@ namespace Scoreboard.Data
                             ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
                             Status = dr.IsDBNull(12) ? null : dr.GetString(12),
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            Team1Flag = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            Team2Flag = dr.IsDBNull(16) ? null : dr.GetString(16)
                         };
 
                         // Parse multiple referees from note field if exists
@@ -532,7 +534,7 @@ namespace Scoreboard.Data
                         m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                         m.time, m.referee_id, u.name AS referee_name, 
                         m.note, m.show_toggle, m.status, m.tournament_id, t.name as tournamentname, t.match_class_id,ms.name as matchclassname,
-                        t.start as tournament_start, t.""end"" as tournament_end
+                        t.start as tournament_start, t.""end"" as tournament_end, m.team1_flag, m.team2_flag
                     FROM Matches m
                     LEFT JOIN Users u ON m.referee_id = u.id
                     LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -565,7 +567,9 @@ namespace Scoreboard.Data
                         MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
                         MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
                         TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
-                        TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
+                        TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
+                        Team1Flag = dr.IsDBNull(19) ? null : dr.GetString(19),
+                        Team2Flag = dr.IsDBNull(20) ? null : dr.GetString(20)
                     };
 
                     // Parse multiple referees from note field if exists
@@ -584,7 +588,7 @@ namespace Scoreboard.Data
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                     m.time, m.referee_id, u.fullname AS referee_name, 
                     m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name, t.match_class_id,ms.name as matchclassname,
-                    t.start as tournament_start, t.""end"" as tournament_end
+                    t.start as tournament_start, t.""end"" as tournament_end, m.team1_flag, m.team2_flag
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -619,7 +623,9 @@ namespace Scoreboard.Data
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
                             MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
                             TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
-                            TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
+                            TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
+                            Team1Flag = dr.IsDBNull(19) ? null : dr.GetString(19),
+                            Team2Flag = dr.IsDBNull(20) ? null : dr.GetString(20)
                         };
 
                         // Parse multiple referees from note field if exists
@@ -674,7 +680,6 @@ namespace Scoreboard.Data
                 match.RefereeNames.Add(match.RefereeName ?? "");
             }
         }
-
         // Helper method to prepare note field with multiple referees
         private static string PrepareNoteWithReferees(MatchModel m)
         {
@@ -690,6 +695,13 @@ namespace Scoreboard.Data
                 }
                 string refereesInfo = "[Referees:" + string.Join("|", refereePairs) + "]";
                 note = note + " " + refereesInfo;
+            }
+
+            // Add flag info to note field
+            if (!string.IsNullOrEmpty(m.Team1Flag) || !string.IsNullOrEmpty(m.Team2Flag))
+            {
+                string flagsInfo = $"[Flags:Team1={m.Team1Flag ?? ""}|Team2={m.Team2Flag ?? ""}]";
+                note = note + " " + flagsInfo;
             }
 
             return note.Trim();
@@ -716,9 +728,9 @@ namespace Scoreboard.Data
         {
             string sql = @"
                 INSERT INTO Matches
-                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id)
+                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id, team1_flag, team2_flag)
                 VALUES
-                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid);
+                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid, @t1f, @t2f);
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -736,6 +748,8 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -754,7 +768,9 @@ namespace Scoreboard.Data
                     note = @note,
                     show_toggle = @show,
                     status = @stt,
-                    tournament_id = @tid
+                    tournament_id = @tid,
+                    team1_flag = @t1f,
+                    team2_flag = @t2f
                 WHERE id = @id;
             ";
 
@@ -773,6 +789,8 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
 
