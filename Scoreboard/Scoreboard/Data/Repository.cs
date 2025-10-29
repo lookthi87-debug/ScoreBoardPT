@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Npgsql;
+using Scoreboard.Config;
 using Scoreboard.Data;
 using Scoreboard.Models;
 
@@ -697,13 +698,6 @@ namespace Scoreboard.Data
                 note = note + " " + refereesInfo;
             }
 
-            // Add flag info to note field
-            if (!string.IsNullOrEmpty(m.Team1Flag) || !string.IsNullOrEmpty(m.Team2Flag))
-            {
-                string flagsInfo = $"[Flags:Team1={m.Team1Flag ?? ""}|Team2={m.Team2Flag ?? ""}]";
-                note = note + " " + flagsInfo;
-            }
-
             return note.Trim();
         }
 
@@ -746,7 +740,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
-                cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
@@ -787,7 +781,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
-                cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
@@ -867,8 +861,8 @@ namespace Scoreboard.Data
                     ms.match_id,
                     m.team1,
                     m.team2,
-                    m.score1 AS total_score1,
-                    m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     m.status,
@@ -879,7 +873,9 @@ namespace Scoreboard.Data
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
-                    mtl.name as MatchClassName
+                    mtl.name as MatchClassName,
+                    m.score1,
+                    m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -905,8 +901,8 @@ namespace Scoreboard.Data
                             MatchId = dr.GetString(1),
                             Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
-                            TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                            TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Score1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Score2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
                             Time = dr.IsDBNull(6) ? null : dr.GetString(6),
                             Note = dr.IsDBNull(7) ? null : dr.GetString(7),
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
@@ -917,7 +913,9 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
+                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
                         });
                     }
                 }
@@ -934,8 +932,8 @@ namespace Scoreboard.Data
                     ms.match_id,
                     m.team1,
                     m.team2,
-                    m.score1 AS total_score1,
-                    m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     ms.status,
@@ -946,7 +944,9 @@ namespace Scoreboard.Data
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
-                    mtl.name as MatchClassName
+                    mtl.name as MatchClassName,
+                    m.score1,
+                    m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -972,8 +972,8 @@ namespace Scoreboard.Data
                             MatchId = dr.GetString(1),
                             Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
-                            TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                            TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Score1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Score2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
                             Time = dr.IsDBNull(6) ? null : dr.GetString(6),
                             Note = dr.IsDBNull(7) ? null : dr.GetString(7),
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
@@ -984,7 +984,9 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
+                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
                         });
                     }
                 }
@@ -1469,7 +1471,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@et", DBNull.Value);
                 cmd.Parameters.AddWithValue("@t", m.Time ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", m.Note ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@csname", m.ClassSetsName ?? (object)DBNull.Value);
@@ -1498,7 +1500,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@s2", m.Score2);
                 cmd.Parameters.AddWithValue("@t", m.Time);
                 cmd.Parameters.AddWithValue("@note", m.Note);
-                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
 
@@ -1811,7 +1813,7 @@ namespace Scoreboard.Data
                 Score2 = 0,
                 Time = "00:00",
                 Note = periodName,
-                Status = "0", // Inactive initially
+                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
                 RefereeId = refereeId,
                 RefereeName = currentMatch.RefereeName,
                 ClassSets_Id = currentMatch.ClassSets_Id,
@@ -1841,7 +1843,7 @@ namespace Scoreboard.Data
                 Score2 = 0,
                 Time = "00:00",
                 Note = "Đá penalty",
-                Status = "0", // Inactive initially
+                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
                 RefereeId = refereeId,
                 RefereeName = match.RefereeName,
                 ClassSets_Id = null, // Special period

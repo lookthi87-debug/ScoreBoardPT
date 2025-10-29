@@ -1,4 +1,6 @@
-﻿namespace Scoreboard
+﻿using Scoreboard.Config;
+
+namespace Scoreboard
 {
     partial class ucFormView_User
     {
@@ -100,7 +102,7 @@
             this.lblScoreTeam2.Name = "lblScoreTeam2";
             this.lblScoreTeam2.Size = new System.Drawing.Size(206, 61);
             this.lblScoreTeam2.TabIndex = 21;
-            this.lblScoreTeam2.Text = "0";
+            this.lblScoreTeam2.Text = MatchStatusConfig.Status.NotStarted;
             this.lblScoreTeam2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblScoreTeam1
@@ -112,7 +114,7 @@
             this.lblScoreTeam1.Name = "lblScoreTeam1";
             this.lblScoreTeam1.Size = new System.Drawing.Size(204, 61);
             this.lblScoreTeam1.TabIndex = 17;
-            this.lblScoreTeam1.Text = "0";
+            this.lblScoreTeam1.Text = MatchStatusConfig.Status.NotStarted;
             this.lblScoreTeam1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTeam2

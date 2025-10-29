@@ -982,13 +982,13 @@ namespace Scoreboard
 
             int colStatus = dgvDetail.Rows[index].DataGridView.Columns["status2"].Index;
             var statusObj = dgvDetail.Rows[index].Cells[colStatus].Value;
-            var status = statusObj?.ToString() ?? "0";
+            var status = statusObj?.ToString() ?? MatchStatusConfig.Status.NotStarted;
             if (status == MatchStatusConfig.GetStatusText(2))
             {
                 MessageBox.Show("Trận đấu đã kết thúc. Không thể sửa.", "Xác nhận chỉnh sửa");
                 return;
             }
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 DialogResult rs = MessageBox.Show("Trận đấu đang hoạt động! Bạn có chắc chắn muốn sửa không?", "Xác nhận chỉnh sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (rs == DialogResult.No)
@@ -1044,7 +1044,7 @@ namespace Scoreboard
                     row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
                     row.Tag = null;
 
-                    if (status == "1")
+                    if (status == MatchStatusConfig.Status.InProgress)
                     {
                         var mc = Repository.GetMatchById(id);
                         if (mc != null)
@@ -1064,7 +1064,7 @@ namespace Scoreboard
                                 showList.Add((id, mc.ShowToggle));
                         }
                     }
-                    else if (status == "2")
+                    else if (status == MatchStatusConfig.Status.Finished)
                     {
                         // Đã kết thúc trận đấu
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
@@ -1129,7 +1129,7 @@ namespace Scoreboard
 
             // Kiểm tra có hiệp nào đang status = 1 không
             var details = Repository.GetMatchSetsByMatchId(matchId);
-            bool hasActiveSet = details.Any(d => d.Status != "2");
+            bool hasActiveSet = details.Any(d => d.Status != MatchStatusConfig.Status.Finished);
             if (!hasActiveSet)
             {
                 MessageBox.Show("Trận này chưa có hiệp nào đang diễn ra (status = 1).");
@@ -1249,13 +1249,13 @@ namespace Scoreboard
 
             // Cập nhật status = 1 (đang hoạt động)
             row.Cells["ShowToggle"].Value = 1;
-            match.Status = "1";
+            match.Status = MatchStatusConfig.Status.InProgress;
             Repository.UpdateMatch(match);
 
             MatchsetModel ms = Repository.GetNoActiveMatchSetsByMatchId(matchId);
             if (ms != null)
             {
-                ms.Status = "1";
+                ms.Status = MatchStatusConfig.Status.InProgress;
                 Repository.UpdateMatchSetStatus(matchId, ms.Id, ms.Status);
             }
 
@@ -1428,13 +1428,13 @@ namespace Scoreboard
             int index = e.RowIndex;
 
             var statusObj = dgGiaiDau.Rows[index].Cells["Status"].Value;
-            var status = statusObj?.ToString() ?? "0";
+            var status = statusObj?.ToString() ?? MatchStatusConfig.Status.NotStarted;
             if (status == MatchStatusConfig.GetStatusText(2))
             {
                 MessageBox.Show("Trận đấu đã kết thúc. Không thể sửa.", "Xác nhận chỉnh sửa");
                 return;
             }
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 DialogResult rs = MessageBox.Show("Trận đấu đang hoạt động! Bạn có chắc chắn muốn sửa không?", "Xác nhận chỉnh sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (rs == DialogResult.No)
@@ -1465,7 +1465,7 @@ namespace Scoreboard
 
             int colstatus = dgvDetail.CurrentRow.DataGridView.Columns["status2"].Index;
             string status = dgvDetail.CurrentRow.Cells[colstatus].Value.ToString();
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 MessageBox.Show($"Hiệp/set đấu đang hoạt động! Không thể xóa!");
                 return;
@@ -1494,7 +1494,7 @@ namespace Scoreboard
 
             string id = dgGiaiDau.CurrentRow.Cells["Id"].Value.ToString();
             string status = dgGiaiDau.CurrentRow.Cells["status"].Value.ToString();
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 MessageBox.Show($"Trận đấu đang hoạt động! Không thể xóa!");
                 return;
@@ -1543,7 +1543,7 @@ namespace Scoreboard
             try
             {
                 lvActiveMatch.Items.Clear();
-                List<MatchModel> activeMatches = Repository.GetMatchesByStatus("2", false);
+                List<MatchModel> activeMatches = Repository.GetMatchesByStatus(MatchStatusConfig.Status.Finished, false);
                 foreach (var match in activeMatches)
                 {
                     var li = new ListViewItem($"{match.Team1} vs {match.Team2} - {match.RefereeName} - {match.Start.Value: dd/MM HH:mm}")

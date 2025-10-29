@@ -27,13 +27,13 @@ namespace Scoreboard
         private MaterialButton btnCancel;
         private MaterialButton btnSave;
         private Label lblTrongTai;
-        private CheckedListBox clbReferees; // Changed from ComboBox to CheckedListBox for multiple selection
+        private CheckedListBox clbReferees; // Đã thay đổi từ ComboBox sang CheckedListBox để chọn nhiều
         private Label lblTeam1;
         private Label lblMatch_Id;
         private Label lblNote;
         private System.Windows.Forms.TextBox txtnote;
         private MatchModel currentMatch;
-        private List<UserModel> allUsers; // Store all users for reference
+        private List<UserModel> allUsers; // Lưu trữ tất cả người dùng để tham khảo
 		private Label lblStartDateTime;
 		private DateTimePicker dtpStartDateTime;
 		private Label lblEndDateTime;
@@ -259,7 +259,6 @@ namespace Scoreboard
             this.dtpEndDateTime.Name = "dtpEndDateTime";
             this.dtpEndDateTime.Size = new System.Drawing.Size(180, 26);
             this.dtpEndDateTime.TabIndex = 8;
-            this.dtpEndDateTime.ValueChanged += new System.EventHandler(this.dtpEndDateTime_ValueChanged);
             // 
             // lblStatus
             // 
@@ -373,7 +372,7 @@ namespace Scoreboard
         {
             try
             {
-                allUsers = Repository.GetAllUsers().Where(u => u.RoleName != "Admin").ToList(); // Store all users for reference
+                allUsers = Repository.GetAllUsers().Where(u => u.RoleName != "Admin").ToList(); // Lưu trữ tất cả người dùng để tham khảo
                 clbReferees.Items.Clear();
                 
                 // Set the DisplayMember to show the Fullname property
@@ -537,6 +536,20 @@ namespace Scoreboard
             dtpEndDateTime.Value = DateTime.Now.AddHours(4);
             LoadUsers();
             
+            // Load tournament information to set date constraints
+            var tournament = Repository.GetAllTournamentsById(tournament_id);
+            if (tournament != null && tournament.End.HasValue)
+            {
+                // Set the maximum date for the end date picker to the tournament's end date
+                // But ensure it's at 23:59:59 of that day
+                var maxEndDate = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
+                var maxStartDate = tournament.Start.Value.Date.AddHours(00).AddMinutes(00).AddSeconds(00);
+                dtpEndDateTime.MaxDate = maxEndDate;
+                dtpStartDateTime.MaxDate = maxEndDate;
+                dtpStartDateTime.MinDate = maxStartDate;
+                dtpEndDateTime.MinDate = maxStartDate;
+            }
+            
             if (id != "")
             {
                 // edit mode
@@ -586,7 +599,7 @@ namespace Scoreboard
                 txtTeam1.Focus();
                 return;
             }
-
+            
             // Check if at least one referee is selected
             var selectedReferees = new List<UserModel>();
             foreach (var item in clbReferees.CheckedItems)
@@ -608,19 +621,21 @@ namespace Scoreboard
             if (currentMatch.TournamentId.HasValue)
             {
                 var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
+                var start = tournament.Start.Value.Date.AddHours(00).AddMinutes(00).AddSeconds(00);
+                var end = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
                 if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
                 {
-                    if (dtpStartDateTime.Value < tournament.Start.Value || dtpStartDateTime.Value > tournament.End.Value)
+                    if (dtpStartDateTime.Value < start || dtpStartDateTime.Value > end)
                     {
-                        MessageBox.Show($"Thời gian bắt đầu ({dtpStartDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
+                        MessageBox.Show($"Thời gian bắt đầu ({dtpStartDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
                                       "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         dtpStartDateTime.Focus();
                         return;
                     }
-                    
-                    if (dtpEndDateTime.Value < tournament.Start.Value || dtpEndDateTime.Value > tournament.End.Value)
+
+                    if (dtpEndDateTime.Value < start || dtpEndDateTime.Value > end)
                     {
-                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
+                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
                                       "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         dtpEndDateTime.Focus();
                         return;
@@ -718,7 +733,7 @@ namespace Scoreboard
                                     Score2 = 0,
                                     Time = "00:00",
                                     Note = "",
-                                    Status = "1", // Active
+                                    Status = MatchStatusConfig.Status.InProgress, // Active
                                     RefereeId = (currentMatch.RefereeIds != null && currentMatch.RefereeIds.Count > 0) ? (int?)currentMatch.RefereeIds[0] : null,
                                     RefereeName = currentMatch.RefereeName,
                                     ClassSets_Id = firstClassSet.Id,
@@ -851,47 +866,6 @@ namespace Scoreboard
             }
             
             dtpEndDateTime.Value = newEndTime;
-        }
-
-        private void dtpEndDateTime_ValueChanged(object sender, EventArgs e)
-        {
-            // Kiểm tra xem currentMatch có null không để tránh lỗi khi form đang khởi tạo
-            if (currentMatch == null)
-                return;
-                
-            // Kiểm tra xem thời gian kết thúc có nằm trong khoảng thời gian của giải đấu không
-            if (currentMatch.TournamentId.HasValue)
-            {
-                var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
-                if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
-                {
-                    if (dtpEndDateTime.Value < tournament.Start.Value || dtpEndDateTime.Value > tournament.End.Value)
-                    {
-                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})", 
-                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        
-                        // Reset về thời gian kết thúc của giải đấu nếu vượt quá
-                        if (dtpEndDateTime.Value > tournament.End.Value)
-                        {
-                            dtpEndDateTime.Value = tournament.End.Value;
-                        }
-                        else if (dtpEndDateTime.Value < tournament.Start.Value)
-                        {
-                            dtpEndDateTime.Value = tournament.Start.Value.AddHours(1); // Ít nhất 1 tiếng
-                        }
-                        return;
-                    }
-                }
-            }
-            
-            // Kiểm tra xem thời gian kết thúc có sau thời gian bắt đầu không
-            if (dtpEndDateTime.Value <= dtpStartDateTime.Value)
-            {
-                MessageBox.Show("Thời gian kết thúc phải sau thời gian bắt đầu", 
-                              "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                dtpEndDateTime.Value = dtpStartDateTime.Value.AddHours(1); // Ít nhất 1 tiếng sau
-                return;
-            }
         }
 
         private void btnSelectTeam1Flag_Click(object sender, EventArgs e)
