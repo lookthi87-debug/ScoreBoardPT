@@ -139,12 +139,22 @@ namespace Scoreboard
 
             if (e.KeyCode == Keys.Escape)
             {
-                for (int i = 0; i <= ucs.Count() - 1; i++)
+                // Show confirmation dialog
+                DialogResult result = MessageBox.Show(
+                    "Bạn có chắc chắn muốn thoát khỏi ứng dụng?",
+                    "Xác nhận thoát",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
                 {
-                    ucs[i].Dispose();
+                    for (int i = 0; i <= ucs.Count() - 1; i++)
+                    {
+                        ucs[i].Dispose();
+                    }
+                    ucs.Clear();
+                    this.Close();
                 }
-                ucs.Clear();
-                this.Close();
             }
             // Ẩn/hiện ghi chú
             if (e.KeyCode == Keys.D0)

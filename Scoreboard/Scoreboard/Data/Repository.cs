@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Npgsql;
+using Scoreboard.Config;
 using Scoreboard.Data;
 using Scoreboard.Models;
 
@@ -55,24 +56,6 @@ namespace Scoreboard.Data
             }
         }
 
-        public static void UpdateRole(RoleModel r)
-        {
-            using (var cmd = new NpgsqlCommand("UPDATE Roles SET name=@n WHERE id=@id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@id", r.Id);
-                cmd.Parameters.AddWithValue("@n", r.Name);
-                cmd.ExecuteNonQuery();
-            }
-        }
-
-        public static void DeleteRole(int id)
-        {
-            using (var cmd = new NpgsqlCommand("DELETE FROM Roles WHERE id=@id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
-        }
 
         // ====================================================
         // USERS
@@ -500,7 +483,7 @@ namespace Scoreboard.Data
                 SELECT 
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                     m.time, m.referee_id, u.name AS referee_name, 
-                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
+                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name, m.team1_flag, m.team2_flag
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -530,7 +513,9 @@ namespace Scoreboard.Data
                             ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
                             Status = dr.IsDBNull(12) ? null : dr.GetString(12),
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            Team1Flag = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            Team2Flag = dr.IsDBNull(16) ? null : dr.GetString(16)
                         };
 
                         // Parse multiple referees from note field if exists
@@ -550,7 +535,7 @@ namespace Scoreboard.Data
                         m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                         m.time, m.referee_id, u.name AS referee_name, 
                         m.note, m.show_toggle, m.status, m.tournament_id, t.name as tournamentname, t.match_class_id,ms.name as matchclassname,
-                        t.start as tournament_start, t.""end"" as tournament_end
+                        t.start as tournament_start, t.""end"" as tournament_end, m.team1_flag, m.team2_flag
                     FROM Matches m
                     LEFT JOIN Users u ON m.referee_id = u.id
                     LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -583,7 +568,9 @@ namespace Scoreboard.Data
                         MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
                         MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
                         TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
-                        TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
+                        TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
+                        Team1Flag = dr.IsDBNull(19) ? null : dr.GetString(19),
+                        Team2Flag = dr.IsDBNull(20) ? null : dr.GetString(20)
                     };
 
                     // Parse multiple referees from note field if exists
@@ -602,7 +589,7 @@ namespace Scoreboard.Data
                     m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
                     m.time, m.referee_id, u.fullname AS referee_name, 
                     m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name, t.match_class_id,ms.name as matchclassname,
-                    t.start as tournament_start, t.""end"" as tournament_end
+                    t.start as tournament_start, t.""end"" as tournament_end, m.team1_flag, m.team2_flag
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
@@ -637,7 +624,9 @@ namespace Scoreboard.Data
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
                             MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
                             TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
-                            TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18)
+                            TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
+                            Team1Flag = dr.IsDBNull(19) ? null : dr.GetString(19),
+                            Team2Flag = dr.IsDBNull(20) ? null : dr.GetString(20)
                         };
 
                         // Parse multiple referees from note field if exists
@@ -692,7 +681,6 @@ namespace Scoreboard.Data
                 match.RefereeNames.Add(match.RefereeName ?? "");
             }
         }
-
         // Helper method to prepare note field with multiple referees
         private static string PrepareNoteWithReferees(MatchModel m)
         {
@@ -713,13 +701,30 @@ namespace Scoreboard.Data
             return note.Trim();
         }
 
+        // Helper method to update referee information in all MatchSets for a match
+        private static void UpdateMatchSetsReferee(string matchId, int? refereeId, string refereeName)
+        {
+            string sql = @"
+                UPDATE MatchSets 
+                SET referee_id = @rid
+                WHERE match_id = @mid;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@mid", matchId);
+                cmd.Parameters.AddWithValue("@rid", refereeId.HasValue ? (object)refereeId.Value : DBNull.Value);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void AddMatch(MatchModel m)
         {
             string sql = @"
                 INSERT INTO Matches
-                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id)
+                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id, team1_flag, team2_flag)
                 VALUES
-                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid);
+                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid, @t1f, @t2f);
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -735,8 +740,10 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
-                cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -755,7 +762,9 @@ namespace Scoreboard.Data
                     note = @note,
                     show_toggle = @show,
                     status = @stt,
-                    tournament_id = @tid
+                    tournament_id = @tid,
+                    team1_flag = @t1f,
+                    team2_flag = @t2f
                 WHERE id = @id;
             ";
 
@@ -772,10 +781,15 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", PrepareNoteWithReferees(m)); // Updated to include multiple referees
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
-                cmd.Parameters.AddWithValue("@stt", m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
+
+            // Update referee_id in all MatchSets for this match
+            UpdateMatchSetsReferee(m.Id, m.RefereeId, m.RefereeName);
         }
         public static void UpdateMatchStatus(string id, string status)
         {
@@ -847,8 +861,8 @@ namespace Scoreboard.Data
                     ms.match_id,
                     m.team1,
                     m.team2,
-                    m.score1 AS total_score1,
-                    m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     m.status,
@@ -859,7 +873,9 @@ namespace Scoreboard.Data
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
-                    mtl.name as MatchClassName
+                    mtl.name as MatchClassName,
+                    m.score1,
+                    m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -885,8 +901,8 @@ namespace Scoreboard.Data
                             MatchId = dr.GetString(1),
                             Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
-                            TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                            TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Score1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Score2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
                             Time = dr.IsDBNull(6) ? null : dr.GetString(6),
                             Note = dr.IsDBNull(7) ? null : dr.GetString(7),
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
@@ -897,7 +913,9 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
+                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
                         });
                     }
                 }
@@ -914,8 +932,8 @@ namespace Scoreboard.Data
                     ms.match_id,
                     m.team1,
                     m.team2,
-                    m.score1 AS total_score1,
-                    m.score2 AS total_score2,
+                    ms.score1,
+                    ms.score2,
                     ms.time,
                     ms.note,
                     ms.status,
@@ -926,7 +944,9 @@ namespace Scoreboard.Data
                     m.tournament_id,
                     t.name AS tournament_name,
                     cs.Match_Class_Id AS MatchClassId,
-                    mtl.name as MatchClassName
+                    mtl.name as MatchClassName,
+                    m.score1,
+                    m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -952,8 +972,8 @@ namespace Scoreboard.Data
                             MatchId = dr.GetString(1),
                             Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
                             Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
-                            TotalScore1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                            TotalScore2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Score1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Score2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
                             Time = dr.IsDBNull(6) ? null : dr.GetString(6),
                             Note = dr.IsDBNull(7) ? null : dr.GetString(7),
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
@@ -964,7 +984,9 @@ namespace Scoreboard.Data
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
                             TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
                             MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
+                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
+                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
                         });
                     }
                 }
@@ -1449,7 +1471,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@et", DBNull.Value);
                 cmd.Parameters.AddWithValue("@t", m.Time ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@note", m.Note ?? (object)DBNull.Value);
-                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@csname", m.ClassSetsName ?? (object)DBNull.Value);
@@ -1478,7 +1500,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@s2", m.Score2);
                 cmd.Parameters.AddWithValue("@t", m.Time);
                 cmd.Parameters.AddWithValue("@note", m.Note);
-                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? "0");
+                cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
 
@@ -1791,7 +1813,7 @@ namespace Scoreboard.Data
                 Score2 = 0,
                 Time = "00:00",
                 Note = periodName,
-                Status = "0", // Inactive initially
+                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
                 RefereeId = refereeId,
                 RefereeName = currentMatch.RefereeName,
                 ClassSets_Id = currentMatch.ClassSets_Id,
@@ -1821,7 +1843,7 @@ namespace Scoreboard.Data
                 Score2 = 0,
                 Time = "00:00",
                 Note = "Đá penalty",
-                Status = "0", // Inactive initially
+                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
                 RefereeId = refereeId,
                 RefereeName = match.RefereeName,
                 ClassSets_Id = null, // Special period
@@ -1896,17 +1918,6 @@ namespace Scoreboard.Data
             }
         }
 
-        public static int CountMatchSetByMatchSetId(string matchSetId)
-        {
-            string countSql = "SELECT COUNT(*) FROM Matchsets WHERE id = @id";
-
-            using (var cmdCount = new NpgsqlCommand(countSql, Conn))
-            {
-                int count = Convert.ToInt32(cmdCount.ExecuteScalar());
-
-                return count;
-            }
-        }
 
         // ====================================================
         // REFEREE AVAILABILITY CHECK
@@ -1953,13 +1964,125 @@ namespace Scoreboard.Data
                     var user = GetUserById(refereeId);
                     if (user != null)
                     {
-                        busyReferees.Add(user.Name);
+                        busyReferees.Add(user.Fullname);
                     }
                 }
             }
             
             return busyReferees;
         }
+
+        /// <summary>
+        /// Kiểm tra trọng tài có bận trong khoảng thời gian cụ thể không
+        /// </summary>
+        /// <param name="refereeId">ID trọng tài</param>
+        /// <param name="startTime">Thời gian bắt đầu</param>
+        /// <param name="endTime">Thời gian kết thúc</param>
+        /// <returns>True nếu trọng tài bận trong khoảng thời gian này</returns>
+        public static bool IsRefereeBusyInTimeRange(int refereeId, DateTime startTime, DateTime endTime)
+        {
+            string sql = @"
+                SELECT COUNT(*) 
+                FROM MatchSets 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+                  AND (
+                      (start <= @startTime AND ""end"" >= @startTime) OR
+                      (start <= @endTime AND ""end"" >= @endTime) OR
+                      (start >= @startTime AND ""end"" <= @endTime)
+                  )
+                UNION ALL
+                SELECT COUNT(*) 
+                FROM Matches 
+                WHERE referee_id = @refereeId 
+                  AND status = '1'
+                  AND (
+                      (start <= @startTime AND ""end"" >= @startTime) OR
+                      (start <= @endTime AND ""end"" >= @endTime) OR
+                      (start >= @startTime AND ""end"" <= @endTime)
+                  )
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@refereeId", refereeId);
+                cmd.Parameters.AddWithValue("@startTime", startTime);
+                cmd.Parameters.AddWithValue("@endTime", endTime);
+                
+                int busyCount = 0;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        busyCount += reader.GetInt32(0);
+                    }
+                }
+                
+                return busyCount > 0;
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh sách trọng tài bận trong khoảng thời gian cụ thể
+        /// </summary>
+        /// <param name="refereeIds">Danh sách ID trọng tài</param>
+        /// <param name="startTime">Thời gian bắt đầu</param>
+        /// <param name="endTime">Thời gian kết thúc</param>
+        /// <returns>Danh sách tên trọng tài bận</returns>
+        public static List<string> GetBusyRefereesInfoInTimeRange(List<int> refereeIds, DateTime startTime, DateTime endTime)
+        {
+            var busyReferees = new List<string>();
+            
+            foreach (var refereeId in refereeIds)
+            {
+                if (IsRefereeBusyInTimeRange(refereeId, startTime, endTime))
+                {
+                    var user = GetUserById(refereeId);
+                    if (user != null)
+                    {
+                        busyReferees.Add(user.Fullname);
+                    }
+                }
+            }
+            
+            return busyReferees;
+        }
+        // ====================================================
+        // AUTO MATCH TIMEOUT MANAGEMENT
+        // ====================================================
+        /// <summary>
+        /// Tự động chuyển các trận đấu đang hoạt động quá 4 tiếng về trạng thái "Đã kết thúc"
+        /// </summary>
+        public static void AutoEndMatchesAfterTimeout()
+        {
+            try
+            {
+                // Tìm các trận đấu đang hoạt động (status = '1') và đã bắt đầu quá 4 tiếng
+                string sql = @"
+                    UPDATE Matches 
+                    SET status = '2', ""end"" = NOW()
+                    WHERE status = '1' 
+                      AND start IS NOT NULL 
+                      AND start <= NOW() - INTERVAL '4 hours';
+                ";
+
+                using (var cmd = new NpgsqlCommand(sql, Conn))
+                {
+                    int affectedRows = cmd.ExecuteNonQuery();
+                    
+                    if (affectedRows > 0)
+                    {
+                        // Log hoạt động này
+                        System.Diagnostics.Debug.WriteLine($"Đã tự động chuyển {affectedRows} trận đấu về trạng thái 'Đã kết thúc' sau 4 tiếng");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Lỗi khi tự động kết thúc trận đấu: {ex.Message}");
+            }
+        }
+
         // ====================================================
         // SYSTEMSECRS
         // ====================================================

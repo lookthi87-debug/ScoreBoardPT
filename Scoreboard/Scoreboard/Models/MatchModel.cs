@@ -15,8 +15,8 @@ namespace Scoreboard.Models
         public string Time { get; set; }
         public int? RefereeId { get; set; }
         public string RefereeName { get; set; }
-        public List<int> RefereeIds { get; set; } = new List<int>(); // For multiple referees
-        public List<string> RefereeNames { get; set; } = new List<string>(); // For multiple referee names
+        public List<int> RefereeIds { get; set; } = new List<int>(); // Cho nhiều trọng tài
+        public List<string> RefereeNames { get; set; } = new List<string>(); // Cho tên nhiều trọng tài
         public string Note { get; set; }
         public int ShowToggle { get; set; }
         public string Status { get; set; }
@@ -26,5 +26,7 @@ namespace Scoreboard.Models
         public string MatchClassName { get; set; }
         public DateTime? TournamentStart { get; set; }
         public DateTime? TournamentEnd { get; set; }
+        public string Team1Flag { get; set; }
+        public string Team2Flag { get; set; }
     }
 }

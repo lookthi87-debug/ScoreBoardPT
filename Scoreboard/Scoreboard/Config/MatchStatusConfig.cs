@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace Scoreboard.Config
 {
     /// <summary>
-    /// Configuration class for match status constants
+    /// Lớp cấu hình cho các hằng số trạng thái trận đấu
     /// </summary>
     public static class MatchStatusConfig
     {
         /// <summary>
-        /// Match status constants
+        /// Hằng số trạng thái trận đấu
         /// </summary>
         public static class Status
         {
@@ -19,7 +19,7 @@ namespace Scoreboard.Config
         }
 
         /// <summary>
-        /// Match status descriptions in Vietnamese
+        /// Mô tả trạng thái trận đấu bằng tiếng Việt
         /// </summary>
         public static class StatusText
         {
@@ -29,7 +29,7 @@ namespace Scoreboard.Config
         }
 
         /// <summary>
-        /// Dictionary mapping status codes to Vietnamese text
+        /// Từ điển ánh xạ mã trạng thái sang văn bản tiếng Việt
         /// </summary>
         public static readonly Dictionary<string, string> StatusTextMap = new Dictionary<string, string>
         {
@@ -39,20 +39,20 @@ namespace Scoreboard.Config
         };
 
         /// <summary>
-        /// Get status text by status code
+        /// Lấy văn bản trạng thái theo mã trạng thái
         /// </summary>
-        /// <param name="statusCode">Status code (0, 1, 2)</param>
-        /// <returns>Vietnamese status text</returns>
+        /// <param name="statusCode">Mã trạng thái (0, 1, 2)</param>
+        /// <returns>Văn bản trạng thái tiếng Việt</returns>
         public static string GetStatusText(string statusCode)
         {
             return StatusTextMap.TryGetValue(statusCode ?? "0", out string text) ? text : "Không xác định";
         }
 
         /// <summary>
-        /// Get status text by status code with null handling
+        /// Lấy văn bản trạng thái theo đối tượng trạng thái với xử lý null
         /// </summary>
-        /// <param name="statusObj">Status object (can be null)</param>
-        /// <returns>Vietnamese status text</returns>
+        /// <param name="statusObj">Đối tượng trạng thái (có thể null)</param>
+        /// <returns>Văn bản trạng thái tiếng Việt</returns>
         public static string GetStatusText(object statusObj)
         {
             var status = statusObj?.ToString() ?? Status.NotStarted;
@@ -60,28 +60,28 @@ namespace Scoreboard.Config
         }
 
         /// <summary>
-        /// Check if status is valid
+        /// Kiểm tra xem trạng thái có hợp lệ không
         /// </summary>
-        /// <param name="statusCode">Status code to check</param>
-        /// <returns>True if valid status code</returns>
+        /// <param name="statusCode">Mã trạng thái cần kiểm tra</param>
+        /// <returns>True nếu là mã trạng thái hợp lệ</returns>
         public static bool IsValidStatus(string statusCode)
         {
             return StatusTextMap.ContainsKey(statusCode ?? "0");
         }
 
         /// <summary>
-        /// Get all available status codes
+        /// Lấy tất cả các mã trạng thái có sẵn
         /// </summary>
-        /// <returns>Array of status codes</returns>
+        /// <returns>Mảng các mã trạng thái</returns>
         public static string[] GetAllStatusCodes()
         {
             return new string[] { Status.NotStarted, Status.InProgress, Status.Finished };
         }
 
         /// <summary>
-        /// Get all status options for ComboBox
+        /// Lấy tất cả các tùy chọn trạng thái cho ComboBox
         /// </summary>
-        /// <returns>Array of anonymous objects with Text and Value properties</returns>
+        /// <returns>Mảng các đối tượng ẩn danh với thuộc tính Text và Value</returns>
         public static object[] GetStatusOptions()
         {
             return new object[]
@@ -93,30 +93,30 @@ namespace Scoreboard.Config
         }
 
         /// <summary>
-        /// Check if match is active (in progress)
+        /// Kiểm tra xem trận đấu có đang hoạt động (đang diễn ra) không
         /// </summary>
-        /// <param name="statusCode">Status code to check</param>
-        /// <returns>True if match is active</returns>
+        /// <param name="statusCode">Mã trạng thái cần kiểm tra</param>
+        /// <returns>True nếu trận đấu đang hoạt động</returns>
         public static bool IsActive(string statusCode)
         {
             return statusCode == Status.InProgress;
         }
 
         /// <summary>
-        /// Check if match is finished
+        /// Kiểm tra xem trận đấu đã kết thúc chưa
         /// </summary>
-        /// <param name="statusCode">Status code to check</param>
-        /// <returns>True if match is finished</returns>
+        /// <param name="statusCode">Mã trạng thái cần kiểm tra</param>
+        /// <returns>True nếu trận đấu đã kết thúc</returns>
         public static bool IsFinished(string statusCode)
         {
             return statusCode == Status.Finished;
         }
 
         /// <summary>
-        /// Check if match is not started
+        /// Kiểm tra xem trận đấu chưa bắt đầu chưa
         /// </summary>
-        /// <param name="statusCode">Status code to check</param>
-        /// <returns>True if match is not started</returns>
+        /// <param name="statusCode">Mã trạng thái cần kiểm tra</param>
+        /// <returns>True nếu trận đấu chưa bắt đầu</returns>
         public static bool IsNotStarted(string statusCode)
         {
             return statusCode == Status.NotStarted;
