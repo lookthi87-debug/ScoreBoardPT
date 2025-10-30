@@ -14,9 +14,6 @@
     <Compile Update="Forms\AddUserDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="Forms\AdminForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Update="Forms\ChangePassForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -24,6 +21,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Forms\MainMDIForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Forms\MatchsForm.cs">
@@ -53,6 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Forms\LoginForm.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Forms\MatchsForm.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>

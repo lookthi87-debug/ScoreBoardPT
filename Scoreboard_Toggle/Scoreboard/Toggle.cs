@@ -23,7 +23,7 @@ namespace Scoreboard
         public Toggle()
         {
             InitializeComponent();
-           // this.WindowState = FormWindowState.Maximized;
+            this.WindowState = FormWindowState.Maximized;
             this.KeyPreview = true;
             this.KeyDown += MainForm_KeyDown;
 

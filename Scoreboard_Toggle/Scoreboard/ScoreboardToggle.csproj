@@ -5,10 +5,10 @@
     <AssemblyName>Scoreboard</AssemblyName>
     <RootNamespace>Scoreboard</RootNamespace>
     <OutputType>WinExe</OutputType>
-    <ApplicationIcon>icon (1).ico</ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="icon (1).ico" />
+    <Content Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
