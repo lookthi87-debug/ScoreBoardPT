@@ -114,8 +114,8 @@ namespace Scoreboard
             // 
             this.dgGiaiDau.AllowUserToAddRows = false;
             this.dgGiaiDau.AllowUserToDeleteRows = false;
-            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgGiaiDau.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgGiaiDau.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgGiaiDau.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
@@ -374,7 +374,7 @@ namespace Scoreboard
             // 
             this.dgvDetail.AllowUserToAddRows = false;
             this.dgvDetail.AllowUserToDeleteRows = false;
-            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDetail.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDetail.BackgroundColor = System.Drawing.SystemColors.ActiveCaption;
@@ -559,7 +559,7 @@ namespace Scoreboard
             // lvActiveMatch
             // 
             this.lvActiveMatch.AllowDrop = true;
-            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvActiveMatch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvActiveMatch.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
@@ -821,7 +821,7 @@ namespace Scoreboard
                 if (idObj == null) return;
 
                 var mTemp = Repository.GetMatchById(idObj.ToString());
-
+                if (mTemp == null) return;
                 if (mTemp.Status == MatchStatusConfig.Status.Finished)
                 {
                     btnDeleteMatch.Enabled = false;
@@ -1017,7 +1017,7 @@ namespace Scoreboard
                     row.DefaultCellStyle.BackColor = System.Drawing.Color.White;
                     row.Tag = null;
 
-                    if (status == "1")
+                    if (status == MatchStatusConfig.Status.InProgress)
                     {
                         var mc = Repository.GetMatchById(id);
                         if (mc != null)
@@ -1037,7 +1037,7 @@ namespace Scoreboard
                                 showList.Add((id, mc.ShowToggle));
                         }
                     }
-                    else if (status == "2")
+                    else if (status == MatchStatusConfig.Status.Finished)
                     {
                         // Đã kết thúc trận đấu
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.LightGray;
@@ -1102,7 +1102,7 @@ namespace Scoreboard
 
             // Kiểm tra có hiệp nào đang status = 1 không
             var details = Repository.GetMatchSetsByMatchId(matchId);
-            bool hasActiveSet = details.Any(d => d.Status != "2");
+            bool hasActiveSet = details.Any(d => d.Status != MatchStatusConfig.Status.Finished);
             if (!hasActiveSet)
             {
                 MessageBox.Show("Trận này chưa có hiệp nào đang diễn ra (status = 1).");
@@ -1222,13 +1222,13 @@ namespace Scoreboard
 
             // Cập nhật status = 1 (đang hoạt động)
             row.Cells["ShowToggle"].Value = 1;
-            match.Status = "1";
+            match.Status = MatchStatusConfig.Status.InProgress;
             Repository.UpdateMatch(match);
 
             MatchsetModel ms = Repository.GetNoActiveMatchSetsByMatchId(matchId);
             if (ms != null)
             {
-                ms.Status = "1";
+                ms.Status = MatchStatusConfig.Status.InProgress;
                 Repository.UpdateMatchSetStatus(matchId, ms.Id, ms.Status);
             }
 
@@ -1300,7 +1300,7 @@ namespace Scoreboard
                             currentRow++;
                         }
 
-                        stt ++;
+                        stt++;
                         // Ghi dòng chính (trận đấu)
                         ws.Cells[currentRow, 1] = stt;
                         ws.Cells[currentRow, 2] = (match.Team1 ?? "") + " vs " + (match.Team2 ?? "");
@@ -1311,7 +1311,7 @@ namespace Scoreboard
                         ws.Cells[currentRow, 7] = match.RefereeName ?? "";
                         ws.Cells[currentRow, 8] = match.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
                                                   match.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
-                                                  match.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished): match.Status;
+                                                  match.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished) : match.Status;
 
 
 
@@ -1339,13 +1339,13 @@ namespace Scoreboard
                                 {
                                     ws.Cells[currentRow, 8] = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
                                 }
-                                else 
-                                { 
+                                else
+                                {
                                     ws.Cells[currentRow, 8] = d.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
                                                               d.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
                                                               d.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished) : d.Status;
                                 }
-                                    
+
                                 Excel.Range detailRange = ws.Range[ws.Cells[currentRow, 1], ws.Cells[currentRow, 8]];
                                 detailRange.Borders.LineStyle = Excel.XlLineStyle.xlContinuous;
                                 currentRow++;
@@ -1376,7 +1376,7 @@ namespace Scoreboard
         {
             if (cbTournaments.SelectedValue == null)
             {
-                MessageBox.Show("Chưa có giải đấu nào.","Hãy tạo giải đấu", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Chưa có giải đấu nào.", "Hãy tạo giải đấu", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             AddUpdateMatch mgAdd = new AddUpdateMatch(int.Parse(cbTournaments.SelectedValue.ToString()));
@@ -1393,13 +1393,13 @@ namespace Scoreboard
             int index = e.RowIndex;
 
             var statusObj = dgGiaiDau.Rows[index].Cells["Status"].Value;
-            var status = statusObj?.ToString() ?? "0";
+            var status = statusObj?.ToString() ?? MatchStatusConfig.Status.NotStarted;
             if (status == MatchStatusConfig.GetStatusText(2))
             {
                 MessageBox.Show("Trận đấu đã kết thúc. Không thể sửa.", "Xác nhận chỉnh sửa");
                 return;
             }
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 DialogResult rs = MessageBox.Show("Trận đấu đang hoạt động! Bạn có chắc chắn muốn sửa không?", "Xác nhận chỉnh sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (rs == DialogResult.No)
@@ -1430,7 +1430,7 @@ namespace Scoreboard
 
             int colstatus = dgvDetail.CurrentRow.DataGridView.Columns["status2"].Index;
             string status = dgvDetail.CurrentRow.Cells[colstatus].Value.ToString();
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 MessageBox.Show($"Hiệp/set đấu đang hoạt động! Không thể xóa!");
                 return;
@@ -1455,11 +1455,11 @@ namespace Scoreboard
         private void btnDeleteMatch_Click(object sender, EventArgs e)
         {
             if (dgGiaiDau.CurrentRow == null) return;
-            if (dgGiaiDau.Rows.Count == 0 ) return;
+            if (dgGiaiDau.Rows.Count == 0) return;
 
             string id = dgGiaiDau.CurrentRow.Cells["Id"].Value.ToString();
             string status = dgGiaiDau.CurrentRow.Cells["status"].Value.ToString();
-            if (status == "1")
+            if (status == MatchStatusConfig.Status.InProgress)
             {
                 MessageBox.Show($"Trận đấu đang hoạt động! Không thể xóa!");
                 return;
@@ -1481,7 +1481,7 @@ namespace Scoreboard
                         LoadDetailsForSelectedMatch(index);
                     }
                 }
-               
+
                 MessageBox.Show("Xóa trận đấu thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadListMatchActive();
             }
@@ -1508,10 +1508,11 @@ namespace Scoreboard
             try
             {
                 lvActiveMatch.Items.Clear();
-                List<MatchModel> activeMatches = Repository.GetMatchesByStatus("2", false);
+                List<MatchModel> activeMatches = Repository.GetMatchesByStatus(MatchStatusConfig.Status.Finished, false);
                 foreach (var match in activeMatches)
                 {
-                    var li = new ListViewItem($"{match.Team1} vs {match.Team2}   -   {match.RefereeName}")
+                    string startTime = match.Start.HasValue ? match.Start.Value.ToString("dd/MM HH:mm") : "N/A";
+                    var li = new ListViewItem($"{match.Team1} vs {match.Team2} - {match.RefereeName} - {startTime}")
                     {
                         Tag = match.Id
                     };

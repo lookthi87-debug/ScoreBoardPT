@@ -28,9 +28,7 @@
     <PackageReference Include="System.Resources.Extensions" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Forms\AddUpdateMatch.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Forms\AddUpdateMatch.cs" />
     <Compile Update="Forms\AddUpdateTournaments.cs">
       <SubType>Form</SubType>
     </Compile>

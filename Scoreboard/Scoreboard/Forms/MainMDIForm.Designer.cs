@@ -44,58 +44,58 @@
             this.mDB});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1000, 26);
+            this.menuStrip1.Size = new System.Drawing.Size(1000, 24);
             this.menuStrip1.TabIndex = 1;
             // 
             // menuTournaments
             // 
-            this.menuTournaments.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuTournaments.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuTournaments.ForeColor = System.Drawing.Color.Blue;
             this.menuTournaments.Name = "menuTournaments";
-            this.menuTournaments.Size = new System.Drawing.Size(90, 22);
+            this.menuTournaments.Size = new System.Drawing.Size(84, 20);
             this.menuTournaments.Text = "⚽ Giải đấu";
             this.menuTournaments.Click += new System.EventHandler(this.menuTournaments_Click);
             // 
             // menuMatches
             // 
-            this.menuMatches.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F);
+            this.menuMatches.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.menuMatches.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.menuMatches.Name = "menuMatches";
-            this.menuMatches.Size = new System.Drawing.Size(93, 22);
+            this.menuMatches.Size = new System.Drawing.Size(88, 20);
             this.menuMatches.Text = "🏆 Trận đấu";
             this.menuMatches.Click += new System.EventHandler(this.menuMatches_Click);
             // 
             // menuUsers
             // 
-            this.menuUsers.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F);
+            this.menuUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.menuUsers.Name = "menuUsers";
-            this.menuUsers.Size = new System.Drawing.Size(108, 22);
+            this.menuUsers.Size = new System.Drawing.Size(103, 20);
             this.menuUsers.Text = "👤 Người dùng";
             this.menuUsers.Click += new System.EventHandler(this.menuUsers_Click);
             // 
             // menuLogout
             // 
             this.menuLogout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.menuLogout.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F);
+            this.menuLogout.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.menuLogout.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.menuLogout.Name = "menuLogout";
-            this.menuLogout.Size = new System.Drawing.Size(101, 22);
+            this.menuLogout.Size = new System.Drawing.Size(93, 20);
             this.menuLogout.Text = "🚪 Đăng xuất";
             this.menuLogout.Click += new System.EventHandler(this.menuLogout_Click);
             // 
             // mLicense
             // 
-            this.mLicense.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F);
+            this.mLicense.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.mLicense.ForeColor = System.Drawing.Color.Orange;
             this.mLicense.Name = "mLicense";
-            this.mLicense.Size = new System.Drawing.Size(161, 22);
+            this.mLicense.Size = new System.Drawing.Size(155, 20);
             this.mLicense.Text = "🔑 Bản quyền / License";
             this.mLicense.Click += new System.EventHandler(this.mLicense_Click);
             // 
             // mDB
             // 
             this.mDB.Name = "mDB";
-            this.mDB.Size = new System.Drawing.Size(94, 22);
+            this.mDB.Size = new System.Drawing.Size(94, 20);
             this.mDB.Text = "⚙️ Cấu hình DB";
             this.mDB.Click += new System.EventHandler(this.mDB_Click);
             // 
@@ -110,7 +110,7 @@
             this.IsMdiContainer = true;
             this.Name = "MainMDIForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Scoreboard - Trang chính";
+            this.Text = "````````````````````````````````````";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainMDIForm_Load);
             this.menuStrip1.ResumeLayout(false);
