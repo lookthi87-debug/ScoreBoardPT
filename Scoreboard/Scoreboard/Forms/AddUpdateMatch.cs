@@ -13,10 +13,12 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Xml.Linq;
 using System.Globalization;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 
 namespace Scoreboard
 {
-    public class AddUpdateMatch : MaterialForm
+    public class AddUpdateMatch : Form
     {
         private System.Windows.Forms.TextBox txtTeam1;
         private System.Windows.Forms.TextBox txtTeam2;
@@ -61,7 +63,7 @@ namespace Scoreboard
             // txtTeam1
             // 
             this.txtTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTeam1.Location = new System.Drawing.Point(148, 122);
+            this.txtTeam1.Location = new System.Drawing.Point(149, 74);
             this.txtTeam1.MaxLength = 100;
             this.txtTeam1.Name = "txtTeam1";
             this.txtTeam1.Size = new System.Drawing.Size(303, 26);
@@ -71,7 +73,7 @@ namespace Scoreboard
             // 
             this.lblTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam1.ForeColor = System.Drawing.Color.Blue;
-            this.lblTeam1.Location = new System.Drawing.Point(229, 69);
+            this.lblTeam1.Location = new System.Drawing.Point(230, 21);
             this.lblTeam1.Name = "lblTeam1";
             this.lblTeam1.Size = new System.Drawing.Size(124, 50);
             this.lblTeam1.TabIndex = 2;
@@ -81,7 +83,7 @@ namespace Scoreboard
             // txtTeam2
             // 
             this.txtTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTeam2.Location = new System.Drawing.Point(466, 122);
+            this.txtTeam2.Location = new System.Drawing.Point(467, 74);
             this.txtTeam2.MaxLength = 100;
             this.txtTeam2.Name = "txtTeam2";
             this.txtTeam2.Size = new System.Drawing.Size(303, 26);
@@ -91,7 +93,7 @@ namespace Scoreboard
             // 
             this.lblTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam2.ForeColor = System.Drawing.Color.Blue;
-            this.lblTeam2.Location = new System.Drawing.Point(553, 69);
+            this.lblTeam2.Location = new System.Drawing.Point(554, 21);
             this.lblTeam2.Name = "lblTeam2";
             this.lblTeam2.Size = new System.Drawing.Size(124, 50);
             this.lblTeam2.TabIndex = 4;
@@ -101,7 +103,8 @@ namespace Scoreboard
             // lblName
             // 
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(32, 122);
+            this.lblName.ForeColor = System.Drawing.Color.Black;
+            this.lblName.Location = new System.Drawing.Point(33, 74);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(110, 29);
             this.lblName.TabIndex = 7;
@@ -116,7 +119,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(252, 465);
+            this.btnCancel.Location = new System.Drawing.Point(253, 417);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -136,7 +139,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(426, 465);
+            this.btnSave.Location = new System.Drawing.Point(427, 417);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -151,7 +154,8 @@ namespace Scoreboard
             // lblTrongTai
             // 
             this.lblTrongTai.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrongTai.Location = new System.Drawing.Point(32, 158);
+            this.lblTrongTai.ForeColor = System.Drawing.Color.Black;
+            this.lblTrongTai.Location = new System.Drawing.Point(33, 110);
             this.lblTrongTai.Name = "lblTrongTai";
             this.lblTrongTai.Size = new System.Drawing.Size(110, 29);
             this.lblTrongTai.TabIndex = 20;
@@ -163,7 +167,7 @@ namespace Scoreboard
             this.clbReferees.DisplayMember = "Fullname";
             this.clbReferees.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.clbReferees.FormattingEnabled = true;
-            this.clbReferees.Location = new System.Drawing.Point(148, 158);
+            this.clbReferees.Location = new System.Drawing.Point(149, 110);
             this.clbReferees.Name = "clbReferees";
             this.clbReferees.Size = new System.Drawing.Size(426, 109);
             this.clbReferees.TabIndex = 7;
@@ -174,7 +178,7 @@ namespace Scoreboard
             // 
             this.lblMatch_Id.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.lblMatch_Id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMatch_Id.Location = new System.Drawing.Point(710, 78);
+            this.lblMatch_Id.Location = new System.Drawing.Point(711, 30);
             this.lblMatch_Id.Name = "lblMatch_Id";
             this.lblMatch_Id.Size = new System.Drawing.Size(27, 23);
             this.lblMatch_Id.TabIndex = 30;
@@ -185,7 +189,8 @@ namespace Scoreboard
             // lblNote
             // 
             this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(32, 325);
+            this.lblNote.ForeColor = System.Drawing.Color.Black;
+            this.lblNote.Location = new System.Drawing.Point(33, 277);
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(110, 29);
             this.lblNote.TabIndex = 37;
@@ -195,7 +200,7 @@ namespace Scoreboard
             // txtnote
             // 
             this.txtnote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtnote.Location = new System.Drawing.Point(148, 325);
+            this.txtnote.Location = new System.Drawing.Point(149, 277);
             this.txtnote.Multiline = true;
             this.txtnote.Name = "txtnote";
             this.txtnote.Size = new System.Drawing.Size(621, 94);
@@ -204,7 +209,8 @@ namespace Scoreboard
             // lblStartTime
             // 
             this.lblStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartTime.Location = new System.Drawing.Point(32, 290);
+            this.lblStartTime.ForeColor = System.Drawing.Color.Black;
+            this.lblStartTime.Location = new System.Drawing.Point(33, 242);
             this.lblStartTime.Name = "lblStartTime";
             this.lblStartTime.Size = new System.Drawing.Size(110, 29);
             this.lblStartTime.TabIndex = 36;
@@ -216,7 +222,7 @@ namespace Scoreboard
             this.dtpStartTime.CustomFormat = "HH:mm";
             this.dtpStartTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dtpStartTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStartTime.Location = new System.Drawing.Point(148, 290);
+            this.dtpStartTime.Location = new System.Drawing.Point(149, 242);
             this.dtpStartTime.Name = "dtpStartTime";
             this.dtpStartTime.ShowUpDown = true;
             this.dtpStartTime.Size = new System.Drawing.Size(108, 26);
@@ -225,7 +231,8 @@ namespace Scoreboard
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(32, 425);
+            this.lblStatus.ForeColor = System.Drawing.Color.Black;
+            this.lblStatus.Location = new System.Drawing.Point(33, 377);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(110, 29);
             this.lblStatus.TabIndex = 38;
@@ -237,14 +244,15 @@ namespace Scoreboard
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(148, 425);
+            this.cbStatus.Location = new System.Drawing.Point(149, 377);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(200, 28);
             this.cbStatus.TabIndex = 10;
             // 
             // AddUpdateMatch
             // 
-            this.ClientSize = new System.Drawing.Size(787, 520);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(787, 480);
             this.Controls.Add(this.cbStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblNote);
@@ -261,15 +269,17 @@ namespace Scoreboard
             this.Controls.Add(this.lblTeam2);
             this.Controls.Add(this.txtTeam1);
             this.Controls.Add(this.lblTeam1);
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddUpdateMatch";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thông tin trận đấu";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddUpdateMatch_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -624,6 +634,29 @@ namespace Scoreboard
             {
                 return "Hiệp 1";
             }
+        }
+
+        private void AddUpdateMatch_Paint(object sender, PaintEventArgs e)
+        {
+            int radius = 30; // bo góc
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Bo góc form
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(this.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(this.Width - radius, this.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, this.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            // Áp dụng bo góc
+            this.Region = new Region(path);
+
+            // Viền nhẹ (giống web)
+            using (Pen borderPen = new Pen(Color.LightGray, 1))
+                g.DrawPath(borderPen, path);
         }
     }
 }

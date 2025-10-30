@@ -1,4 +1,6 @@
 using System;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -8,7 +10,7 @@ using Scoreboard.Models;
 
 namespace Scoreboard
 {
-    public class AddUserDialog : MaterialForm
+    public class AddUserDialog : Form
     {
         private int? editingUserId;
 
@@ -68,7 +70,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(366, 286);
+            this.btnSave.Location = new System.Drawing.Point(384, 224);
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -88,7 +90,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(170, 286);
+            this.btnCancel.Location = new System.Drawing.Point(188, 224);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -103,7 +105,7 @@ namespace Scoreboard
             // txtUser
             // 
             this.txtUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtUser.Location = new System.Drawing.Point(169, 92);
+            this.txtUser.Location = new System.Drawing.Point(187, 30);
             this.txtUser.MaxLength = 100;
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(217, 29);
@@ -112,7 +114,7 @@ namespace Scoreboard
             // lblUser
             // 
             this.lblUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.Location = new System.Drawing.Point(11, 92);
+            this.lblUser.Location = new System.Drawing.Point(29, 30);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(152, 23);
             this.lblUser.TabIndex = 8;
@@ -126,7 +128,7 @@ namespace Scoreboard
             this.cbRole.Items.AddRange(new object[] {
             "Addmin",
             "User"});
-            this.cbRole.Location = new System.Drawing.Point(169, 227);
+            this.cbRole.Location = new System.Drawing.Point(187, 165);
             this.cbRole.Name = "cbRole";
             this.cbRole.Size = new System.Drawing.Size(217, 29);
             this.cbRole.TabIndex = 2;
@@ -134,7 +136,7 @@ namespace Scoreboard
             // lblTrongTai
             // 
             this.lblTrongTai.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTrongTai.Location = new System.Drawing.Point(53, 227);
+            this.lblTrongTai.Location = new System.Drawing.Point(71, 165);
             this.lblTrongTai.Name = "lblTrongTai";
             this.lblTrongTai.Size = new System.Drawing.Size(110, 23);
             this.lblTrongTai.TabIndex = 22;
@@ -144,7 +146,7 @@ namespace Scoreboard
             // txtName
             // 
             this.txtName.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtName.Location = new System.Drawing.Point(169, 124);
+            this.txtName.Location = new System.Drawing.Point(187, 62);
             this.txtName.MaxLength = 150;
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(492, 29);
@@ -153,7 +155,7 @@ namespace Scoreboard
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(11, 124);
+            this.label1.Location = new System.Drawing.Point(29, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(152, 23);
             this.label1.TabIndex = 24;
@@ -164,7 +166,7 @@ namespace Scoreboard
             // 
             this.cReset.AutoSize = true;
             this.cReset.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.cReset.Location = new System.Drawing.Point(407, 231);
+            this.cReset.Location = new System.Drawing.Point(425, 169);
             this.cReset.Name = "cReset";
             this.cReset.Size = new System.Drawing.Size(144, 25);
             this.cReset.TabIndex = 3;
@@ -174,7 +176,7 @@ namespace Scoreboard
             // lblPassDefault
             // 
             this.lblPassDefault.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassDefault.Location = new System.Drawing.Point(529, 98);
+            this.lblPassDefault.Location = new System.Drawing.Point(567, 20);
             this.lblPassDefault.Name = "lblPassDefault";
             this.lblPassDefault.Size = new System.Drawing.Size(10, 23);
             this.lblPassDefault.TabIndex = 25;
@@ -185,7 +187,7 @@ namespace Scoreboard
             // txtPhone
             // 
             this.txtPhone.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtPhone.Location = new System.Drawing.Point(169, 157);
+            this.txtPhone.Location = new System.Drawing.Point(187, 95);
             this.txtPhone.MaxLength = 30;
             this.txtPhone.Name = "txtPhone";
             this.txtPhone.Size = new System.Drawing.Size(217, 29);
@@ -194,7 +196,7 @@ namespace Scoreboard
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(11, 157);
+            this.label2.Location = new System.Drawing.Point(29, 95);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(152, 23);
             this.label2.TabIndex = 27;
@@ -204,7 +206,7 @@ namespace Scoreboard
             // txtEmail
             // 
             this.txtEmail.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtEmail.Location = new System.Drawing.Point(169, 192);
+            this.txtEmail.Location = new System.Drawing.Point(187, 130);
             this.txtEmail.MaxLength = 150;
             this.txtEmail.Name = "txtEmail";
             this.txtEmail.Size = new System.Drawing.Size(492, 29);
@@ -213,7 +215,7 @@ namespace Scoreboard
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(11, 192);
+            this.label3.Location = new System.Drawing.Point(29, 130);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(152, 23);
             this.label3.TabIndex = 29;
@@ -224,7 +226,7 @@ namespace Scoreboard
             // 
             this.lblId.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.lblId.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblId.Location = new System.Drawing.Point(609, 73);
+            this.lblId.Location = new System.Drawing.Point(611, 30);
             this.lblId.Name = "lblId";
             this.lblId.Size = new System.Drawing.Size(27, 23);
             this.lblId.TabIndex = 30;
@@ -234,7 +236,7 @@ namespace Scoreboard
             // 
             // AddUserDialog
             // 
-            this.ClientSize = new System.Drawing.Size(688, 351);
+            this.ClientSize = new System.Drawing.Size(688, 303);
             this.Controls.Add(this.lblId);
             this.Controls.Add(this.txtEmail);
             this.Controls.Add(this.label3);
@@ -250,15 +252,16 @@ namespace Scoreboard
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.txtUser);
             this.Controls.Add(this.lblUser);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddUserDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thông tin user";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddUserDialog_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -402,6 +405,29 @@ namespace Scoreboard
         private void btnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void AddUserDialog_Paint(object sender, PaintEventArgs e)
+        {
+            int radius = 30; // bo góc
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Bo góc form
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(this.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(this.Width - radius, this.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, this.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            // Áp dụng bo góc
+            this.Region = new Region(path);
+
+            // Viền nhẹ (giống web)
+            using (Pen borderPen = new Pen(Color.LightGray, 1))
+                g.DrawPath(borderPen, path);
         }
     }
 }

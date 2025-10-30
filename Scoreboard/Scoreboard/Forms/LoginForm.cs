@@ -1,14 +1,17 @@
 using System;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Data;
 using Scoreboard.Models;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Scoreboard
 {
-    public class LoginForm : MaterialForm
+    public class LoginForm : Form
     {
         private TextBox txtUserName;
         private Label lblUser;
@@ -18,14 +21,15 @@ namespace Scoreboard
         private LinkLabel linkMiss;
         private LinkLabel linkChangePass;
         private MaterialButton btnLogin;
-        private PictureBox pDB;
-        private UserModel User;
-        private LinkLabel lblLicense;
+        public UserModel User;
         private Timer pingTimer = new Timer();
-        public LoginForm()
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel1;
+        private MainMDIForm mainForm;
+        public LoginForm(MainMDIForm parent)
         {
             InitializeComponent();
-            this.pDB.Image = global::Scoreboard.Properties.Resources.DB;
+            mainForm = parent;
         }
         private void InitializeComponent()
         {
@@ -38,15 +42,16 @@ namespace Scoreboard
             this.btnLogin = new MaterialSkin.Controls.MaterialButton();
             this.linkMiss = new System.Windows.Forms.LinkLabel();
             this.linkChangePass = new System.Windows.Forms.LinkLabel();
-            this.pDB = new System.Windows.Forms.PictureBox();
-            this.lblLicense = new System.Windows.Forms.LinkLabel();
-            ((System.ComponentModel.ISupportInitialize)(this.pDB)).BeginInit();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtUserName
             // 
             this.txtUserName.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtUserName.Location = new System.Drawing.Point(175, 105);
+            this.txtUserName.Location = new System.Drawing.Point(187, 69);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
@@ -56,7 +61,8 @@ namespace Scoreboard
             // lblUser
             // 
             this.lblUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.Location = new System.Drawing.Point(17, 105);
+            this.lblUser.ForeColor = System.Drawing.Color.Black;
+            this.lblUser.Location = new System.Drawing.Point(29, 69);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(152, 23);
             this.lblUser.TabIndex = 2;
@@ -66,7 +72,7 @@ namespace Scoreboard
             // txtPassWord
             // 
             this.txtPassWord.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.txtPassWord.Location = new System.Drawing.Point(175, 146);
+            this.txtPassWord.Location = new System.Drawing.Point(187, 103);
             this.txtPassWord.Name = "txtPassWord";
             this.txtPassWord.PasswordChar = '*';
             this.txtPassWord.Size = new System.Drawing.Size(354, 29);
@@ -78,7 +84,8 @@ namespace Scoreboard
             // lblPassWord
             // 
             this.lblPassWord.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassWord.Location = new System.Drawing.Point(17, 146);
+            this.lblPassWord.ForeColor = System.Drawing.Color.Black;
+            this.lblPassWord.Location = new System.Drawing.Point(29, 103);
             this.lblPassWord.Name = "lblPassWord";
             this.lblPassWord.Size = new System.Drawing.Size(152, 23);
             this.lblPassWord.TabIndex = 4;
@@ -93,7 +100,7 @@ namespace Scoreboard
             this.btnClose.Depth = 0;
             this.btnClose.HighEmphasis = true;
             this.btnClose.Icon = null;
-            this.btnClose.Location = new System.Drawing.Point(175, 196);
+            this.btnClose.Location = new System.Drawing.Point(187, 141);
             this.btnClose.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnClose.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnClose.Name = "btnClose";
@@ -113,7 +120,7 @@ namespace Scoreboard
             this.btnLogin.Depth = 0;
             this.btnLogin.HighEmphasis = true;
             this.btnLogin.Icon = null;
-            this.btnLogin.Location = new System.Drawing.Point(371, 196);
+            this.btnLogin.Location = new System.Drawing.Point(383, 141);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnLogin.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnLogin.Name = "btnLogin";
@@ -128,7 +135,7 @@ namespace Scoreboard
             // linkMiss
             // 
             this.linkMiss.AutoSize = true;
-            this.linkMiss.Location = new System.Drawing.Point(335, 250);
+            this.linkMiss.Location = new System.Drawing.Point(345, 192);
             this.linkMiss.Name = "linkMiss";
             this.linkMiss.Size = new System.Drawing.Size(80, 13);
             this.linkMiss.TabIndex = 5;
@@ -139,7 +146,7 @@ namespace Scoreboard
             // linkChangePass
             // 
             this.linkChangePass.AutoSize = true;
-            this.linkChangePass.Location = new System.Drawing.Point(433, 250);
+            this.linkChangePass.Location = new System.Drawing.Point(443, 192);
             this.linkChangePass.Name = "linkChangePass";
             this.linkChangePass.Size = new System.Drawing.Size(96, 13);
             this.linkChangePass.TabIndex = 6;
@@ -147,53 +154,61 @@ namespace Scoreboard
             this.linkChangePass.Text = "Thay đổi mật khẩu";
             this.linkChangePass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkChangePass_LinkClicked);
             // 
-            // pDB
+            // tableLayoutPanel1
             // 
-            this.pDB.Location = new System.Drawing.Point(535, 67);
-            this.pDB.Name = "pDB";
-            this.pDB.Size = new System.Drawing.Size(30, 30);
-            this.pDB.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pDB.TabIndex = 7;
-            this.pDB.TabStop = false;
-            this.pDB.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(772, 523);
+            this.tableLayoutPanel1.TabIndex = 9;
             // 
-            // lblLicense
+            // panel1
             // 
-            this.lblLicense.AutoSize = true;
-            this.lblLicense.LinkColor = System.Drawing.Color.Gray;
-            this.lblLicense.Location = new System.Drawing.Point(4, 277);
-            this.lblLicense.Name = "lblLicense";
-            this.lblLicense.Size = new System.Drawing.Size(86, 13);
-            this.lblLicense.TabIndex = 8;
-            this.lblLicense.TabStop = true;
-            this.lblLicense.Text = "Cập nhật license";
-            this.lblLicense.Click += new System.EventHandler(this.lblLicense_Click);
+            this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.panel1.Controls.Add(this.linkChangePass);
+            this.panel1.Controls.Add(this.linkMiss);
+            this.panel1.Controls.Add(this.txtUserName);
+            this.panel1.Controls.Add(this.btnLogin);
+            this.panel1.Controls.Add(this.lblUser);
+            this.panel1.Controls.Add(this.btnClose);
+            this.panel1.Controls.Add(this.lblPassWord);
+            this.panel1.Controls.Add(this.txtPassWord);
+            this.panel1.Location = new System.Drawing.Point(79, 125);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(614, 273);
+            this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // LoginForm
             // 
-            this.ClientSize = new System.Drawing.Size(571, 293);
-            this.Controls.Add(this.lblLicense);
-            this.Controls.Add(this.pDB);
-            this.Controls.Add(this.linkChangePass);
-            this.Controls.Add(this.linkMiss);
-            this.Controls.Add(this.btnLogin);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.txtPassWord);
-            this.Controls.Add(this.lblPassWord);
-            this.Controls.Add(this.txtUserName);
-            this.Controls.Add(this.lblUser);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(772, 523);
+            this.ControlBox = false;
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LoginForm";
-            this.Sizable = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Login";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
             this.Load += new System.EventHandler(this.LoginForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pDB)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
         private void EnsureDefaultAdmin()
@@ -275,12 +290,22 @@ namespace Scoreboard
                         var role = Repository.GetRoleById(User.RoleId.Value);
                         if (role != null && role.Name.Equals("Admin", StringComparison.OrdinalIgnoreCase))
                         {
-                            new AdminForm(User).Show();
+                            mainForm.Invoke(new Action(() =>
+                            {
+                                mainForm.EnableMenusAfterLogin(true, User);
+                            }));
+
+                            // Đóng form login
                             this.Hide();
                         }
                         else
                         {
-                            new UserInfoForm(User).Show();
+                            mainForm.Invoke(new Action(() =>
+                            {
+                                mainForm.EnableMenusAfterLogin(false, User);
+                            }));
+
+                            // Đóng form login
                             this.Hide();
                         }
                     }    
@@ -293,7 +318,6 @@ namespace Scoreboard
             catch
             {
                 MessageBox.Show("Vui lòng cấu hình database");
-                pDB.Focus();
             }
 
         }
@@ -335,7 +359,7 @@ namespace Scoreboard
         }
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Application.Exit();
         }
 
         private void txtPassWord_KeyDown(object sender, KeyEventArgs e)
@@ -370,11 +394,6 @@ namespace Scoreboard
             {
                 txtUserName.Focus();
             }
-        }
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-            ConfigDatabase configDatabase = new ConfigDatabase();
-            configDatabase.ShowDialog();
         }
         private void LoginForm_Load(object sender, EventArgs e)
         {
@@ -419,59 +438,47 @@ namespace Scoreboard
             {
             }
         }
-
-        private void lblLicense_Click(object sender, EventArgs e)
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            try
+            Panel panel = sender as Panel;
+            int radius = 20;   // độ bo góc
+            int shadow = 8;    // độ dày bóng
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Tạo path bo góc cho panel
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, panel.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, panel.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            // Gán Region để panel thật sự bo góc
+            panel.Region = new Region(path);
+
+            // Vẽ bóng mờ nhẹ (ngoài path)
+            using (GraphicsPath shadowPath = new GraphicsPath())
             {
-                try
+                Rectangle shadowRect = new Rectangle(shadow, shadow, panel.Width - shadow, panel.Height - shadow);
+                shadowPath.AddArc(shadowRect.X, shadowRect.Y, radius, radius, 180, 90);
+                shadowPath.AddArc(shadowRect.Right - radius, shadowRect.Y, radius, radius, 270, 90);
+                shadowPath.AddArc(shadowRect.Right - radius, shadowRect.Bottom - radius, radius, radius, 0, 90);
+                shadowPath.AddArc(shadowRect.X, shadowRect.Bottom - radius, radius, radius, 90, 90);
+                shadowPath.CloseFigure();
+
+                using (PathGradientBrush brush = new PathGradientBrush(shadowPath))
                 {
-                    User = Repository.GetUserByName(txtUserName.Text.Trim());
-
-                    // Chọn file license
-                    using (var ofd = new OpenFileDialog())
-                    {
-                        ofd.Filter = "License file (*.licx)|*.licx";
-                        ofd.Title = "Chọn file license mới";
-                        if (ofd.ShowDialog() != DialogResult.OK)
-                            return;
-
-                        string selectedPath = ofd.FileName;
-                        string appPath = AppDomain.CurrentDomain.BaseDirectory;
-                        string targetPath = Path.Combine(appPath, "license.licx");
-
-                        // Đọc file và kiểm tra hợp lệ
-                        string json = File.ReadAllText(selectedPath);
-                        if (!LicenseVerifier.TryVerifyLicense(json, out int totalMachines, out DateTime expiry))
-                        {
-                            MessageBox.Show("File license không hợp lệ hoặc bị chỉnh sửa.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-                        // Copy file vào thư mục chương trình (ghi đè nếu có)
-                        File.Copy(selectedPath, targetPath, overwrite: true);
-
-                        // Gọi SyncLicenseFileToDB để cập nhật xuống DB (chỉ update nếu license mới hơn)
-                        LicenseVerifier.SyncLicenseFileToDB(targetPath, User.Id);
-
-                        // Thông báo thành công
-                        MessageBox.Show(
-                            $"Đã cập nhật license mới!\n" +
-                            $"Số máy: {totalMachines}\n" +
-                            $"Hết hạn: {expiry:yyyy-MM-dd}",
-                            "Cập nhật License", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-                catch 
-                {
-                    MessageBox.Show("Vui lòng cấu hình Database", "Thông báo");
-                    pDB.Focus();
-                    return;
+                    brush.CenterColor = Color.FromArgb(50, Color.Black); // độ mờ
+                    brush.SurroundColors = new Color[] { Color.Transparent };
+                    e.Graphics.FillPath(brush, shadowPath);
                 }
             }
-            catch (Exception ex)
+
+            // Vẽ lại thân panel để che phần bóng bên trong
+            using (SolidBrush brush = new SolidBrush(panel.BackColor))
             {
-                MessageBox.Show("Lỗi khi cập nhật license: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Graphics.FillPath(brush, path);
             }
         }
     }

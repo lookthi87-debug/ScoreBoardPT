@@ -13,7 +13,7 @@ namespace Scoreboard
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ApplicationExit += OnApplicationExit;
-            Application.Run(new LoginForm());
+            Application.Run(new MainMDIForm());
         }
         static void OnApplicationExit(object sender, EventArgs e)
         {

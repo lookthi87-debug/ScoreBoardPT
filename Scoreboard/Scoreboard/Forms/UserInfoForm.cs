@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
+using System.Drawing;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
 using Scoreboard.Config;
@@ -8,7 +10,7 @@ using Scoreboard.Models;
 
 namespace Scoreboard
 {
-    public class UserInfoForm : MaterialForm
+    public class UserInfoForm : Form
     {
         private TextBox txtTime;
         private NumericUpDown nScore2;
@@ -26,6 +28,8 @@ namespace Scoreboard
         private MaterialButton btnStart;
         private MaterialButton btnRefresh;
         private Label lblMessage;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Panel panel1;
         private UserModel currentUser;
         public UserInfoForm(UserModel u)
         {
@@ -35,6 +39,7 @@ namespace Scoreboard
         }
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserInfoForm));
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
             this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
             this.txtTime = new System.Windows.Forms.TextBox();
@@ -51,8 +56,12 @@ namespace Scoreboard
             this.lblTenTranDau = new System.Windows.Forms.Label();
             this.btnCancel = new MaterialSkin.Controls.MaterialButton();
             this.lblMessage = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -63,7 +72,7 @@ namespace Scoreboard
             this.btnStart.Depth = 0;
             this.btnStart.HighEmphasis = true;
             this.btnStart.Icon = null;
-            this.btnStart.Location = new System.Drawing.Point(626, 265);
+            this.btnStart.Location = new System.Drawing.Point(656, 244);
             this.btnStart.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnStart.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnStart.Name = "btnStart";
@@ -83,7 +92,7 @@ namespace Scoreboard
             this.btnRefresh.Depth = 0;
             this.btnRefresh.HighEmphasis = true;
             this.btnRefresh.Icon = null;
-            this.btnRefresh.Location = new System.Drawing.Point(515, 265);
+            this.btnRefresh.Location = new System.Drawing.Point(545, 244);
             this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnRefresh.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnRefresh.Name = "btnRefresh";
@@ -98,7 +107,7 @@ namespace Scoreboard
             // txtTime
             // 
             this.txtTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTime.Location = new System.Drawing.Point(124, 110);
+            this.txtTime.Location = new System.Drawing.Point(154, 89);
             this.txtTime.Name = "txtTime";
             this.txtTime.ReadOnly = true;
             this.txtTime.Size = new System.Drawing.Size(81, 26);
@@ -109,7 +118,7 @@ namespace Scoreboard
             // nScore2
             // 
             this.nScore2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.nScore2.Location = new System.Drawing.Point(440, 216);
+            this.nScore2.Location = new System.Drawing.Point(470, 195);
             this.nScore2.Name = "nScore2";
             this.nScore2.ReadOnly = true;
             this.nScore2.Size = new System.Drawing.Size(108, 26);
@@ -120,7 +129,7 @@ namespace Scoreboard
             // nScore1
             // 
             this.nScore1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.nScore1.Location = new System.Drawing.Point(122, 216);
+            this.nScore1.Location = new System.Drawing.Point(152, 195);
             this.nScore1.Name = "nScore1";
             this.nScore1.ReadOnly = true;
             this.nScore1.Size = new System.Drawing.Size(108, 26);
@@ -131,7 +140,8 @@ namespace Scoreboard
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(6, 109);
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(36, 88);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(110, 23);
             this.label4.TabIndex = 27;
@@ -141,7 +151,8 @@ namespace Scoreboard
             // lblScore
             // 
             this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScore.Location = new System.Drawing.Point(6, 222);
+            this.lblScore.ForeColor = System.Drawing.Color.Black;
+            this.lblScore.Location = new System.Drawing.Point(36, 201);
             this.lblScore.Name = "lblScore";
             this.lblScore.Size = new System.Drawing.Size(110, 23);
             this.lblScore.TabIndex = 33;
@@ -151,7 +162,8 @@ namespace Scoreboard
             // lblName
             // 
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(6, 176);
+            this.lblName.ForeColor = System.Drawing.Color.Black;
+            this.lblName.Location = new System.Drawing.Point(36, 155);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(110, 23);
             this.lblName.TabIndex = 30;
@@ -161,7 +173,7 @@ namespace Scoreboard
             // txtTeam2
             // 
             this.txtTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTeam2.Location = new System.Drawing.Point(440, 176);
+            this.txtTeam2.Location = new System.Drawing.Point(470, 155);
             this.txtTeam2.Name = "txtTeam2";
             this.txtTeam2.ReadOnly = true;
             this.txtTeam2.Size = new System.Drawing.Size(303, 26);
@@ -172,7 +184,7 @@ namespace Scoreboard
             // 
             this.lblTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam2.ForeColor = System.Drawing.Color.Blue;
-            this.lblTeam2.Location = new System.Drawing.Point(527, 135);
+            this.lblTeam2.Location = new System.Drawing.Point(557, 114);
             this.lblTeam2.Name = "lblTeam2";
             this.lblTeam2.Size = new System.Drawing.Size(124, 38);
             this.lblTeam2.TabIndex = 29;
@@ -182,7 +194,7 @@ namespace Scoreboard
             // txtTeam1
             // 
             this.txtTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTeam1.Location = new System.Drawing.Point(122, 176);
+            this.txtTeam1.Location = new System.Drawing.Point(152, 155);
             this.txtTeam1.Name = "txtTeam1";
             this.txtTeam1.ReadOnly = true;
             this.txtTeam1.Size = new System.Drawing.Size(303, 26);
@@ -193,7 +205,7 @@ namespace Scoreboard
             // 
             this.lblTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam1.ForeColor = System.Drawing.Color.Blue;
-            this.lblTeam1.Location = new System.Drawing.Point(211, 135);
+            this.lblTeam1.Location = new System.Drawing.Point(241, 114);
             this.lblTeam1.Name = "lblTeam1";
             this.lblTeam1.Size = new System.Drawing.Size(124, 38);
             this.lblTeam1.TabIndex = 28;
@@ -203,7 +215,7 @@ namespace Scoreboard
             // txtTitle
             // 
             this.txtTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtTitle.Location = new System.Drawing.Point(122, 74);
+            this.txtTitle.Location = new System.Drawing.Point(152, 55);
             this.txtTitle.Name = "txtTitle";
             this.txtTitle.ReadOnly = true;
             this.txtTitle.Size = new System.Drawing.Size(621, 26);
@@ -213,7 +225,8 @@ namespace Scoreboard
             // lblTenTranDau
             // 
             this.lblTenTranDau.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenTranDau.Location = new System.Drawing.Point(6, 74);
+            this.lblTenTranDau.ForeColor = System.Drawing.Color.Black;
+            this.lblTenTranDau.Location = new System.Drawing.Point(36, 55);
             this.lblTenTranDau.Name = "lblTenTranDau";
             this.lblTenTranDau.Size = new System.Drawing.Size(110, 23);
             this.lblTenTranDau.TabIndex = 25;
@@ -228,7 +241,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(408, 265);
+            this.btnCancel.Location = new System.Drawing.Point(438, 244);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -242,46 +255,80 @@ namespace Scoreboard
             // 
             // lblMessage
             // 
-            this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMessage.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.lblMessage.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
-            this.lblMessage.Location = new System.Drawing.Point(22, 297);
+            this.lblMessage.Location = new System.Drawing.Point(0, 0);
             this.lblMessage.Name = "lblMessage";
-            this.lblMessage.Size = new System.Drawing.Size(208, 26);
+            this.lblMessage.Size = new System.Drawing.Size(1036, 48);
             this.lblMessage.TabIndex = 40;
             this.lblMessage.Text = "Message";
-            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 48);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1036, 682);
+            this.tableLayoutPanel1.TabIndex = 41;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.panel1.Controls.Add(this.lblTenTranDau);
+            this.panel1.Controls.Add(this.btnStart);
+            this.panel1.Controls.Add(this.btnCancel);
+            this.panel1.Controls.Add(this.txtTitle);
+            this.panel1.Controls.Add(this.btnRefresh);
+            this.panel1.Controls.Add(this.lblTeam1);
+            this.panel1.Controls.Add(this.txtTime);
+            this.panel1.Controls.Add(this.txtTeam1);
+            this.panel1.Controls.Add(this.nScore2);
+            this.panel1.Controls.Add(this.lblTeam2);
+            this.panel1.Controls.Add(this.nScore1);
+            this.panel1.Controls.Add(this.txtTeam2);
+            this.panel1.Controls.Add(this.label4);
+            this.panel1.Controls.Add(this.lblName);
+            this.panel1.Controls.Add(this.lblScore);
+            this.panel1.Location = new System.Drawing.Point(109, 167);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(817, 348);
+            this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // UserInfoForm
             // 
-            this.ClientSize = new System.Drawing.Size(762, 326);
+            this.ClientSize = new System.Drawing.Size(1036, 730);
+            this.ControlBox = false;
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.lblMessage);
-            this.Controls.Add(this.btnCancel);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.txtTime);
-            this.Controls.Add(this.nScore2);
-            this.Controls.Add(this.nScore1);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.lblScore);
-            this.Controls.Add(this.lblName);
-            this.Controls.Add(this.txtTeam2);
-            this.Controls.Add(this.lblTeam2);
-            this.Controls.Add(this.txtTeam1);
-            this.Controls.Add(this.lblTeam1);
-            this.Controls.Add(this.txtTitle);
-            this.Controls.Add(this.lblTenTranDau);
-            this.Controls.Add(this.btnStart);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "UserInfoForm";
-            this.Sizable = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Thông tin";
             this.Activated += new System.EventHandler(this.UserInfoForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserInfoForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
         private void LoadUserInfo()
@@ -347,6 +394,50 @@ namespace Scoreboard
         private void UserInfoForm_Activated(object sender, EventArgs e)
         {
             LoadUserInfo();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            int radius = 20;   // độ bo góc
+            int shadow = 8;    // độ dày bóng
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Tạo path bo góc cho panel
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(panel.Width - radius, panel.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, panel.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            // Gán Region để panel thật sự bo góc
+            panel.Region = new Region(path);
+
+            // Vẽ bóng mờ nhẹ (ngoài path)
+            using (GraphicsPath shadowPath = new GraphicsPath())
+            {
+                Rectangle shadowRect = new Rectangle(shadow, shadow, panel.Width - shadow, panel.Height - shadow);
+                shadowPath.AddArc(shadowRect.X, shadowRect.Y, radius, radius, 180, 90);
+                shadowPath.AddArc(shadowRect.Right - radius, shadowRect.Y, radius, radius, 270, 90);
+                shadowPath.AddArc(shadowRect.Right - radius, shadowRect.Bottom - radius, radius, radius, 0, 90);
+                shadowPath.AddArc(shadowRect.X, shadowRect.Bottom - radius, radius, radius, 90, 90);
+                shadowPath.CloseFigure();
+
+                using (PathGradientBrush brush = new PathGradientBrush(shadowPath))
+                {
+                    brush.CenterColor = Color.FromArgb(50, Color.Black); // độ mờ
+                    brush.SurroundColors = new Color[] { Color.Transparent };
+                    e.Graphics.FillPath(brush, shadowPath);
+                }
+            }
+
+            // Vẽ lại thân panel để che phần bóng bên trong
+            using (SolidBrush brush = new SolidBrush(panel.BackColor))
+            {
+                e.Graphics.FillPath(brush, path);
+            }
         }
     }
 }
