@@ -150,6 +150,9 @@ namespace Scoreboard
             this.dgGiaiDau.Location = new System.Drawing.Point(17, 133);
             this.dgGiaiDau.Name = "dgGiaiDau";
             this.dgGiaiDau.RowHeadersVisible = false;
+			this.dgGiaiDau.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+			this.dgGiaiDau.RowsDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+			this.dgGiaiDau.MultiSelect = false;
             this.dgGiaiDau.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgGiaiDau.Size = new System.Drawing.Size(945, 404);
             this.dgGiaiDau.TabIndex = 1;
@@ -407,6 +410,9 @@ namespace Scoreboard
             this.dgvDetail.Location = new System.Drawing.Point(17, 639);
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.RowHeadersVisible = false;
+			this.dgvDetail.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+			this.dgvDetail.RowsDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+			this.dgvDetail.MultiSelect = false;
             this.dgvDetail.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDetail.Size = new System.Drawing.Size(945, 141);
             this.dgvDetail.TabIndex = 24;
@@ -866,11 +872,12 @@ namespace Scoreboard
                 // Gán vào dgvDetail
                 dgvDetail.DataSource = details;
 
-                // Nếu có dữ liệu thì chọn hiệp đầu tiên hoặc theo index
+                // Nếu có dữ liệu thì luôn chọn row đầu tiên
                 if (dgvDetail.Rows.Count > 0)
                 {
-                    int safeIndex = (index >= 0 && index < dgvDetail.Rows.Count) ? index : 0;
-                    dgvDetail.Rows[safeIndex].Selected = true;
+                    dgvDetail.ClearSelection();
+                    dgvDetail.Rows[0].Selected = true;
+                    dgvDetail.CurrentCell = dgvDetail.Rows[0].Cells[0];
                 }
             }
             catch (Exception ex)

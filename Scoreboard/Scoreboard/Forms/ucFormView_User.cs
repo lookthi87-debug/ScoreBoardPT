@@ -45,7 +45,7 @@ namespace Scoreboard
             foreach (Control ctl in this.Controls)
                 AttachFocusHandler(ctl);
 
-            // Ensure this control can receive focus
+            // Đảm bảo control có thể nhận được focus
             this.SetStyle(ControlStyles.Selectable, true);
             this.TabStop = true;
             this.Focus();
@@ -67,7 +67,7 @@ namespace Scoreboard
             }
             lblTime.Text = m.Time ?? "00:00";
 
-            // Initialize current period scores
+            // Khởi tạo điểm số của hiệp/set hiện tại
             scoreTeam1 = m.Score1;
             scoreTeam2 = m.Score2;
 
@@ -138,14 +138,14 @@ namespace Scoreboard
         {
             try
             {
-                // Only allow adding points when clock is running
+                // Chỉ cho phép cộng điểm khi đồng hồ đang chạy
                 if (isPaused)
                 {
                     MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Show confirmation dialog
+                // Hiển thị hộp thoại xác nhận
                 DialogResult result = MessageBox.Show(
                     $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team1}?",
                     "Xác nhận cộng điểm",
@@ -154,19 +154,19 @@ namespace Scoreboard
 
                 if (result != DialogResult.Yes)
                 {
-                    return; // User clicked No, don't add points
+                    return; // Người dùng chọn Không, không cộng điểm
                 }
 
-                // Increment current period score
+                // Tăng điểm của hiệp/set hiện tại
                 scoreTeam1++;
 
-                // Update current period score in match object
+                // Cập nhật điểm của hiệp/set hiện tại vào đối tượng trận đấu
                 match.Score1 = scoreTeam1;
 
-                // Save to database first
+                // Lưu vào cơ sở dữ liệu trước
                 Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
 
-                // Calculate total score from database (sum of all periods with same match_id)
+                // Tính tổng điểm từ cơ sở dữ liệu (tổng tất cả các hiệp/set cùng match_id)
                 if (IsSoccerMatch())
                 {
                     var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
@@ -175,7 +175,7 @@ namespace Scoreboard
                         Repository.UpdateMatchScore1(match.MatchId, CalculateTotalScore1());
                     }
                 }
-                // Update UI
+                // Cập nhật giao diện
                 UpdateScoreLabel();
             }
             catch (Exception ex)
@@ -188,14 +188,14 @@ namespace Scoreboard
         {
             try
             {
-                // Only allow adding points when clock is running
+                // Chỉ cho phép cộng điểm khi đồng hồ đang chạy
                 if (isPaused)
                 {
                     MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Show confirmation dialog
+                // Hiển thị hộp thoại xác nhận
                 DialogResult result = MessageBox.Show(
                     $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team2}?",
                     "Xác nhận cộng điểm",
@@ -204,19 +204,19 @@ namespace Scoreboard
 
                 if (result != DialogResult.Yes)
                 {
-                    return; // User clicked No, don't add points
+                    return; // Người dùng chọn Không, không cộng điểm
                 }
 
-                // Increment current period score
+                // Tăng điểm của hiệp/set hiện tại
                 scoreTeam2++;
 
-                // Update current period score in match object
+                // Cập nhật điểm của hiệp/set hiện tại vào đối tượng trận đấu
                 match.Score2 = scoreTeam2;
 
-                // Save to database first
+                // Lưu vào cơ sở dữ liệu trước
                 Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
 
-                // Calculate total score from database (sum of all periods with same match_id)
+                // Tính tổng điểm từ cơ sở dữ liệu (tổng tất cả các hiệp/set cùng match_id)
                 if (IsSoccerMatch())
                 {
                     var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
@@ -225,7 +225,7 @@ namespace Scoreboard
                         Repository.UpdateMatchScore2(match.MatchId, CalculateTotalScore2());
                     }
                 }
-                // Update UI
+                // Cập nhật giao diện
                 UpdateScoreLabel();
             }
             catch (Exception ex)
@@ -236,19 +236,19 @@ namespace Scoreboard
 
         public void ResetScore()
         {
-            // Reset current period scores to 0
+            // Đặt lại điểm của hiệp/set hiện tại về 0
             scoreTeam1 = 0;
             scoreTeam2 = 0;
 
-            // Update match object
+            // Cập nhật đối tượng trận đấu
             match.Score1 = 0;
             match.Score2 = 0;
 
-            // Recalculate total scores
+            // Tính lại tổng điểm
             match.TotalScore1 = CalculateTotalScore1();
             match.TotalScore2 = CalculateTotalScore2();
 
-            // Update database
+            // Cập nhật cơ sở dữ liệu
             Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
             Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
 
@@ -260,10 +260,10 @@ namespace Scoreboard
         {
             if (IsSoccerMatch())
             {
-                // Get all periods for this match from database
+                // Lấy tất cả các hiệp/set của trận đấu từ cơ sở dữ liệu
                 var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
                 allPeriods = allPeriods.Where(m => !m.ClassSetsName.Contains("Penalty")).ToList();
-                // Sum up all score1 from all periods with same match_id
+                // Cộng dồn toàn bộ Score1 của tất cả hiệp/set cùng match_id
                 int totalScore = 0;
                 foreach (var period in allPeriods)
                 {
@@ -282,10 +282,10 @@ namespace Scoreboard
         {
             if (IsSoccerMatch())
             {
-                // Get all periods for this match from database
+                // Lấy tất cả các hiệp/set của trận đấu từ cơ sở dữ liệu
                 var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
                 allPeriods = allPeriods.Where(m => !m.ClassSetsName.Contains("Penalty")).ToList();
-                // Sum up all score2 from all periods with same match_id
+                // Cộng dồn toàn bộ Score2 của tất cả hiệp/set cùng match_id
                 int totalScore = 0;
                 foreach (var period in allPeriods)
                 {
@@ -314,7 +314,7 @@ namespace Scoreboard
                     lblScoreTeam2.Text = matchPen.Score2.ToString();
                 } else
                 {
-                    // Display total scores (sum of all periods)
+                    // Hiển thị tổng điểm (tổng của tất cả hiệp/set)
                     lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
                     lblScoreTeam2.Text = list.Sum(x => x.Score2).ToString();
                 }
@@ -459,7 +459,7 @@ namespace Scoreboard
         }
         public void NextSet()
         {
-            // Show confirmation dialog
+            // Hiển thị hộp thoại xác nhận
             DialogResult resultConfirm = MessageBox.Show(
                 $"Bạn có chắc chắn muốn tăng set đấu?",
                 "Xác nhận tăng set đấu",
@@ -472,13 +472,13 @@ namespace Scoreboard
             }
             try
             {
-                // Mark current set as finished
+                // Đánh dấu hiệp/set hiện tại đã kết thúc
                 Repository.UpdateMatchSetStatus(match.MatchId, match.Id, MatchStatusConfig.Status.Finished);
 
-                // update score match
+                // Cập nhật điểm tổng cho trận
                 UpdateScoreMatch(match.MatchId, match.Id);
 
-                // Check if we need to ask for overtime creation
+                // Kiểm tra có cần hỏi tạo hiệp phụ hay không
                 if (ShouldAskForOvertime())
                 {
                     var result = MessageBox.Show("Kết quả hiện tại đang hòa.\nBạn có muốn tạo hiệp phụ không?",
@@ -488,57 +488,61 @@ namespace Scoreboard
 
                     if (result == DialogResult.No)
                     {
-                        // End the match without creating overtime
+                        // Kết thúc trận mà không tạo hiệp phụ
                         Repository.UpdateMatchStatus(match.MatchId, MatchStatusConfig.Status.Finished);
                         MessageBox.Show("Trận đấu kết thúc với kết quả hòa!");
                         return;
                     }
+                    else
+                    {
+                        Repository.UpdateMatchStatus(match.MatchId, MatchStatusConfig.Status.InProgress);
+                    }
                 }
 
-                // Try to get next existing period first
+                // Thử lấy hiệp/set kế tiếp đã tồn tại trước
                 var next = Repository.GetNextMatchDetail(match.MatchId, match.Id);
                 if (next == null)
                 {
-                    // check kết quả trước khi tạo hiệp/set mới
+                    // Kiểm tra kết quả trước khi tạo hiệp/set mới
                     if (!IsCreateNewMatchSet())
                     {
-                        // show kết quả cho các bộ môn khác ngoài bóng đá
+                        // Hiển thị kết quả cho các bộ môn khác ngoài bóng đá
                         ShowMatchResult();
                         return;
                     }
-                    // No next period exists, create a new one
+                    // Không có hiệp/set kế tiếp, tạo mới
                     next = CreateNextPeriod();
                     if (next == null)
                     {
-                        // set match as ended
+                        // Đánh dấu trận đấu đã kết thúc
                         ShowMatchResult();
                         return;
                     }
                 }
 
-                // Activate next period
-                Repository.UpdateMatchSetStatus(next.MatchId, next.Id, "1");
+                // Kích hoạt hiệp/set kế tiếp
+                Repository.UpdateMatchSetStatus(next.MatchId, next.Id, MatchStatusConfig.Status.InProgress);
 
-                // Use the next period directly
+                // Sử dụng trực tiếp hiệp/set kế tiếp
                 match = next;
 
-                // Reset current period scores to 0 (new period starts)
+                // Đặt lại điểm hiệp/set hiện tại về 0 (bắt đầu hiệp/set mới)
                 scoreTeam1 = 0;
                 scoreTeam2 = 0;
 
-                // Update match object with current period scores
+                // Cập nhật đối tượng trận đấu với điểm hiệp/set hiện tại
                 match.Score1 = 0;
                 match.Score2 = 0;
 
-                // Save new period scores to database (0-0)
+                // Lưu điểm hiệp/set mới vào cơ sở dữ liệu (0-0)
                 Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
                 Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
 
-                // Calculate and update total scores from database
+                // Tính toán và cập nhật tổng điểm từ cơ sở dữ liệu
                 match.TotalScore1 = CalculateTotalScore1();
                 match.TotalScore2 = CalculateTotalScore2();
 
-                // Force UI update
+                // Buộc cập nhật giao diện
                 UpdateUI();
 
                 if (lblTime.Text != "00:00")
@@ -559,7 +563,7 @@ namespace Scoreboard
             }
             catch
             {
-                // Silent error handling
+                // Bỏ qua lỗi im lặng
             }
         }
 
@@ -567,26 +571,26 @@ namespace Scoreboard
         {
             try
             {
-                // Get match class info to determine period rules
+                // Lấy thông tin lớp môn thi đấu để xác định quy tắc hiệp/set
                 var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
                 if (matchClass == null)
                 {
                     return null;
                 }
 
-                // Get all periods for this match
+                // Lấy tất cả các hiệp/set của trận
                 var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
 
-                // Determine next period based on match class rules
+                // Xác định hiệp/set tiếp theo dựa trên quy tắc của môn
                 string nextPeriodName = DetermineNextPeriodName(allPeriods, matchClass);
 
                 if (string.IsNullOrEmpty(nextPeriodName))
                 {
-                    return null; // No more periods allowed
+                    return null; // Không còn hiệp/set nào được phép
                 }
 
 
-                // Create new matchset
+                // Tạo hiệp/set mới
                 var newSet = new MatchsetModel
                 {
                     MatchId = match.MatchId,
@@ -596,32 +600,32 @@ namespace Scoreboard
                     Score2 = 0,
                     Time = "00:00",
                     Note = "",
-                    Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
+                    Status = MatchStatusConfig.Status.NotStarted, // Ban đầu chưa hoạt động
                     RefereeId = match.RefereeId,
                     RefereeName = match.RefereeName,
-                    ClassSets_Id = match.ClassSets_Id, // Keep same ClassSets_Id as current period
-                    ClassSetsName = nextPeriodName, // Use the determined period name
+                    ClassSets_Id = match.ClassSets_Id, // Giữ nguyên ClassSets_Id như hiệp/set hiện tại
+                    ClassSetsName = nextPeriodName, // Sử dụng tên hiệp/set đã xác định
                     TournamentId = match.TournamentId,
                     TournamentName = match.TournamentName,
                     MatchClassId = match.MatchClassId,
                     MatchClassName = match.MatchClassName
                 };
 
-                // Add to database
+                // Thêm vào cơ sở dữ liệu
                 Repository.AddMatchSet(newSet);
 
-                // Wait a moment for database to update
+                // Chờ một chút để cơ sở dữ liệu cập nhật
                 System.Threading.Thread.Sleep(100);
 
-                // Get all periods again to find the newly created one
+                // Lấy lại tất cả hiệp/set để tìm hiệp/set vừa tạo
                 var updatedPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
 
-                // Try to find the newly created set by name
+                // Thử tìm hiệp/set vừa tạo theo tên
                 var createdSet = updatedPeriods.FirstOrDefault(s => s.ClassSetsName == nextPeriodName);
 
                 if (createdSet == null)
                 {
-                    // If not found by name, try to get the last created period
+                    // Nếu không tìm thấy theo tên, lấy hiệp/set có Id mới nhất
                     createdSet = updatedPeriods.OrderByDescending(s => s.Id).FirstOrDefault();
                 }
 
@@ -649,13 +653,13 @@ namespace Scoreboard
         private string DetermineFootballNextPeriod(List<MatchsetModel> allPeriods, MatchClassModel matchClass)
         {
             // Count different types of periods ONLY for football
-            var regularPeriods = allPeriods.Where(p => p.ClassSetsName?.StartsWith("Hiệp ") == true && !p.ClassSetsName.Contains("phụ") && !p.ClassSetsName.Contains("penalty")).ToList();
+            var regularPeriods = allPeriods.Where(p => p.ClassSetsName?.StartsWith("Hiệp ") == true && !p.ClassSetsName.Contains("phụ") && !p.ClassSetsName.Contains("Penalty")).ToList();
             var overtimePeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("phụ") == true).ToList();
             var penaltyPeriods = allPeriods.Where(p => p.ClassSetsName?.Contains("Penalty") == true || p.ClassSetsName?.Contains("Pen") == true).ToList();
 
-            // Get current scores
-            int team1Score = match.TotalScore1;
-            int team2Score = match.TotalScore2;
+            // Check điểm của 2 hiệp chính
+            int team1Score = regularPeriods.Sum(m => m.Score1);
+            int team2Score = regularPeriods.Sum(m => m.Score2);
             bool isTied = team1Score == team2Score;
 
             // Standard football: 2 regular periods
@@ -679,7 +683,7 @@ namespace Scoreboard
             }
 
             // After overtime, if still tied, go to penalty
-            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count >= matchClass.MaxOvertimePeriods && penaltyPeriods.Count == 0)
+            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count >= matchClass.MaxOvertimePeriods && penaltyPeriods.Count == 0 && CalculateTotalScore1() == CalculateTotalScore2())
             {
                 return "Penalty";
             }
@@ -777,7 +781,7 @@ namespace Scoreboard
                     return;
                 }
                 var matchSet = Repository.GetMatchClassById((int)match.MatchClassId);
-                // Update UI elements
+                // Cập nhật các thành phần giao diện
                 lblTitle.Text = match.TournamentName ?? "";
                 lblHiepDau.Text = match.ClassSetsName ?? "";
                 lblTeam1.Text = match.Team1 ?? "";
@@ -785,13 +789,14 @@ namespace Scoreboard
                 UpdateScoreLabel();
                 lblTime.Text = match.Time ?? "00:00";
 
-                // Force UI refresh
+                // Buộc làm mới giao diện
                 this.Invalidate();
                 this.Update();
+
             }
             catch
             {
-                // Silent error handling
+                // Bỏ qua lỗi im lặng
             }
         }
 
@@ -866,7 +871,7 @@ namespace Scoreboard
                 var regularPeriods = allPeriods.Where(p =>
                     p.ClassSetsName?.StartsWith("Hiệp ") == true &&
                     !p.ClassSetsName.Contains("phụ") &&
-                    !p.ClassSetsName.Contains("penalty")).ToList();
+                    !p.ClassSetsName.Contains("Penalty")).ToList();
 
                 // Check if we're finishing the second regular period
                 if (regularPeriods.Count == 2)

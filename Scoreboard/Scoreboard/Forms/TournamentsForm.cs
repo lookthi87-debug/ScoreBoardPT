@@ -115,12 +115,14 @@ namespace Scoreboard
             this.start.HeaderText = "Ngày bắt đầu";
             this.start.Name = "start";
             this.start.ReadOnly = true;
+			this.start.DefaultCellStyle.Format = "dd/MM/yyyy";
             // 
             // end
             // 
             this.end.DataPropertyName = "end";
             this.end.HeaderText = "Ngày kết thúc";
             this.end.Name = "end";
+            this.end.DefaultCellStyle.Format = "dd/MM/yyyy";
             // 
             // description
             // 
