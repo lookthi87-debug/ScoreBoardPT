@@ -48,6 +48,7 @@ namespace Scoreboard
             this.lblTeam1 = new System.Windows.Forms.Label();
             this.tableView = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlSetScores = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableView.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -149,6 +150,7 @@ namespace Scoreboard
             this.tableView.Controls.Add(this.lblTime, 0, 1);
             this.tableView.Controls.Add(this.lblHiepDau, 0, 2);
             this.tableView.Controls.Add(this.tableLayoutPanel3, 0, 3);
+            this.tableView.Controls.Add(this.pnlSetScores, 0, 4);
             this.tableView.Controls.Add(this.tableLayoutPanel1, 0, 5);
             this.tableView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableView.Location = new System.Drawing.Point(0, 0);
@@ -178,6 +180,21 @@ namespace Scoreboard
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(474, 40);
             this.tableLayoutPanel3.TabIndex = 6;
+            // 
+            // pnlSetScores
+            // 
+            this.pnlSetScores.BackColor = System.Drawing.Color.Black;
+            this.pnlSetScores.ColumnCount = 1;
+            this.pnlSetScores.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.pnlSetScores.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlSetScores.Location = new System.Drawing.Point(3, 181);
+            this.pnlSetScores.Name = "pnlSetScores";
+            this.pnlSetScores.RowCount = 2;
+            this.pnlSetScores.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pnlSetScores.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.pnlSetScores.Size = new System.Drawing.Size(474, 16);
+            this.pnlSetScores.TabIndex = 9;
+            this.pnlSetScores.Visible = false;
             // 
             // tableLayoutPanel1
             // 
@@ -223,6 +240,7 @@ namespace Scoreboard
         private System.Windows.Forms.Label lblTeam1;
         private System.Windows.Forms.TableLayoutPanel tableView;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
+        private System.Windows.Forms.TableLayoutPanel pnlSetScores;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
     }
 }
