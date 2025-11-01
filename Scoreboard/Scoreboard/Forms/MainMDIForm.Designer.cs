@@ -110,7 +110,7 @@
             this.IsMdiContainer = true;
             this.Name = "MainMDIForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "````````````````````````````````````";
+            this.Text = "Hệ thống bảng diểm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainMDIForm_Load);
             this.menuStrip1.ResumeLayout(false);

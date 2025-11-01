@@ -129,8 +129,8 @@ namespace Scoreboard
             lblTitle.Font = new Font("Arial", baseSize, FontStyle.Bold);
             lblTime.Font = new Font("Arial", baseSize * 2, FontStyle.Bold);
             lblHiepDau.Font = new Font("Arial", baseSize, FontStyle.Bold);
-            lblTeam1.Font = new Font("Arial", baseSize, FontStyle.Bold);
-            lblTeam2.Font = new Font("Arial", baseSize, FontStyle.Bold);
+            lblTeam1.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
+            lblTeam2.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
             lblScoreTeam1.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
             lblScoreTeam2.Font = new Font("Arial", baseSize * 2 + 30, FontStyle.Bold);
             foreach (Control ctl in this.Controls)
@@ -1092,7 +1092,8 @@ namespace Scoreboard
             var matchSet = Repository.GetMatchSetByMatchAndId(matchId, idMatchset);
             if (!IsSoccerMatch())
             {
-                //if ((match.Score1 + match.Score2) == matchClass.PeriodsToWin) return;
+                // check xem đội nào có điểm số WIN trước
+                if ((match.Score1 == matchClass.PeriodsToWin) || (match.Score2 == matchClass.PeriodsToWin)) return;
                 if (matchSet.Score1 > matchSet.Score2)
                 {
                     // Update match totals in database
