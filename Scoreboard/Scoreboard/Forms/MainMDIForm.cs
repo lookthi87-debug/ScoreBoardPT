@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Scoreboard.Data;
 using Scoreboard.Models;
 using static MaterialSkin.MaterialSkinManager;
+using MaterialSkin;
 
 namespace Scoreboard
 {
@@ -18,6 +19,19 @@ namespace Scoreboard
             InitializeComponent(); // designer only
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MatchsForm));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            
+            // Initialize MaterialSkinManager
+            var materialSkinManager = MaterialSkinManager.Instance;
+            materialSkinManager.Theme = Themes.LIGHT;
+            
+            // Set primary color to our main blue color (#3B82F6)
+            materialSkinManager.ColorScheme = new ColorScheme(
+                Primary.Blue600,  // Primary color - Xanh dương chủ đạo
+                Primary.Blue700, 
+                Primary.Blue400, 
+                Accent.LightBlue200, 
+                TextShade.WHITE
+            );
         }
         private void SetMenuVisibel(bool isLogin,bool isAdmin = true)
         {

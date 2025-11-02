@@ -86,6 +86,8 @@ namespace Scoreboard
             this.dgUser.RowHeadersVisible = false;
             this.dgUser.Size = new System.Drawing.Size(1086, 419);
             this.dgUser.TabIndex = 6;
+            this.dgUser.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
+            this.dgUser.RowsDefaultCellStyle.ForeColor = System.Drawing.Color.Black;
             this.dgUser.DoubleClick += new System.EventHandler(this.dgUser_DoubleClick);
             // 
             // name

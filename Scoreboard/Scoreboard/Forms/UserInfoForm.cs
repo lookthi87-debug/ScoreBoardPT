@@ -114,6 +114,7 @@ namespace Scoreboard
             this.txtTime.TabIndex = 36;
             this.txtTime.TabStop = false;
             this.txtTime.Text = "00:00";
+            this.txtTime.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // nScore2
             // 
@@ -125,6 +126,7 @@ namespace Scoreboard
             this.nScore2.TabIndex = 35;
             this.nScore2.TabStop = false;
             this.nScore2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nScore2.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // nScore1
             // 
@@ -136,11 +138,12 @@ namespace Scoreboard
             this.nScore1.TabIndex = 34;
             this.nScore1.TabStop = false;
             this.nScore1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nScore1.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label4.Location = new System.Drawing.Point(36, 88);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(110, 23);
@@ -151,7 +154,7 @@ namespace Scoreboard
             // lblScore
             // 
             this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScore.ForeColor = System.Drawing.Color.Black;
+            this.lblScore.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblScore.Location = new System.Drawing.Point(36, 201);
             this.lblScore.Name = "lblScore";
             this.lblScore.Size = new System.Drawing.Size(110, 23);
@@ -162,7 +165,7 @@ namespace Scoreboard
             // lblName
             // 
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.Black;
+            this.lblName.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblName.Location = new System.Drawing.Point(36, 155);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(110, 23);
@@ -179,11 +182,12 @@ namespace Scoreboard
             this.txtTeam2.Size = new System.Drawing.Size(303, 26);
             this.txtTeam2.TabIndex = 32;
             this.txtTeam2.TabStop = false;
+            this.txtTeam2.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTeam2
             // 
             this.lblTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTeam2.ForeColor = System.Drawing.Color.Blue;
+            this.lblTeam2.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblTeam2.Location = new System.Drawing.Point(557, 114);
             this.lblTeam2.Name = "lblTeam2";
             this.lblTeam2.Size = new System.Drawing.Size(124, 38);
@@ -200,11 +204,12 @@ namespace Scoreboard
             this.txtTeam1.Size = new System.Drawing.Size(303, 26);
             this.txtTeam1.TabIndex = 31;
             this.txtTeam1.TabStop = false;
+            this.txtTeam1.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTeam1
             // 
             this.lblTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTeam1.ForeColor = System.Drawing.Color.Blue;
+            this.lblTeam1.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblTeam1.Location = new System.Drawing.Point(241, 114);
             this.lblTeam1.Name = "lblTeam1";
             this.lblTeam1.Size = new System.Drawing.Size(124, 38);
@@ -221,11 +226,12 @@ namespace Scoreboard
             this.txtTitle.Size = new System.Drawing.Size(621, 26);
             this.txtTitle.TabIndex = 26;
             this.txtTitle.TabStop = false;
+            this.txtTitle.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTenTranDau
             // 
             this.lblTenTranDau.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenTranDau.ForeColor = System.Drawing.Color.Black;
+            this.lblTenTranDau.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblTenTranDau.Location = new System.Drawing.Point(36, 55);
             this.lblTenTranDau.Name = "lblTenTranDau";
             this.lblTenTranDau.Size = new System.Drawing.Size(110, 23);
@@ -255,7 +261,7 @@ namespace Scoreboard
             // 
             // lblMessage
             // 
-            this.lblMessage.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.lblMessage.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
             this.lblMessage.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
@@ -268,7 +274,7 @@ namespace Scoreboard
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -286,7 +292,7 @@ namespace Scoreboard
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
             this.panel1.Controls.Add(this.lblTenTranDau);
             this.panel1.Controls.Add(this.btnStart);
             this.panel1.Controls.Add(this.btnCancel);
@@ -321,6 +327,7 @@ namespace Scoreboard
             this.Name = "UserInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Thông tin";
+            this.Load += new System.EventHandler(this.UserInfoForm_Load);
             this.Activated += new System.EventHandler(this.UserInfoForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserInfoForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).EndInit();
@@ -396,10 +403,27 @@ namespace Scoreboard
             LoadUserInfo();
         }
 
+        // Create border panels for textboxes after the form loads
+        private void UserInfoForm_Load(object sender, EventArgs e)
+        {
+            // Set button colors through MaterialSkin theme
+            // btnStart - Xanh dương chủ đạo #3B82F6
+            // This will be handled by the MaterialSkin theme set in MainMDIForm
+            
+            // btnCancel - Xám nhạt #E5E7EB
+            // We'll need to customize this button specifically
+            btnCancel.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnCancel.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
+            
+            // btnRefresh - Xám nhạt #E5E7EB
+            btnRefresh.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnRefresh.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
+        }
+
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
-            int radius = 20;   // độ bo góc
+            int radius = 10;   // độ bo góc - 8-10px như yêu cầu
             int shadow = 8;    // độ dày bóng
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -414,6 +438,12 @@ namespace Scoreboard
 
             // Gán Region để panel thật sự bo góc
             panel.Region = new Region(path);
+
+            // Vẽ viền xám nhẹ cho panel (#D0D5DD)
+            using (Pen borderPen = new Pen(Color.FromArgb(208, 213, 221), 1)) // #D0D5DD - Border color
+            {
+                e.Graphics.DrawPath(borderPen, path);
+            }
 
             // Vẽ bóng mờ nhẹ (ngoài path)
             using (GraphicsPath shadowPath = new GraphicsPath())

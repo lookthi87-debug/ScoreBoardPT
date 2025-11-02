@@ -66,10 +66,12 @@ namespace Scoreboard
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
             this.txtUserName.Text = "admin";
+            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblUser
             // 
             this.lblUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUser.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblUser.Location = new System.Drawing.Point(29, 47);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(196, 23);
@@ -87,10 +89,12 @@ namespace Scoreboard
             this.txtPassWord.TabIndex = 1;
             this.txtPassWord.Text = "admin123";
             this.txtPassWord.UseSystemPasswordChar = true;
+            this.txtPassWord.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblPassWord
             // 
             this.lblPassWord.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPassWord.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblPassWord.Location = new System.Drawing.Point(29, 88);
             this.lblPassWord.Name = "lblPassWord";
             this.lblPassWord.Size = new System.Drawing.Size(196, 23);
@@ -148,10 +152,12 @@ namespace Scoreboard
             this.txtPassWordNew.TabIndex = 2;
             this.txtPassWordNew.Text = "admin123";
             this.txtPassWordNew.UseSystemPasswordChar = true;
+            this.txtPassWordNew.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label1.Location = new System.Drawing.Point(29, 129);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(196, 23);
@@ -169,10 +175,12 @@ namespace Scoreboard
             this.txtPassWordNewCf.TabIndex = 3;
             this.txtPassWordNewCf.Text = "admin123";
             this.txtPassWordNewCf.UseSystemPasswordChar = true;
+            this.txtPassWordNewCf.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label2.Location = new System.Drawing.Point(29, 172);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(196, 23);
@@ -182,7 +190,7 @@ namespace Scoreboard
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -200,7 +208,7 @@ namespace Scoreboard
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
             this.panel1.Controls.Add(this.lblUser);
             this.panel1.Controls.Add(this.txtPassWordNewCf);
             this.panel1.Controls.Add(this.txtUserName);
@@ -231,6 +239,7 @@ namespace Scoreboard
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thay đổi mật khẩu";
+            this.Load += new System.EventHandler(this.ChangePassForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -327,7 +336,7 @@ namespace Scoreboard
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
-            int radius = 20;   // độ bo góc
+            int radius = 10;   // độ bo góc - 8-10px như yêu cầu
             int shadow = 8;    // độ dày bóng
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -342,6 +351,12 @@ namespace Scoreboard
 
             // Gán Region để panel thật sự bo góc
             panel.Region = new Region(path);
+
+            // Vẽ viền xám nhẹ cho panel (#D0D5DD)
+            using (Pen borderPen = new Pen(Color.FromArgb(208, 213, 221), 1)) // #D0D5DD - Border color
+            {
+                e.Graphics.DrawPath(borderPen, path);
+            }
 
             // Vẽ bóng mờ nhẹ (ngoài path)
             using (GraphicsPath shadowPath = new GraphicsPath())
@@ -366,6 +381,15 @@ namespace Scoreboard
             {
                 e.Graphics.FillPath(brush, path);
             }
+        }
+        
+        // Set button colors after the form loads
+        private void ChangePassForm_Load(object sender, EventArgs e)
+        {
+            // btnCancel - Xám nhạt #E5E7EB
+            // We'll need to customize this button specifically
+            btnCancel.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnCancel.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
         }
     }
 }

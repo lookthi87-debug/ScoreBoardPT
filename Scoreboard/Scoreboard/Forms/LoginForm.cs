@@ -56,12 +56,15 @@ namespace Scoreboard
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
             this.txtUserName.Text = "Admin";
+            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            this.txtUserName.GotFocus += TxtBox_GotFocus;
+            this.txtUserName.LostFocus += TxtBox_LostFocus;
             this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
             // 
             // lblUser
             // 
             this.lblUser.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUser.ForeColor = System.Drawing.Color.Black;
+            this.lblUser.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblUser.Location = new System.Drawing.Point(29, 69);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(152, 23);
@@ -79,12 +82,15 @@ namespace Scoreboard
             this.txtPassWord.TabIndex = 1;
             this.txtPassWord.Text = "Abc12345";
             this.txtPassWord.UseSystemPasswordChar = true;
+            this.txtPassWord.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            this.txtPassWord.GotFocus += TxtBox_GotFocus;
+            this.txtPassWord.LostFocus += TxtBox_LostFocus;
             this.txtPassWord.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPassWord_KeyDown);
             // 
             // lblPassWord
             // 
             this.lblPassWord.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPassWord.ForeColor = System.Drawing.Color.Black;
+            this.lblPassWord.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblPassWord.Location = new System.Drawing.Point(29, 103);
             this.lblPassWord.Name = "lblPassWord";
             this.lblPassWord.Size = new System.Drawing.Size(152, 23);
@@ -110,7 +116,6 @@ namespace Scoreboard
             this.btnClose.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnClose.UseAccentColor = false;
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnLogin
             // 
@@ -135,6 +140,7 @@ namespace Scoreboard
             // linkMiss
             // 
             this.linkMiss.AutoSize = true;
+            this.linkMiss.LinkColor = System.Drawing.Color.FromArgb(37, 99, 235); // #2563EB - Xanh nhạt
             this.linkMiss.Location = new System.Drawing.Point(345, 192);
             this.linkMiss.Name = "linkMiss";
             this.linkMiss.Size = new System.Drawing.Size(80, 13);
@@ -146,6 +152,7 @@ namespace Scoreboard
             // linkChangePass
             // 
             this.linkChangePass.AutoSize = true;
+            this.linkChangePass.LinkColor = System.Drawing.Color.FromArgb(37, 99, 235); // #2563EB - Xanh nhạt
             this.linkChangePass.Location = new System.Drawing.Point(443, 192);
             this.linkChangePass.Name = "linkChangePass";
             this.linkChangePass.Size = new System.Drawing.Size(96, 13);
@@ -156,7 +163,7 @@ namespace Scoreboard
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -175,7 +182,7 @@ namespace Scoreboard
             // panel1
             // 
             this.panel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
             this.panel1.Controls.Add(this.linkChangePass);
             this.panel1.Controls.Add(this.linkMiss);
             this.panel1.Controls.Add(this.txtUserName);
@@ -210,6 +217,52 @@ namespace Scoreboard
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
+        }
+        
+        // Create border panels for textboxes after the form loads
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+            // Set button colors through MaterialSkin theme
+            // btnLogin - Xanh dương chủ đạo #3B82F6
+            // This will be handled by the MaterialSkin theme set in MainMDIForm
+            
+            // btnClose - Xám nhạt #E5E7EB
+            // We'll need to customize this button specifically
+            btnClose.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnClose.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
+            
+            // Create border panels for username textbox
+            Panel userBorder = new Panel();
+            userBorder.Name = "txtUserName_border";
+            userBorder.BackColor = Color.Transparent;
+            userBorder.Size = new Size(txtUserName.Width + 2, txtUserName.Height + 2);
+            userBorder.Location = new Point(txtUserName.Location.X - 1, txtUserName.Location.Y - 1);
+            userBorder.BringToFront();
+            panel1.Controls.Add(userBorder);
+            panel1.Controls.SetChildIndex(userBorder, panel1.Controls.IndexOf(txtUserName));
+            
+            // Create border panels for password textbox
+            Panel passBorder = new Panel();
+            passBorder.Name = "txtPassWord_border";
+            passBorder.BackColor = Color.Transparent;
+            passBorder.Size = new Size(txtPassWord.Width + 2, txtPassWord.Height + 2);
+            passBorder.Location = new Point(txtPassWord.Location.X - 1, txtPassWord.Location.Y - 1);
+            passBorder.BringToFront();
+            panel1.Controls.Add(passBorder);
+            panel1.Controls.SetChildIndex(passBorder, panel1.Controls.IndexOf(txtPassWord));
+            
+            // Bring textboxes to front
+            txtUserName.BringToFront();
+            txtPassWord.BringToFront();
+            
+            // Set initial textbox colors
+            txtUserName.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            txtPassWord.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            
+            pingTimer = new Timer();
+            pingTimer.Interval = 10 * 60 * 500; // 5 phút
+            pingTimer.Tick += PingTimer_Tick;
+            pingTimer.Start();
         }
         private void EnsureDefaultAdmin()
         {
@@ -395,13 +448,7 @@ namespace Scoreboard
                 txtUserName.Focus();
             }
         }
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            pingTimer = new Timer();
-            pingTimer.Interval = 10 * 60 * 500; // 5 phút
-            pingTimer.Tick += PingTimer_Tick;
-            pingTimer.Start();
-        }
+
         private void PingTimer_Tick(object sender, EventArgs e)
         {
             try
@@ -441,7 +488,7 @@ namespace Scoreboard
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
-            int radius = 20;   // độ bo góc
+            int radius = 10;   // độ bo góc - 8-10px như yêu cầu
             int shadow = 8;    // độ dày bóng
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -456,6 +503,12 @@ namespace Scoreboard
 
             // Gán Region để panel thật sự bo góc
             panel.Region = new Region(path);
+
+            // Vẽ viền xám nhẹ cho panel (#D0D5DD)
+            using (Pen borderPen = new Pen(Color.FromArgb(208, 213, 221), 1)) // #D0D5DD - Border color
+            {
+                e.Graphics.DrawPath(borderPen, path);
+            }
 
             // Vẽ bóng mờ nhẹ (ngoài path)
             using (GraphicsPath shadowPath = new GraphicsPath())
@@ -479,6 +532,38 @@ namespace Scoreboard
             using (SolidBrush brush = new SolidBrush(panel.BackColor))
             {
                 e.Graphics.FillPath(brush, path);
+            }
+        }
+
+        private void TxtBox_GotFocus(object sender, EventArgs e)
+        {
+            TextBox txtBox = sender as TextBox;
+            txtBox.BorderStyle = BorderStyle.FixedSingle;
+            txtBox.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            
+            // Show the border panel with focus color
+            string borderName = txtBox.Name + "_border";
+            Panel borderPanel = panel1.Controls[borderName] as Panel;
+            
+            if (borderPanel != null)
+            {
+                borderPanel.BackColor = Color.FromArgb(59, 130, 246); // #3B82F6 - Xanh chủ đạo (focus color)
+            }
+        }
+
+        private void TxtBox_LostFocus(object sender, EventArgs e)
+        {
+            TextBox txtBox = sender as TextBox;
+            txtBox.BorderStyle = BorderStyle.FixedSingle;
+            txtBox.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
+            
+            // Hide the border panel by setting its color to transparent
+            string borderName = txtBox.Name + "_border";
+            Panel borderPanel = panel1.Controls[borderName] as Panel;
+            
+            if (borderPanel != null)
+            {
+                borderPanel.BackColor = Color.Transparent;
             }
         }
     }

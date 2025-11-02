@@ -56,11 +56,12 @@ namespace Scoreboard
             this.txtHost.Size = new System.Drawing.Size(354, 29);
             this.txtHost.TabIndex = 0;
             this.txtHost.Text = "localhost";
+            this.txtHost.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblHost
             // 
             this.lblHost.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHost.ForeColor = System.Drawing.Color.Black;
+            this.lblHost.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.lblHost.Location = new System.Drawing.Point(77, 51);
             this.lblHost.Name = "lblHost";
             this.lblHost.Size = new System.Drawing.Size(109, 23);
@@ -96,11 +97,12 @@ namespace Scoreboard
             this.txtPort.Size = new System.Drawing.Size(354, 29);
             this.txtPort.TabIndex = 1;
             this.txtPort.Text = "5432";
+            this.txtPort.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label1.Location = new System.Drawing.Point(77, 86);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 23);
@@ -116,11 +118,12 @@ namespace Scoreboard
             this.txtDatabase.Size = new System.Drawing.Size(354, 29);
             this.txtDatabase.TabIndex = 2;
             this.txtDatabase.Text = "DB_Scoreboard";
+            this.txtDatabase.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label2.Location = new System.Drawing.Point(77, 121);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 23);
@@ -136,11 +139,12 @@ namespace Scoreboard
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 3;
             this.txtUserName.Text = "postgres";
+            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label3.Location = new System.Drawing.Point(77, 156);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 23);
@@ -156,11 +160,12 @@ namespace Scoreboard
             this.txtPass.Size = new System.Drawing.Size(354, 29);
             this.txtPass.TabIndex = 4;
             this.txtPass.Text = "Abc12345";
+            this.txtPass.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
             this.label4.Location = new System.Drawing.Point(77, 192);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 23);
@@ -186,11 +191,10 @@ namespace Scoreboard
             this.btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnCancel.UseAccentColor = false;
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -208,7 +212,7 @@ namespace Scoreboard
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
             this.panel1.Controls.Add(this.txtDatabase);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.lblHost);
@@ -241,7 +245,7 @@ namespace Scoreboard
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Connect database";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
+            this.Load += new System.EventHandler(this.ConfigDatabase_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -288,7 +292,7 @@ namespace Scoreboard
                 txtHost.Focus();
             }
         }
-        private void LoginForm_Load(object sender, EventArgs e)
+        private void ConfigDatabase_Load(object sender, EventArgs e)
         {
             var cf = PostgresHelper.LoadConfig();
             txtHost.Text = cf.Host;
@@ -296,6 +300,11 @@ namespace Scoreboard
             txtDatabase.Text = cf.Database;
             txtUserName.Text = cf.User;
             txtPass.Text = cf.Password;
+            
+            // btnCancel - Xám nhạt #E5E7EB
+            // We'll need to customize this button specifically
+            btnCancel.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnCancel.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -306,7 +315,7 @@ namespace Scoreboard
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
-            int radius = 20;   // độ bo góc
+            int radius = 10;   // độ bo góc - 8-10px như yêu cầu
             int shadow = 8;    // độ dày bóng
             e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -321,6 +330,12 @@ namespace Scoreboard
 
             // Gán Region để panel thật sự bo góc
             panel.Region = new Region(path);
+
+            // Vẽ viền xám nhẹ cho panel (#D0D5DD)
+            using (Pen borderPen = new Pen(Color.FromArgb(208, 213, 221), 1)) // #D0D5DD - Border color
+            {
+                e.Graphics.DrawPath(borderPen, path);
+            }
 
             // Vẽ bóng mờ nhẹ (ngoài path)
             using (GraphicsPath shadowPath = new GraphicsPath())
