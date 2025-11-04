@@ -30,6 +30,10 @@ namespace Scoreboard
         {
             InitializeComponent();
             mainForm = parent;
+            pingTimer = new Timer();
+            pingTimer.Interval = 10 * 60 * 500; // 5 phút
+            pingTimer.Tick += PingTimer_Tick;
+            pingTimer.Start();
         }
         private void InitializeComponent()
         {
@@ -211,59 +215,13 @@ namespace Scoreboard
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Login";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
-            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
-        
-        // Create border panels for textboxes after the form loads
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            // Set button colors through MaterialSkin theme
-            // btnLogin - Xanh dương chủ đạo #3B82F6
-            // This will be handled by the MaterialSkin theme set in MainMDIForm
-            
-            // btnClose - Xám nhạt #E5E7EB
-            // We'll need to customize this button specifically
-            btnClose.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
-            btnClose.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
-            
-            // Create border panels for username textbox
-            Panel userBorder = new Panel();
-            userBorder.Name = "txtUserName_border";
-            userBorder.BackColor = Color.Transparent;
-            userBorder.Size = new Size(txtUserName.Width + 2, txtUserName.Height + 2);
-            userBorder.Location = new Point(txtUserName.Location.X - 1, txtUserName.Location.Y - 1);
-            userBorder.BringToFront();
-            panel1.Controls.Add(userBorder);
-            panel1.Controls.SetChildIndex(userBorder, panel1.Controls.IndexOf(txtUserName));
-            
-            // Create border panels for password textbox
-            Panel passBorder = new Panel();
-            passBorder.Name = "txtPassWord_border";
-            passBorder.BackColor = Color.Transparent;
-            passBorder.Size = new Size(txtPassWord.Width + 2, txtPassWord.Height + 2);
-            passBorder.Location = new Point(txtPassWord.Location.X - 1, txtPassWord.Location.Y - 1);
-            passBorder.BringToFront();
-            panel1.Controls.Add(passBorder);
-            panel1.Controls.SetChildIndex(passBorder, panel1.Controls.IndexOf(txtPassWord));
-            
-            // Bring textboxes to front
-            txtUserName.BringToFront();
-            txtPassWord.BringToFront();
-            
-            // Set initial textbox colors
-            txtUserName.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
-            txtPassWord.BackColor = Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
-            
-            pingTimer = new Timer();
-            pingTimer.Interval = 10 * 60 * 500; // 5 phút
-            pingTimer.Tick += PingTimer_Tick;
-            pingTimer.Start();
-        }
+
         private void EnsureDefaultAdmin()
         {
             try
