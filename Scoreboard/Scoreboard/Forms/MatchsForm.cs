@@ -1317,7 +1317,7 @@ namespace Scoreboard
                         ws.Cells[currentRow, 6] = match.End;
                         ws.Cells[currentRow, 7] = match.RefereeName ?? "";
                         ws.Cells[currentRow, 8] = match.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
-                                                  match.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                  match.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress) :
                                                   match.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished) : match.Status;
 
 
@@ -1349,7 +1349,7 @@ namespace Scoreboard
                                 else
                                 {
                                     ws.Cells[currentRow, 8] = d.Status == MatchStatusConfig.Status.NotStarted ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
-                                                              d.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted) :
+                                                              d.Status == MatchStatusConfig.Status.InProgress ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress) :
                                                               d.Status == MatchStatusConfig.Status.Finished ? MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished) : d.Status;
                                 }
 
