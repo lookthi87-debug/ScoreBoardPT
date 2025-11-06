@@ -790,7 +790,6 @@ namespace Scoreboard
                     Status = MatchStatusConfig.Status.NotStarted, // Ban đầu chưa hoạt động
                     RefereeId = match.RefereeId,
                     RefereeName = match.RefereeName,
-                    ClassSets_Id = match.ClassSets_Id, // Giữ nguyên ClassSets_Id như hiệp/set hiện tại
                     ClassSetsName = nextPeriodName, // Sử dụng tên hiệp/set đã xác định
                     TournamentId = match.TournamentId,
                     TournamentName = match.TournamentName,

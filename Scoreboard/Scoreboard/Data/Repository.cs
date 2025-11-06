@@ -527,61 +527,6 @@ namespace Scoreboard.Data
             }
             return list;
         }
-        public static List<MatchModel> GetAllMatches()
-        {
-            var list = new List<MatchModel>();
-            string sql = @"
-                    SELECT 
-                        m.id, m.team1, m.team2, m.score1, m.score2, m.start, m.""end"", 
-                        m.time, m.referee_id, u.name AS referee_name, 
-                        m.note, m.show_toggle, m.status, m.tournament_id, t.name as tournamentname, t.match_class_id,ms.name as matchclassname,
-                        t.start as tournament_start, t.""end"" as tournament_end, m.team1_flag, m.team2_flag
-                    FROM Matches m
-                    LEFT JOIN Users u ON m.referee_id = u.id
-                    LEFT JOIN Tournaments t ON m.tournament_id = t.id
-                    LEFT JOIN MatchClass ms ON t.match_class_id = ms.id
-                    ORDER BY m.id;
-                ";
-
-            using (var cmd = new NpgsqlCommand(sql, Conn))
-            using (var dr = cmd.ExecuteReader())
-            {
-                while (dr.Read())
-                {
-                    var match = new MatchModel
-                    {
-                        Id = dr.GetString(0),
-                        Team1 = dr.IsDBNull(1) ? null : dr.GetString(1),
-                        Team2 = dr.IsDBNull(2) ? null : dr.GetString(2),
-                        Score1 = dr.IsDBNull(3) ? 0 : dr.GetInt32(3),
-                        Score2 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
-                        Start = dr.IsDBNull(5) ? (DateTime?)null : dr.GetDateTime(5),
-                        End = dr.IsDBNull(6) ? (DateTime?)null : dr.GetDateTime(6),
-                        Time = dr.IsDBNull(7) ? null : dr.GetString(7),
-                        RefereeId = dr.IsDBNull(8) ? (int?)null : dr.GetInt32(8),
-                        RefereeName = dr.IsDBNull(9) ? null : dr.GetString(9),
-                        Note = dr.IsDBNull(10) ? null : dr.GetString(10),
-                        ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
-                        Status = dr.IsDBNull(12) ? null : dr.GetString(12),
-                        TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                        TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                        MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                        MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                        TournamentStart = dr.IsDBNull(17) ? (DateTime?)null : dr.GetDateTime(17),
-                        TournamentEnd = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
-                        Team1Flag = dr.IsDBNull(19) ? null : dr.GetString(19),
-                        Team2Flag = dr.IsDBNull(20) ? null : dr.GetString(20)
-                    };
-
-                    // Parse multiple referees from note field if exists
-                    ParseMultipleRefereesFromNote(match);
-
-                    list.Add(match);
-                }
-            }
-
-            return list;
-        }
         public static MatchModel GetMatchById(string id)
         {
             string sql = @"
@@ -722,9 +667,9 @@ namespace Scoreboard.Data
         {
             string sql = @"
                 INSERT INTO Matches
-                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id, team1_flag, team2_flag)
+                (id, team1, team2, score1, score2, start, ""end"", time, referee_id, note, show_toggle, status, tournament_id, match_class_id, team1_flag, team2_flag)
                 VALUES
-                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid, @t1f, @t2f);
+                (@id, @t1, @t2, @s1, @s2, @st, @et, @time, @rid, @note, @show, @stt, @tid, @mli, @t1f, @t2f);
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -742,6 +687,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@mli", m.MatchClassId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
@@ -763,6 +709,7 @@ namespace Scoreboard.Data
                     show_toggle = @show,
                     status = @stt,
                     tournament_id = @tid,
+                    match_class_id = @mli,
                     team1_flag = @t1f,
                     team2_flag = @t2f
                 WHERE id = @id;
@@ -783,6 +730,7 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@show", m.ShowToggle);
                 cmd.Parameters.AddWithValue("@stt", m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@tid", m.TournamentId.HasValue ? (object)m.TournamentId.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@mli", m.MatchClassId ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t1f", m.Team1Flag ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@t2f", m.Team2Flag ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
@@ -868,19 +816,17 @@ namespace Scoreboard.Data
                     m.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName,
                     m.score1,
                     m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.status = '1'
                   AND ms.referee_id = @uid
@@ -908,14 +854,13 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
                             RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
                             RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
-                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
+                            ClassSetsName = dr.IsDBNull(11) ? null : dr.GetString(11),
+                            TournamentId = dr.IsDBNull(12) ? (int?)null : dr.GetInt32(12),
+                            TournamentName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            TotalScore1 = dr.IsDBNull(16) ? 0 : dr.GetInt32(16),
+                            TotalScore2 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17)
                         });
                     }
                 }
@@ -939,19 +884,17 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName,
                     m.score1,
                     m.score2
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE m.status = '1' AND ms.status = '1'
                   AND ms.referee_id = @uid
@@ -979,14 +922,13 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
                             RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
                             RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                            TotalScore1 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
-                            TotalScore2 = dr.IsDBNull(18) ? 0 : dr.GetInt32(18)
+                            ClassSetsName = dr.IsDBNull(11) ? null : dr.GetString(11),
+                            TournamentId = dr.IsDBNull(12) ? (int?)null : dr.GetInt32(12),
+                            TournamentName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            TotalScore1 = dr.IsDBNull(16) ? 0 : dr.GetInt32(16),
+                            TotalScore2 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17)
                         });
                     }
                 }
@@ -1013,21 +955,19 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.status = '0'
                   AND ms.match_id = @id
-                ORDER BY ms.ClassSets_id,m.id, ms.id;
+                ORDER BY m.id, ms.id;
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1053,12 +993,11 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(10) ? null : dr.GetString(10),
                             RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
                             RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
-                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
+                            ClassSetsName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            TournamentId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            TournamentName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            MatchClassId = dr.IsDBNull(16) ? (int?)null : dr.GetInt32(16),
+                            MatchClassName = dr.IsDBNull(17) ? null : dr.GetString(17)
                         };
                     }
                 }
@@ -1184,21 +1123,19 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.status = '1'
                   AND ms.match_id = @id
-                ORDER BY ms.ClassSets_id,m.id, ms.id;
+                ORDER BY m.id, ms.id;
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1222,12 +1159,11 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
                             RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
                             RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            ClassSetsName = dr.IsDBNull(11) ? null : dr.GetString(11),
+                            TournamentId = dr.IsDBNull(12) ? (int?)null : dr.GetInt32(12),
+                            TournamentName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15)
                         });
                     }
                 }
@@ -1252,17 +1188,15 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.status = '0'
                   AND ms.match_id = @mid
@@ -1292,12 +1226,11 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(8) ? null : dr.GetString(8),
                             RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
                             RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
-                            ClassSets_Id = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
-                            ClassSetsName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            MatchClassId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            MatchClassName = dr.IsDBNull(16) ? null : dr.GetString(16)
+                            ClassSetsName = dr.IsDBNull(11) ? null : dr.GetString(11),
+                            TournamentId = dr.IsDBNull(12) ? (int?)null : dr.GetInt32(12),
+                            TournamentName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15)
                         };
                     }
                 }
@@ -1323,17 +1256,15 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.fullname AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.match_id = @mid
                 ORDER BY ms.id;
@@ -1362,12 +1293,11 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(10) ? null : dr.GetString(10),
                             RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
                             RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
-                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18)
+                            ClassSetsName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            TournamentId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            TournamentName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            MatchClassId = dr.IsDBNull(16) ? (int?)null : dr.GetInt32(16),
+                            MatchClassName = dr.IsDBNull(17) ? null : dr.GetString(17)
                         });
                     }
                 }
@@ -1392,18 +1322,16 @@ namespace Scoreboard.Data
                     ms.status,
                     ms.referee_id,
                     u.name AS referee_name,
-                    ms.ClassSets_id,
-                    COALESCE(ms.ClassSetsName, cs.name) AS classsets_name,
+                    ms.ClassSetsName AS classsets_name,
                     m.tournament_id,
                     t.name AS tournament_name,
-                    cs.Match_Class_Id AS MatchClassId,
+                    mtl.id AS MatchClassId,
                     mtl.name as MatchClassName,
                     ms.start
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
-                LEFT JOIN ClassSets cs ON ms.ClassSets_id = cs.id
-                LEFT JOIN MatchClass mtl ON cs.Match_Class_Id = mtl.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 WHERE ms.match_id = @mid AND ms.id = @id;
             ";
@@ -1432,13 +1360,12 @@ namespace Scoreboard.Data
                             Status = dr.IsDBNull(10) ? null : dr.GetString(10),
                             RefereeId = dr.IsDBNull(11) ? (int?)null : dr.GetInt32(11),
                             RefereeName = dr.IsDBNull(12) ? null : dr.GetString(12),
-                            ClassSets_Id = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            ClassSetsName = dr.IsDBNull(14) ? null : dr.GetString(14),
-                            TournamentId = dr.IsDBNull(15) ? (int?)null : dr.GetInt32(15),
-                            TournamentName = dr.IsDBNull(16) ? null : dr.GetString(16),
-                            MatchClassId = dr.IsDBNull(17) ? (int?)null : dr.GetInt32(17),
-                            MatchClassName = dr.IsDBNull(18) ? null : dr.GetString(18),
-                            Start = dr.IsDBNull(19) ? (DateTime?)null : dr.GetDateTime(19),
+                            ClassSetsName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            TournamentId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            TournamentName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            MatchClassId = dr.IsDBNull(16) ? (int?)null : dr.GetInt32(16),
+                            MatchClassName = dr.IsDBNull(17) ? null : dr.GetString(17),
+                            Start = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
                         };
                     }
                 }
@@ -1457,8 +1384,8 @@ namespace Scoreboard.Data
 
             string sql = @"
                 INSERT INTO MatchSets
-                (id, match_id, score1, score2, start, ""end"", time, note, status, ClassSets_id, referee_id, ClassSetsName)
-                VALUES (@id, @mid, @s1, @s2, @st, @et, @t, @note, @stt, @cid, @rid, @csname);
+                (id, match_id, score1, score2, start, ""end"", time, note, status, referee_id, ClassSetsName)
+                VALUES (@id, @mid, @s1, @s2, @st, @et, @t, @note, @stt, @rid, @csname);
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1473,7 +1400,6 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@note", m.Note ?? (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@csname", m.ClassSetsName ?? (object)DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
@@ -1488,8 +1414,7 @@ namespace Scoreboard.Data
                     time = @t,
                     note = @note,
                     status = @stt,
-                    referee_id = @rid,
-                    ClassSets_id = @cid
+                    referee_id = @rid
                 WHERE id = @id;
             ";
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1502,7 +1427,6 @@ namespace Scoreboard.Data
                 cmd.Parameters.AddWithValue("@note", m.Note);
                 cmd.Parameters.AddWithValue("@stt", (object)m.Status ?? MatchStatusConfig.Status.NotStarted);
                 cmd.Parameters.AddWithValue("@rid", m.RefereeId.HasValue ? (object)m.RefereeId.Value : DBNull.Value);
-                cmd.Parameters.AddWithValue("@cid", m.ClassSets_Id.HasValue ? (object)m.ClassSets_Id.Value : DBNull.Value);
 
                 cmd.ExecuteNonQuery();
             }
@@ -1581,18 +1505,6 @@ namespace Scoreboard.Data
             }
         }
         // ====================================================
-        // ACTIVITIES
-        // ====================================================
-        public static void AddActivity(int userId, string activity)
-        {
-            using (var cmd = new NpgsqlCommand("INSERT INTO Activities(user_id, activity) VALUES(@u,@a)", Conn))
-            {
-                cmd.Parameters.AddWithValue("@u", userId);
-                cmd.Parameters.AddWithValue("@a", activity);
-                cmd.ExecuteNonQuery();
-            }
-        }
-        // ====================================================
         // MATCHCLASS
         // ====================================================
         public static List<MatchClassModel> GetAllMatchClasses()
@@ -1622,143 +1534,6 @@ namespace Scoreboard.Data
             }
 
             return list;
-        }
-
-        public static void AddMatchClass(MatchClassModel m)
-        {
-            using (var cmd = new NpgsqlCommand(@"INSERT INTO MatchClass(name, period_type, standard_periods, periods_to_win, 
-                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at) 
-                VALUES(@n, @pt, @sp, @ptw, @ao, @mop, @at, @ca, @ua)", Conn))
-            {
-                cmd.Parameters.AddWithValue("@n", m.Name);
-                cmd.Parameters.AddWithValue("@pt", string.IsNullOrEmpty(m.PeriodType) ? (object)DBNull.Value : m.PeriodType);
-                cmd.Parameters.AddWithValue("@sp", m.StandardPeriods);
-                cmd.Parameters.AddWithValue("@ptw", m.PeriodsToWin);
-                cmd.Parameters.AddWithValue("@ao", m.AllowOvertime);
-                cmd.Parameters.AddWithValue("@mop", m.MaxOvertimePeriods);
-                cmd.Parameters.AddWithValue("@at", m.AllowTie);
-                cmd.Parameters.AddWithValue("@ca", DateTime.Now);
-                cmd.Parameters.AddWithValue("@ua", DateTime.Now);
-                cmd.ExecuteNonQuery();
-            }
-        }
-        public static void UpdateMatchClass(MatchClassModel m)
-        {
-            using (var cmd = new NpgsqlCommand(@"UPDATE MatchClass SET name=@n, period_type=@pt, standard_periods=@sp, 
-                periods_to_win=@ptw, allow_overtime=@ao, max_overtime_periods=@mop, allow_tie=@at, updated_at=@ua 
-                WHERE id=@id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@id", m.Id);
-                cmd.Parameters.AddWithValue("@n", m.Name);
-                cmd.Parameters.AddWithValue("@pt", string.IsNullOrEmpty(m.PeriodType) ? (object)DBNull.Value : m.PeriodType);
-                cmd.Parameters.AddWithValue("@sp", m.StandardPeriods);
-                cmd.Parameters.AddWithValue("@ptw", m.PeriodsToWin);
-                cmd.Parameters.AddWithValue("@ao", m.AllowOvertime);
-                cmd.Parameters.AddWithValue("@mop", m.MaxOvertimePeriods);
-                cmd.Parameters.AddWithValue("@at", m.AllowTie);
-                cmd.Parameters.AddWithValue("@ua", DateTime.Now);
-                cmd.ExecuteNonQuery();
-            }
-        }
-        // ====================================================
-        // CLASSSETS
-        // ====================================================
-        public static List<ClassSetsModel> GetAllClassSets()
-        {
-            var list = new List<ClassSetsModel>();
-            using (var cmd = new NpgsqlCommand("SELECT id, name, Match_Class_Id FROM ClassSets ORDER BY id", Conn))
-            using (var dr = cmd.ExecuteReader())
-            {
-                while (dr.Read())
-                {
-                    list.Add(new ClassSetsModel
-                    {
-                        Id = dr.GetInt32(0),
-                        Name = dr.GetString(1),
-                        Match_Class_Id = dr.IsDBNull(2) ? (int?)null : dr.GetInt32(2)
-                    });
-                }
-            }
-            return list;
-        }
-        public static List<ClassSetsModel> GetAllClassSetsByClassId(int id)
-        {
-            var list = new List<ClassSetsModel>();
-            using (var cmd = new NpgsqlCommand("SELECT id, name, Match_Class_Id FROM ClassSets " +
-                " WHERE Match_Class_Id=@ml " +
-                " ORDER BY id", Conn))
-            {
-                cmd.Parameters.AddWithValue("@ml", id);
-                using (var dr = cmd.ExecuteReader())
-                {
-                    while (dr.Read())
-                    {
-                        list.Add(new ClassSetsModel
-                        {
-                            Id = dr.GetInt32(0),
-                            Name = dr.GetString(1),
-                            Match_Class_Id = dr.IsDBNull(2) ? (int?)null : dr.GetInt32(2)
-                        });
-                    }
-                }
-            }
-            return list;
-        }
-        public static ClassSetsModel GetClassSetById(int id)
-        {
-            using (var cmd = new NpgsqlCommand("SELECT id, name, Match_Class_Id FROM ClassSets WHERE id=@id", PostgresHelper.SharedConn))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                using (var dr = cmd.ExecuteReader())
-                {
-                    if (dr.Read())
-                    {
-                        return new ClassSetsModel
-                        {
-                            Id = dr.GetInt32(0),
-                            Name = dr.GetString(1),
-                            Match_Class_Id = dr.IsDBNull(2) ? (int?)null : dr.GetInt32(2)
-                        };
-                    }
-                }
-            }
-            return null;
-        }
-
-        public static void AddClassSet(ClassSetsModel c)
-        {
-            using (var cmd = new NpgsqlCommand("INSERT INTO ClassSets(name, Match_Class_Id) VALUES(@n, @m)", PostgresHelper.SharedConn))
-            {
-                cmd.Parameters.AddWithValue("@n", c.Name);
-                if (c.Match_Class_Id.HasValue)
-                    cmd.Parameters.AddWithValue("@m", c.Match_Class_Id.Value);
-                else
-                    cmd.Parameters.AddWithValue("@m", DBNull.Value);
-
-                cmd.ExecuteNonQuery();
-            }
-        }
-        public static void UpdateClassSet(ClassSetsModel c)
-        {
-            using (var cmd = new NpgsqlCommand("UPDATE ClassSets SET name=@n, Match_Class_Id=@m WHERE id=@id", PostgresHelper.SharedConn))
-            {
-                cmd.Parameters.AddWithValue("@id", c.Id);
-                cmd.Parameters.AddWithValue("@n", c.Name);
-                if (c.Match_Class_Id.HasValue)
-                    cmd.Parameters.AddWithValue("@m", c.Match_Class_Id.Value);
-                else
-                    cmd.Parameters.AddWithValue("@m", DBNull.Value);
-
-                cmd.ExecuteNonQuery();
-            }
-        }
-        public static void DeleteClassSet(int id)
-        {
-            using (var cmd = new NpgsqlCommand("DELETE FROM ClassSets WHERE id=@id", PostgresHelper.SharedConn))
-            {
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
-            }
         }
 
         // ====================================================
@@ -1793,69 +1568,7 @@ namespace Scoreboard.Data
             return null;
         }
 
-        public static void CreateOvertimePeriod(string matchId, int currentSetId, string periodName, int refereeId)
-        {
-            // Get current match details
-            var currentMatch = GetMatchSetByMatchAndId(matchId, currentSetId);
-            if (currentMatch == null) return;
 
-            // Get match class details
-            var matchClass = GetMatchClassById(currentMatch.MatchClassId ?? 0);
-            if (matchClass == null) return;
-
-            // Create new overtime period
-            var overtimeSet = new MatchsetModel
-            {
-                MatchId = matchId,
-                Team1 = currentMatch.Team1,
-                Team2 = currentMatch.Team2,
-                Score1 = 0,
-                Score2 = 0,
-                Time = "00:00",
-                Note = periodName,
-                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
-                RefereeId = refereeId,
-                RefereeName = currentMatch.RefereeName,
-                ClassSets_Id = currentMatch.ClassSets_Id,
-                ClassSetsName = periodName,
-                TournamentId = currentMatch.TournamentId,
-                TournamentName = currentMatch.TournamentName,
-                MatchClassId = currentMatch.MatchClassId,
-                MatchClassName = currentMatch.MatchClassName
-            };
-
-            AddMatchSet(overtimeSet);
-        }
-
-        public static void CreatePenaltyShootout(string matchId, int refereeId)
-        {
-            // Get current match details
-            var match = GetMatchById(matchId);
-            if (match == null) return;
-
-            // Create penalty shootout period
-            var penaltySet = new MatchsetModel
-            {
-                MatchId = matchId,
-                Team1 = match.Team1,
-                Team2 = match.Team2,
-                Score1 = 0,
-                Score2 = 0,
-                Time = "00:00",
-                Note = "Đá penalty",
-                Status = MatchStatusConfig.Status.NotStarted, // Inactive initially
-                RefereeId = refereeId,
-                RefereeName = match.RefereeName,
-                ClassSets_Id = null, // Special period
-                ClassSetsName = "Đá penalty",
-                TournamentId = match.TournamentId,
-                TournamentName = match.TournamentName,
-                MatchClassId = match.MatchClassId,
-                MatchClassName = match.MatchClassName
-            };
-
-            AddMatchSet(penaltySet);
-        }
         public static void StartMatchSet(string matchId, int id)
         {
             string sql = @"

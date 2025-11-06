@@ -15,7 +15,6 @@ namespace Scoreboard.Models
         public string Status { get; set; }
         public int? RefereeId { get; set; }
         public string RefereeName { get; set; }
-        public int? ClassSets_Id { get; set; }
         public string ClassSetsName { get; set; }
         public string Team1 { get; set; }
         public string Team2 { get; set; }

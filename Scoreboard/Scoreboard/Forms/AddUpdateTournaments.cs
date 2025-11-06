@@ -150,7 +150,7 @@ namespace Scoreboard
             // 
             this.dStart.CustomFormat = "dd/MM/yyyy";
             this.dStart.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.dStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dStart.Location = new System.Drawing.Point(152, 97);
             this.dStart.Name = "dStart";
             this.dStart.Size = new System.Drawing.Size(107, 29);
@@ -160,7 +160,7 @@ namespace Scoreboard
             // 
             this.dEnd.CustomFormat = "dd/MM/yyyy";
             this.dEnd.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
-            this.dEnd.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dEnd.Location = new System.Drawing.Point(369, 97);
             this.dEnd.Name = "dEnd";
             this.dEnd.Size = new System.Drawing.Size(107, 29);
@@ -247,8 +247,10 @@ namespace Scoreboard
         {
             lblId.Text = t.Id.ToString();
             txtName.Text = t.Name;
-            dStart.Text = t.Start.ToString();
-            dEnd.Text = t.End.ToString();
+            if (t.Start.HasValue)
+                dStart.Value = t.Start.Value;
+            if (t.End.HasValue)
+                dEnd.Value = t.End.Value;
             try { cbMatchClass.SelectedValue = t.match_class_id; } catch { }
             cbMatchClass.Text = t.match_class_name ?? "";
         }
@@ -256,7 +258,10 @@ namespace Scoreboard
         {
             InitializeComponent();
             LoadClass();
-            dEnd.Value = dStart.Value.AddDays(10);
+            
+            // Set default dates
+            dStart.Value = DateTime.Now.Date;
+            dEnd.Value = DateTime.Now.Date.AddDays(10);
 
             if (TournamentsId != -1)
             {

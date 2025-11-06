@@ -619,6 +619,9 @@ namespace Scoreboard
             if (currentMatch.TournamentId.HasValue)
             {
                 var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
+                // Set the MatchClassId from the tournament
+                currentMatch.MatchClassId = tournament.match_class_id;
+                currentMatch.MatchClassName = tournament.match_class_name;
                 var start = tournament.Start.Value.Date.AddHours(00).AddMinutes(00).AddSeconds(00);
                 var end = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
                 if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
@@ -714,35 +717,28 @@ namespace Scoreboard
                         var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
                         if (tournament != null)
                         {
-                            var classSets = Repository.GetAllClassSetsByClassId(tournament.match_class_id);
-                            var firstClassSet = classSets != null && classSets.Count > 0 ? classSets[0] : null;
+                            // Determine period name based on match class
+                            string firstPeriodName = GetFirstPeriodName(tournament.match_class_id);
 
-                            if (firstClassSet != null)
+                            var firstSet = new MatchsetModel
                             {
-                                // Determine period name based on match class
-                                string firstPeriodName = GetFirstPeriodName(tournament.match_class_id);
-
-                                var firstSet = new MatchsetModel
-                                {
-                                    MatchId = currentMatch.Id,
-                                    Team1 = currentMatch.Team1,
-                                    Team2 = currentMatch.Team2,
-                                    Score1 = 0,
-                                    Score2 = 0,
-                                    Time = "00:00",
-                                    Note = "",
-                                    Status = MatchStatusConfig.Status.InProgress, // Active
-                                    RefereeId = (currentMatch.RefereeIds != null && currentMatch.RefereeIds.Count > 0) ? (int?)currentMatch.RefereeIds[0] : null,
-                                    RefereeName = currentMatch.RefereeName,
-                                    ClassSets_Id = firstClassSet.Id,
-                                    ClassSetsName = firstPeriodName, // Use "Hiệp 1" instead of firstClassSet.Name
-                                    TournamentId = currentMatch.TournamentId,
-                                    TournamentName = currentMatch.TournamentName,
-                                    MatchClassId = currentMatch.MatchClassId,
-                                    MatchClassName = currentMatch.MatchClassName
-                                };
-                                Repository.AddMatchSet(firstSet);
-                            }
+                                MatchId = currentMatch.Id,
+                                Team1 = currentMatch.Team1,
+                                Team2 = currentMatch.Team2,
+                                Score1 = 0,
+                                Score2 = 0,
+                                Time = "00:00",
+                                Note = "",
+                                Status = MatchStatusConfig.Status.InProgress, // Active
+                                RefereeId = (currentMatch.RefereeIds != null && currentMatch.RefereeIds.Count > 0) ? (int?)currentMatch.RefereeIds[0] : null,
+                                RefereeName = currentMatch.RefereeName,
+                                ClassSetsName = firstPeriodName, // Use "Hiệp 1" instead of firstClassSet.Name
+                                TournamentId = currentMatch.TournamentId,
+                                TournamentName = currentMatch.TournamentName,
+                                MatchClassId = currentMatch.MatchClassId,
+                                MatchClassName = currentMatch.MatchClassName
+                            };
+                            Repository.AddMatchSet(firstSet);
                         }
                     }
 
