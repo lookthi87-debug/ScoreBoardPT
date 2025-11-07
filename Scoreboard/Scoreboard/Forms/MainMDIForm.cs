@@ -13,6 +13,16 @@ namespace Scoreboard
     public partial class MainMDIForm : Form
     {
         private UserModel currentUser;
+        // Store the currently selected menu item
+        private ToolStripMenuItem selectedMenuItem;
+        
+        // Public properties to expose menu items
+        public ToolStripMenuItem MenuTournaments => menuTournaments;
+        public ToolStripMenuItem MenuMatches => menuMatches;
+        public ToolStripMenuItem MenuUsers => menuUsers;
+        public ToolStripMenuItem MenuLogout => menuLogout;
+        public ToolStripMenuItem MenuLicense => mLicense;
+        public ToolStripMenuItem MenuDB => mDB;
 
         public MainMDIForm()
         {
@@ -32,7 +42,74 @@ namespace Scoreboard
                 Accent.LightBlue200, 
                 TextShade.WHITE
             );
+            
+            // Initialize menu highlighting after the form is loaded
+            this.Load += MainMDIForm_LoadComplete;
         }
+        
+        // Initialize menu highlighting functionality after form is loaded
+        private void MainMDIForm_LoadComplete(object sender, EventArgs e)
+        {
+            // Attach click event handlers to all menu items for highlighting
+            menuTournaments.Click += (s, ev) => { SetSelectedMenuItem(menuTournaments); menuTournaments_Click(s, ev); };
+            menuMatches.Click += (s, ev) => { SetSelectedMenuItem(menuMatches); menuMatches_Click(s, ev); };
+            menuUsers.Click += (s, ev) => { SetSelectedMenuItem(menuUsers); menuUsers_Click(s, ev); };
+            mDB.Click += (s, ev) => { SetSelectedMenuItem(mDB); mDB_Click(s, ev); };
+        }
+        
+        // Public method to allow other forms to set the selected menu item
+        public void SetSelectedMenuItem(ToolStripMenuItem menuItem)
+        {
+            // Reset previous selection
+            if (selectedMenuItem != null)
+            {
+                ResetMenuItemStyle(selectedMenuItem);
+            }
+            
+            // Highlight the new selection
+            HighlightMenuItem(menuItem);
+            selectedMenuItem = menuItem;
+        }
+        
+        // Highlight a menu item
+        private void HighlightMenuItem(ToolStripMenuItem item)
+        {
+            // Store original colors
+            item.Tag = new MenuItemColors 
+            { 
+                BackColor = item.BackColor, 
+                ForeColor = item.ForeColor 
+            };
+            
+            // Apply highlight colors (blue background with white text)
+            item.BackColor = Color.FromArgb(59, 130, 246); // Our main blue color (#3B82F6)
+            item.ForeColor = Color.White;
+        }
+        
+        // Reset a menu item to its original colors
+        private void ResetMenuItemStyle(ToolStripMenuItem item)
+        {
+            // Restore original colors if they were stored
+            if (item.Tag is MenuItemColors colors)
+            {
+                item.BackColor = colors.BackColor;
+                item.ForeColor = colors.ForeColor;
+            }
+            else
+            {
+                // Fallback to default colors if tag is not set
+                item.BackColor = Color.Transparent;
+                item.ForeColor = SystemColors.MenuText;
+            }
+        }
+        
+        // Helper class to store original menu item colors
+        private class MenuItemColors
+        {
+            public Color BackColor { get; set; }
+            public Color ForeColor { get; set; }
+        }
+
         private void SetMenuVisibel(bool isLogin,bool isAdmin = true)
         {
             if (isLogin)
@@ -65,6 +142,7 @@ namespace Scoreboard
                 mDB.Visible = true;
             }
         }
+        
         private void menuTournaments_Click(object sender, EventArgs e)
         {
             OpenChildForm(typeof(TournamentsForm),this, currentUser);
@@ -133,6 +211,8 @@ namespace Scoreboard
             {
                 SetMenuVisibel(true);
                 OpenChildForm(typeof(TournamentsForm), this, currentUser);
+                // Highlight the Tournaments menu item by default for admin
+                SetSelectedMenuItem(menuTournaments);
             }
             else 
             {
@@ -149,6 +229,13 @@ namespace Scoreboard
         {
             if (MessageBox.Show("Bạn có chắc muốn đăng xuất?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                // Reset menu highlighting on logout
+                if (selectedMenuItem != null)
+                {
+                    ResetMenuItemStyle(selectedMenuItem);
+                    selectedMenuItem = null;
+                }
+                
                 SetMenuVisibel(false);
                 try
                 {

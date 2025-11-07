@@ -1,20 +1,21 @@
 using System;
-using System.Linq;
-using System.Diagnostics.Eventing.Reader;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using MaterialSkin.Controls;
-using Scoreboard.Data;
-using Scoreboard.Models;
-using Scoreboard.Config;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Collections.Generic;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Xml.Linq;
+using System.Diagnostics.Eventing.Reader;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
-using System.Drawing;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using System.Xml.Linq;
+using MaterialSkin.Controls;
+using Scoreboard.Config;
+using Scoreboard.Data;
+using Scoreboard.Models;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Scoreboard
 {
@@ -353,12 +354,14 @@ namespace Scoreboard
             this.Controls.Add(this.btnSelectTeam1Flag);
             this.Controls.Add(this.pbTeam2Flag);
             this.Controls.Add(this.btnSelectTeam2Flag);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AddUpdateMatch";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.AddUpdateMatch_Paint);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Thông tin trận đấu";
             ((System.ComponentModel.ISupportInitialize)(this.pbTeam1Flag)).EndInit();
@@ -990,6 +993,28 @@ namespace Scoreboard
                 // Silently handle errors when loading flag images
                 // This prevents the form from crashing if flag images are missing
             }
+        }
+        private void AddUpdateMatch_Paint(object sender, PaintEventArgs e)
+        {
+            int radius = 30; // bo góc
+            Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Bo góc form
+            GraphicsPath path = new GraphicsPath();
+            path.StartFigure();
+            path.AddArc(new Rectangle(0, 0, radius, radius), 180, 90);
+            path.AddArc(new Rectangle(this.Width - radius, 0, radius, radius), 270, 90);
+            path.AddArc(new Rectangle(this.Width - radius, this.Height - radius, radius, radius), 0, 90);
+            path.AddArc(new Rectangle(0, this.Height - radius, radius, radius), 90, 90);
+            path.CloseFigure();
+
+            // Áp dụng bo góc
+            this.Region = new Region(path);
+
+            // Viền nhẹ (giống web)
+            using (Pen borderPen = new Pen(Color.LightGray, 1))
+                g.DrawPath(borderPen, path);
         }
     }
 }

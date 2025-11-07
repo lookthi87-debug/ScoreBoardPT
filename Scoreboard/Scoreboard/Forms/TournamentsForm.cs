@@ -368,6 +368,9 @@ namespace Scoreboard
             {
                 mainForm.OpenMatchsForm(user);
             }));
+            
+            // Set the Matches menu item as selected when navigating to MatchsForm
+            mainForm.SetSelectedMenuItem(mainForm.MenuMatches);
         }
     }
 }

@@ -67,7 +67,9 @@
             // 
             // menuUsers
             // 
+            this.menuUsers.BackColor = System.Drawing.Color.Transparent;
             this.menuUsers.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.menuUsers.ForeColor = System.Drawing.Color.Black;
             this.menuUsers.Name = "menuUsers";
             this.menuUsers.Size = new System.Drawing.Size(103, 20);
             this.menuUsers.Text = "👤 Người dùng";
