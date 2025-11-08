@@ -29,6 +29,7 @@ namespace Scoreboard
         private MaterialButton btnSave;
         private Label lblTrongTai;
         private CheckedListBox clbReferees; // Đã thay đổi từ ComboBox sang CheckedListBox để chọn nhiều
+        private System.Windows.Forms.TextBox txtRefereeSearch; // Added search textbox for referees
         private Label lblTeam1;
         private Label lblMatch_Id;
         private Label lblNote;
@@ -59,6 +60,7 @@ namespace Scoreboard
             this.btnSave = new MaterialSkin.Controls.MaterialButton();
             this.lblTrongTai = new System.Windows.Forms.Label();
             this.clbReferees = new System.Windows.Forms.CheckedListBox();
+            this.txtRefereeSearch = new System.Windows.Forms.TextBox(); // Add search textbox for referees
             this.lblMatch_Id = new System.Windows.Forms.Label();
             this.lblNote = new System.Windows.Forms.Label();
             this.txtnote = new System.Windows.Forms.TextBox();
@@ -135,7 +137,7 @@ namespace Scoreboard
             this.btnCancel.Depth = 0;
             this.btnCancel.HighEmphasis = true;
             this.btnCancel.Icon = null;
-            this.btnCancel.Location = new System.Drawing.Point(252, 494);
+            this.btnCancel.Location = new System.Drawing.Point(252, 524); // Adjusted position
             this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnCancel.Name = "btnCancel";
@@ -155,7 +157,7 @@ namespace Scoreboard
             this.btnSave.Depth = 0;
             this.btnSave.HighEmphasis = true;
             this.btnSave.Icon = null;
-            this.btnSave.Location = new System.Drawing.Point(426, 494);
+            this.btnSave.Location = new System.Drawing.Point(426, 524); // Adjusted position
             this.btnSave.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSave.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSave.Name = "btnSave";
@@ -182,12 +184,25 @@ namespace Scoreboard
             this.clbReferees.DisplayMember = "Fullname";
             this.clbReferees.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.clbReferees.FormattingEnabled = true;
-            this.clbReferees.Location = new System.Drawing.Point(148, 200);
+            this.clbReferees.Location = new System.Drawing.Point(148, 230);
             this.clbReferees.Name = "clbReferees";
             this.clbReferees.Size = new System.Drawing.Size(426, 109);
             this.clbReferees.TabIndex = 7;
             this.clbReferees.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.clbReferees_ItemCheck);
             this.clbReferees.Click += new System.EventHandler(this.clbReferees_Click);
+            // 
+            // txtRefereeSearch
+            // 
+            this.txtRefereeSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtRefereeSearch.Location = new System.Drawing.Point(148, 200);
+            this.txtRefereeSearch.Name = "txtRefereeSearch";
+            this.txtRefereeSearch.Size = new System.Drawing.Size(426, 26);
+            this.txtRefereeSearch.TabIndex = 6;
+            this.txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+            this.txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+            this.txtRefereeSearch.Enter += new System.EventHandler(this.txtRefereeSearch_Enter);
+            this.txtRefereeSearch.Leave += new System.EventHandler(this.txtRefereeSearch_Leave);
+            this.txtRefereeSearch.TextChanged += new System.EventHandler(this.txtRefereeSearch_TextChanged);
             // 
             // lblMatch_Id
             // 
@@ -201,29 +216,10 @@ namespace Scoreboard
             this.lblMatch_Id.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblMatch_Id.Visible = false;
             // 
-            // lblNote
-            // 
-            this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(32, 354);
-            this.lblNote.Name = "lblNote";
-            this.lblNote.Size = new System.Drawing.Size(110, 29);
-            this.lblNote.TabIndex = 37;
-            this.lblNote.Text = "Ghi chú";
-            this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtnote
-            // 
-            this.txtnote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.txtnote.Location = new System.Drawing.Point(148, 354);
-            this.txtnote.Multiline = true;
-            this.txtnote.Name = "txtnote";
-            this.txtnote.Size = new System.Drawing.Size(621, 94);
-            this.txtnote.TabIndex = 9;
-            // 
             // lblStartDateTime
             // 
             this.lblStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStartDateTime.Location = new System.Drawing.Point(32, 322);
+            this.lblStartDateTime.Location = new System.Drawing.Point(32, 352);
             this.lblStartDateTime.Name = "lblStartDateTime";
             this.lblStartDateTime.Size = new System.Drawing.Size(110, 29);
             this.lblStartDateTime.TabIndex = 39;
@@ -235,7 +231,7 @@ namespace Scoreboard
             this.dtpStartDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpStartDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dtpStartDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpStartDateTime.Location = new System.Drawing.Point(148, 322);
+            this.dtpStartDateTime.Location = new System.Drawing.Point(148, 352);
             this.dtpStartDateTime.Name = "dtpStartDateTime";
             this.dtpStartDateTime.Size = new System.Drawing.Size(180, 26);
             this.dtpStartDateTime.TabIndex = 7;
@@ -244,7 +240,7 @@ namespace Scoreboard
             // lblEndDateTime
             // 
             this.lblEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEndDateTime.Location = new System.Drawing.Point(350, 322);
+            this.lblEndDateTime.Location = new System.Drawing.Point(350, 352);
             this.lblEndDateTime.Name = "lblEndDateTime";
             this.lblEndDateTime.Size = new System.Drawing.Size(110, 29);
             this.lblEndDateTime.TabIndex = 40;
@@ -256,15 +252,34 @@ namespace Scoreboard
             this.dtpEndDateTime.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dtpEndDateTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.dtpEndDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpEndDateTime.Location = new System.Drawing.Point(466, 322);
+            this.dtpEndDateTime.Location = new System.Drawing.Point(466, 352);
             this.dtpEndDateTime.Name = "dtpEndDateTime";
             this.dtpEndDateTime.Size = new System.Drawing.Size(180, 26);
             this.dtpEndDateTime.TabIndex = 8;
             // 
+            // lblNote
+            // 
+            this.lblNote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNote.Location = new System.Drawing.Point(32, 384);
+            this.lblNote.Name = "lblNote";
+            this.lblNote.Size = new System.Drawing.Size(110, 29);
+            this.lblNote.TabIndex = 37;
+            this.lblNote.Text = "Ghi chú";
+            this.lblNote.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtnote
+            // 
+            this.txtnote.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.txtnote.Location = new System.Drawing.Point(148, 384);
+            this.txtnote.Multiline = true;
+            this.txtnote.Name = "txtnote";
+            this.txtnote.Size = new System.Drawing.Size(621, 94);
+            this.txtnote.TabIndex = 9;
+            // 
             // lblStatus
             // 
             this.lblStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(32, 454);
+            this.lblStatus.Location = new System.Drawing.Point(32, 484);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(110, 29);
             this.lblStatus.TabIndex = 38;
@@ -276,10 +291,11 @@ namespace Scoreboard
             this.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.cbStatus.FormattingEnabled = true;
-            this.cbStatus.Location = new System.Drawing.Point(148, 454);
+            this.cbStatus.Location = new System.Drawing.Point(148, 484);
             this.cbStatus.Name = "cbStatus";
             this.cbStatus.Size = new System.Drawing.Size(200, 28);
             this.cbStatus.TabIndex = 10;
+            this.cbStatus.SelectedIndexChanged += new System.EventHandler(this.cbStatus_SelectedIndexChanged);
             // 
             // pbTeam1Flag
             // 
@@ -331,7 +347,7 @@ namespace Scoreboard
             // 
             // AddUpdateMatch
             // 
-            this.ClientSize = new System.Drawing.Size(787, 547);
+            this.ClientSize = new System.Drawing.Size(787, 577);
             this.Controls.Add(this.cbStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.lblNote);
@@ -342,6 +358,7 @@ namespace Scoreboard
             this.Controls.Add(this.txtnote);
             this.Controls.Add(this.lblMatch_Id);
             this.Controls.Add(this.clbReferees);
+            this.Controls.Add(this.txtRefereeSearch); // Add search textbox
             this.Controls.Add(this.lblTrongTai);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnCancel);
@@ -375,22 +392,111 @@ namespace Scoreboard
             try
             {
                 allUsers = Repository.GetAllUsers().Where(u => u.RoleName != "Admin").ToList(); // Lưu trữ tất cả người dùng để tham khảo
-                clbReferees.Items.Clear();
-
-                // Set the DisplayMember to show the Fullname property
-                clbReferees.DisplayMember = "Fullname";
-
-                foreach (var user in allUsers)
-
-                {
-                    clbReferees.Items.Add(user, false); // Add user object with unchecked state
-                }
+                FilterReferees(""); // Display all users initially
             }
             catch
             {
                 clbReferees.Items.Clear();
                 clbReferees.Items.Add("No data");
                 MessageBox.Show("Không có dữ liệu trọng tài. Vui lòng tạo");
+            }
+        }
+
+        private void FilterReferees(string searchText)
+        {
+            // Store currently selected referees before filtering
+            var selectedRefereeIds = new List<int>();
+            foreach (var item in clbReferees.CheckedItems)
+            {
+                if (item is UserModel user)
+                {
+                    selectedRefereeIds.Add(user.Id);
+                }
+            }
+
+            clbReferees.Items.Clear();
+
+            // Set the DisplayMember to show the Fullname property
+            clbReferees.DisplayMember = "Fullname";
+
+            // Check if the search text is the placeholder text
+            if (searchText == "Tìm kiếm trọng tài...")
+            {
+                searchText = "";
+            }
+
+            List<UserModel> usersToShow;
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                // If no search text, show all users
+                usersToShow = allUsers;
+            }
+            else
+            {
+                // Filter users based on search text
+                usersToShow = allUsers.Where(u => 
+                    u.Fullname != null && 
+                    u.Fullname.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            }
+
+            // Add users to the list and restore checked state
+            foreach (var user in usersToShow)
+            {
+                bool isChecked = selectedRefereeIds.Contains(user.Id);
+                clbReferees.Items.Add(user, isChecked);
+            }
+        }
+
+        private void txtRefereeSearch_TextChanged(object sender, EventArgs e)
+        {
+            FilterReferees(txtRefereeSearch.Text.Trim());
+        }
+
+        private void txtRefereeSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtRefereeSearch.Text == "Tìm kiếm trọng tài...")
+            {
+                txtRefereeSearch.Text = "";
+                txtRefereeSearch.ForeColor = System.Drawing.Color.Black;
+            }
+        }
+
+        private void txtRefereeSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtRefereeSearch.Text))
+            {
+                txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+                txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+            }
+        }
+
+        private void cbStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Check if the selected status is "In Progress" and disable referee controls
+            if (cbStatus.SelectedValue != null)
+            {
+                string selectedStatus = cbStatus.SelectedValue.ToString();
+                if (selectedStatus == MatchStatusConfig.Status.InProgress)
+                {
+                    // Disable referee selection when match is in progress
+                    clbReferees.Enabled = false;
+                    txtRefereeSearch.Enabled = false;
+                    txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+                    txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+                }
+                else
+                {
+                    // Enable referee selection for other statuses
+                    clbReferees.Enabled = true;
+                    txtRefereeSearch.Enabled = true;
+                    
+                    // Restore placeholder text if search box is empty
+                    if (string.IsNullOrWhiteSpace(txtRefereeSearch.Text))
+                    {
+                        txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+                        txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+                    }
+                }
             }
         }
 
@@ -524,7 +630,18 @@ namespace Scoreboard
             if (matchSetsCount >= 2)
             {
                 clbReferees.Enabled = false;
+                txtRefereeSearch.Enabled = false; // Disable search when referees are disabled
             }
+            
+            // Check if match status is "In Progress" and disable referees
+            if (m.Status == MatchStatusConfig.Status.InProgress)
+            {
+                clbReferees.Enabled = false;
+                txtRefereeSearch.Enabled = false;
+                txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+                txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+            }
+            
             // Load flag images if they exist
             LoadFlagImages(m);
         }
@@ -536,6 +653,11 @@ namespace Scoreboard
             dtpStartDateTime.Value = DateTime.Now;
             // Set default end datetime to 4 hours later
             dtpEndDateTime.Value = DateTime.Now.AddHours(4);
+            
+            // Initialize placeholder text for search box
+            txtRefereeSearch.Text = "Tìm kiếm trọng tài...";
+            txtRefereeSearch.ForeColor = System.Drawing.Color.Gray;
+            
             LoadUsers();
             // Load tournament information to set date constraints
             var tournament = Repository.GetAllTournamentsById(tournament_id);
@@ -988,7 +1110,7 @@ namespace Scoreboard
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Silently handle errors when loading flag images
                 // This prevents the form from crashing if flag images are missing
