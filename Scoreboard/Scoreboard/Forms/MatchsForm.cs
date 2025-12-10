@@ -713,10 +713,23 @@ namespace Scoreboard
         {
             try
             {
-                var Tournaments = Repository.GetAllTournamentsByClassId(classId);
-                cbTournaments.DataSource = Tournaments;
+                var tournaments = Repository.GetAllTournamentsByClassId(classId);
+                cbTournaments.DataSource = tournaments;
                 cbTournaments.DisplayMember = "Name";
                 cbTournaments.ValueMember = "Id";
+                if (tournaments.Count > 0 && tournaments.First().End <= DateTime.Now)
+                {
+                    btnAddMatch.Enabled = false;
+                    btnDeleteMatch.Enabled = false;
+                    btnAddMatchset.Enabled = false;
+                    btnDeleteMatchset.Enabled = false;
+                } else
+                {
+                    btnAddMatch.Enabled = true;
+                    btnDeleteMatch.Enabled = true;
+                    btnAddMatchset.Enabled = true;
+                    btnDeleteMatchset.Enabled = true;
+                }
             }
             catch
             {
