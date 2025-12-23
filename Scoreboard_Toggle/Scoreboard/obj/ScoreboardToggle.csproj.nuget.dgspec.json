@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj": {}
+    "D:\\BongDa\\202512\\GitHub\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj": {}
   },
   "projects": {
-    "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj": {
+    "D:\\BongDa\\202512\\GitHub\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
+        "projectUniqueName": "D:\\BongDa\\202512\\GitHub\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
         "projectName": "Scoreboard",
-        "projectPath": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
+        "projectPath": "D:\\BongDa\\202512\\GitHub\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
         "packagesPath": "C:\\Users\\Thi-NV\\.nuget\\packages\\",
-        "outputPath": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\obj\\",
+        "outputPath": "D:\\BongDa\\202512\\GitHub\\Scoreboard_Toggle\\Scoreboard\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

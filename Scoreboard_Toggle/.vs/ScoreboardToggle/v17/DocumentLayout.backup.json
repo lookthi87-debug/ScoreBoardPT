@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\ScoreboardToggle.csproj|d:\\bongda\\202510_11\\github_source\\scoreboard_toggle\\scoreboard\\scoreboardtoggle.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\ScoreboardToggle.csproj|solutionrelative:scoreboard\\scoreboardtoggle.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\ScoreboardToggle.csproj|d:\\bongda\\202510_11\\github_source\\scoreboard_toggle\\scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A1B2C3D4-E5F6-4789-ABCD-0123456789AB}|Scoreboard\\ScoreboardToggle.csproj|solutionrelative:scoreboard\\toggle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -53,7 +57,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -61,7 +65,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "ScoreboardToggle",
+              "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
+              "RelativeDocumentMoniker": "Scoreboard\\ScoreboardToggle.csproj",
+              "ToolTip": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ScoreboardToggle.csproj",
+              "RelativeToolTip": "Scoreboard\\ScoreboardToggle.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-10-21T02:41:48.192Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "PostgresHelper.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Database\\PostgresHelper.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Database\\PostgresHelper.cs",
@@ -74,7 +90,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ucFormView_User.cs [Design]",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\Scoreboard_Toggle\\Scoreboard\\ucFormView_User.cs",
               "RelativeDocumentMoniker": "..\\..\\Scoreboard_Toggle\\Scoreboard\\ucFormView_User.cs",
@@ -85,7 +101,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "ConfigDatabase.cs [Design]",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ConfigDatabase.cs",
               "RelativeDocumentMoniker": "Scoreboard\\ConfigDatabase.cs",
@@ -96,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Toggle.cs [Design]",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Toggle.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Toggle.cs",
@@ -108,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "ucFormView_Toggle.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ucFormView_Toggle.cs",
               "RelativeDocumentMoniker": "Scoreboard\\ucFormView_Toggle.cs",
@@ -121,7 +137,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "ucFormView_Toggle.cs [Design]",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ucFormView_Toggle.cs",
               "RelativeDocumentMoniker": "Scoreboard\\ucFormView_Toggle.cs",
@@ -132,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Toggle.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Toggle.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Toggle.cs",
@@ -145,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "Repository.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Database\\Repository.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Database\\Repository.cs",
@@ -157,7 +173,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ConfigDatabase.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\ConfigDatabase.cs",
               "RelativeDocumentMoniker": "Scoreboard\\ConfigDatabase.cs",
@@ -169,7 +185,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Toggle.cs [Design]",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Toggle.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Toggle.cs",
@@ -180,7 +196,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\BongDa\\202510_11\\GitHub_Source\\Scoreboard_Toggle\\Scoreboard\\Program.cs",
               "RelativeDocumentMoniker": "Scoreboard\\Program.cs",
