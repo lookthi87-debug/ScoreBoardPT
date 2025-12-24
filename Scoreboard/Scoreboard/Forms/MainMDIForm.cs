@@ -53,6 +53,7 @@ namespace Scoreboard
         {
             // Attach click event handlers to all menu items for highlighting
             menuTournaments.Click += (s, ev) => { SetSelectedMenuItem(menuTournaments); menuTournaments_Click(s, ev); };
+            menuTeam.Click += (s, ev) => { SetSelectedMenuItem(menuTeam); menuTeam_Click(s, ev); };
             menuMatches.Click += (s, ev) => { SetSelectedMenuItem(menuMatches); menuMatches_Click(s, ev); };
             menuUsers.Click += (s, ev) => { SetSelectedMenuItem(menuUsers); menuUsers_Click(s, ev); };
             mDB.Click += (s, ev) => { SetSelectedMenuItem(mDB); mDB_Click(s, ev); };

@@ -47,12 +47,12 @@ namespace Scoreboard
             {
                 150, // Flag VN
                 50, // Title
-                42, // Time
-                32, // Hiệp đấu
-                80,  // Team
-                100,  //Score
-                80,   //Score detail
-                60
+                50, // Time
+                50, // Hiệp đấu
+                50,  // Team
+                50,  //Score
+                60,   //Score detail
+                40
             };
 
             tableView.RowCount = _baseRowHeights.Length;
@@ -64,7 +64,7 @@ namespace Scoreboard
             tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[3]));
 
             // Content chính
-            tableView.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[4]));
 
             // Footer
             tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[5]));
@@ -170,7 +170,7 @@ namespace Scoreboard
 
             LoadFlagImagesTeams(m);
             // Khởi tạo bảng điểm các set cho các bộ môn không phải bóng đá
-            //UpdateSetScoresPanel();
+            UpdateSetScoresPanel();
         }
 
         private void AttachFocusHandler(Control ctl)
@@ -228,13 +228,13 @@ namespace Scoreboard
             float normalSize = Math.Max(10, Math.Min(28, 14 * scale));
 
             lblTitle.Font = new Font("Arial", titleSize + 10, FontStyle.Bold);
-            lblTime.Font = new Font("Arial", normalSize + 20, FontStyle.Bold);
+            lblTime.Font = new Font("Arial", normalSize + 40, FontStyle.Bold);
             lblHiepDau.Font = new Font("Arial", normalSize, FontStyle.Bold);
             lblTeam1.Font = new Font("Arial", normalSize + 20, FontStyle.Bold);
             lblTeam2.Font = new Font("Arial", normalSize + 20, FontStyle.Bold);
-            lblScoreTeam1.Font = new Font("Arial", titleSize + 60, FontStyle.Bold);
-            lblScoreTeam2.Font = new Font("Arial", titleSize + 60, FontStyle.Bold);
-
+            lblScoreTeam1.Font = new Font("Arial", titleSize + 50, FontStyle.Bold);
+            lblScoreTeam2.Font = new Font("Arial", titleSize + 50, FontStyle.Bold);
+            lblBonus.Font = new Font("Arial", normalSize, FontStyle.Bold);
             int flagVN = Math.Max(24, Math.Min(120, (int)(40 * scale)));
             int flagTeam = Math.Max(20, Math.Min(100, (int)(30 * scale)));
 

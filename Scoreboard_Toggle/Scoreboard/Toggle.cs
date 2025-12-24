@@ -10,6 +10,8 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Scoreboard.Models;
+using Scoreboard.Data;
 
 namespace Scoreboard
 {

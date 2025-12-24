@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Scoreboard.Utilities
+namespace Scoreboard.Database
 {
     public static class Security
     {

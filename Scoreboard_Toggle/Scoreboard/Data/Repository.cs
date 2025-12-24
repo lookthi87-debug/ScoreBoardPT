@@ -10,7 +10,7 @@ using DocumentFormat.OpenXml.Office.Word;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using Npgsql;
 using Scoreboard.Config;
-using Scoreboard.Data;
+using Scoreboard.Database;
 using Scoreboard.Models;
 
 
@@ -806,6 +806,74 @@ namespace Scoreboard.Data
         // ====================================================
         // MATCHSETS
         // ====================================================
+        public static List<MatchsetModel> GetActiveMatchSetsShowtoggle()
+        {
+            var list = new List<MatchsetModel>();
+            string sql = @"
+                SELECT 
+                    ms.id,
+                    ms.match_id,
+                    tm1.name as team1,
+                    tm2.name as team2,
+                    ms.score1,
+                    ms.score2,
+                    ms.time,
+                    ms.note,
+                    m.status,
+                    ms.referee_id,
+                    u.name AS referee_name,
+                    ms.ClassSetsName AS classsets_name,
+                    m.tournament_id,
+                    t.name AS tournament_name,
+                    mtl.id AS MatchClassId,
+                    mtl.name as MatchClassName,
+                    m.score1,
+                    m.score2
+                FROM MatchSets ms
+                INNER JOIN Matches m ON ms.match_id = m.id
+                LEFT JOIN Users u ON ms.referee_id = u.id
+                LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
+                LEFT JOIN Tournaments t ON m.tournament_id = t.id
+                LEFT JOIN Teams tm1 ON m.team1_id = tm1.id AND m.tournament_id = tm1.tournament_id
+                LEFT JOIN Teams tm2 ON m.team2_id = tm2.id AND m.tournament_id = tm2.tournament_id
+                WHERE ms.status = '1'
+                AND m.show_toggle > 0
+                ORDER BY m.show_toggle;
+            ";
+
+            using (var cmd = new NpgsqlCommand(sql, Conn))
+            {
+                using (var dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        list.Add(new MatchsetModel
+                        {
+                            Id = dr.GetInt32(0),
+                            MatchId = dr.GetString(1),
+                            Team1 = dr.IsDBNull(2) ? null : dr.GetString(2),
+                            Team2 = dr.IsDBNull(3) ? null : dr.GetString(3),
+                            Score1 = dr.IsDBNull(4) ? 0 : dr.GetInt32(4),
+                            Score2 = dr.IsDBNull(5) ? 0 : dr.GetInt32(5),
+                            Time = dr.IsDBNull(6) ? null : dr.GetString(6),
+                            Note = dr.IsDBNull(7) ? null : dr.GetString(7),
+                            Status = dr.IsDBNull(8) ? null : dr.GetString(8),
+                            RefereeId = dr.IsDBNull(9) ? (int?)null : dr.GetInt32(9),
+                            RefereeName = dr.IsDBNull(10) ? null : dr.GetString(10),
+                            ClassSetsName = dr.IsDBNull(11) ? null : dr.GetString(11),
+                            TournamentId = dr.IsDBNull(12) ? (int?)null : dr.GetInt32(12),
+                            TournamentName = dr.IsDBNull(13) ? null : dr.GetString(13),
+                            MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
+                            MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15),
+                            TotalScore1 = dr.IsDBNull(16) ? 0 : dr.GetInt32(16),
+                            TotalScore2 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17)
+                        });
+                    }
+                }
+            }
+
+            return list;
+        }
         public static List<MatchsetModel> GetAllMatchSetsByUser(int userId)
         {
             var list = new List<MatchsetModel>();
@@ -1083,14 +1151,14 @@ namespace Scoreboard.Data
             string sql = @"
                 SELECT 
                     m.id, tm1.name as team1, tm2.name as team2, m.score1, m.score2, m.start, m.""end"", 
-                    m.time, m.referee_id, u.fullname AS referee_name, 
+                    m.time, m.referee_id, u.name AS referee_name, 
                     m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 LEFT JOIN Teams tm1 ON m.team1_id = tm1.id AND m.tournament_id = tm1.tournament_id
                 LEFT JOIN Teams tm2 ON m.team2_id = tm2.id AND m.tournament_id = tm2.tournament_id
-                WHERE m.status='1' AND m.show_toggle>0;
+                WHERE m.status='1' AND m.show_toggle=1;
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))

@@ -18,7 +18,7 @@ namespace Scoreboard
         public MainForm(UserModel us)
         {
             InitializeComponent();
-            this.WindowState = FormWindowState.Maximized;
+           // this.WindowState = FormWindowState.Maximized;
             user = us;
             this.KeyPreview = true;
         }
