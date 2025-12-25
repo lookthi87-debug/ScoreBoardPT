@@ -245,7 +245,7 @@ namespace Scoreboard
                 tableLayoutPanel_BongDa.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
                 tableLayoutPanel_BongDa.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-                var uc = new ucFormView_User(m[0]);
+                var uc = new ucFormView_User(m[0], m.Count);
                 uc.Dock = DockStyle.Fill;
                 tableLayoutPanel_BongDa.Controls.Add(uc, 0, 0);
                 ucs.Add(uc);
@@ -274,7 +274,7 @@ namespace Scoreboard
                     for (int c = 0; c < cols; c++)
                     {
                         if (index >= m.Count) break;
-                        var uc = new ucFormView_User(m[index]);
+                        var uc = new ucFormView_User(m[index], m.Count);
                         uc.Dock = DockStyle.Fill;
                         tableLayoutPanel_BongDa.Controls.Add(uc, c, r);
                         ucs.Add(uc);

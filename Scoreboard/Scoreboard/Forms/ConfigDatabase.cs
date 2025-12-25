@@ -50,18 +50,18 @@ namespace Scoreboard
             // 
             // txtHost
             // 
+            this.txtHost.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtHost.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
             this.txtHost.Location = new System.Drawing.Point(192, 51);
             this.txtHost.Name = "txtHost";
             this.txtHost.Size = new System.Drawing.Size(354, 29);
             this.txtHost.TabIndex = 0;
             this.txtHost.Text = "localhost";
-            this.txtHost.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblHost
             // 
             this.lblHost.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHost.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblHost.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblHost.Location = new System.Drawing.Point(77, 51);
             this.lblHost.Name = "lblHost";
             this.lblHost.Size = new System.Drawing.Size(109, 23);
@@ -91,18 +91,18 @@ namespace Scoreboard
             // 
             // txtPort
             // 
+            this.txtPort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtPort.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
             this.txtPort.Location = new System.Drawing.Point(192, 86);
             this.txtPort.Name = "txtPort";
             this.txtPort.Size = new System.Drawing.Size(354, 29);
             this.txtPort.TabIndex = 1;
             this.txtPort.Text = "5432";
-            this.txtPort.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.label1.Location = new System.Drawing.Point(77, 86);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 23);
@@ -112,18 +112,18 @@ namespace Scoreboard
             // 
             // txtDatabase
             // 
+            this.txtDatabase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtDatabase.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
             this.txtDatabase.Location = new System.Drawing.Point(192, 121);
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(354, 29);
             this.txtDatabase.TabIndex = 2;
             this.txtDatabase.Text = "DB_Scoreboard";
-            this.txtDatabase.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label2
             // 
             this.label2.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.label2.Location = new System.Drawing.Point(77, 121);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(109, 23);
@@ -133,18 +133,18 @@ namespace Scoreboard
             // 
             // txtUserName
             // 
+            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtUserName.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
             this.txtUserName.Location = new System.Drawing.Point(192, 156);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 3;
             this.txtUserName.Text = "postgres";
-            this.txtUserName.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label3
             // 
             this.label3.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.label3.Location = new System.Drawing.Point(77, 156);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 23);
@@ -154,18 +154,18 @@ namespace Scoreboard
             // 
             // txtPass
             // 
+            this.txtPass.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtPass.Font = new System.Drawing.Font("Arial Unicode MS", 12F);
             this.txtPass.Location = new System.Drawing.Point(192, 192);
             this.txtPass.Name = "txtPass";
             this.txtPass.Size = new System.Drawing.Size(354, 29);
             this.txtPass.TabIndex = 4;
             this.txtPass.Text = "Abc12345";
-            this.txtPass.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Arial Unicode MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.label4.Location = new System.Drawing.Point(77, 192);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 23);
@@ -191,10 +191,11 @@ namespace Scoreboard
             this.btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
             this.btnCancel.UseAccentColor = false;
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click_1);
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -212,7 +213,7 @@ namespace Scoreboard
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.txtDatabase);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.lblHost);
@@ -307,11 +308,6 @@ namespace Scoreboard
             btnCancel.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Panel panel = sender as Panel;
@@ -360,6 +356,11 @@ namespace Scoreboard
             {
                 e.Graphics.FillPath(brush, path);
             }
+        }
+
+        private void btnCancel_Click_1(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

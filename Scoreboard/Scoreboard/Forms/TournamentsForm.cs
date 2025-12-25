@@ -211,6 +211,7 @@ namespace Scoreboard
             this.cbMatchClass.Name = "cbMatchClass";
             this.cbMatchClass.Size = new System.Drawing.Size(324, 28);
             this.cbMatchClass.TabIndex = 0;
+            this.cbMatchClass.SelectedIndexChanged += new System.EventHandler(this.cbMatchClass_SelectedIndexChanged);
             // 
             // lblClassMatch
             // 
@@ -357,6 +358,11 @@ namespace Scoreboard
             
             // Set the Matches menu item as selected when navigating to MatchsForm
             mainForm.SetSelectedMenuItem(mainForm.MenuMatches);
+        }
+
+        private void cbMatchClass_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgData.DataSource = null;
         }
     }
 }

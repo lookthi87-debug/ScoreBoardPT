@@ -219,6 +219,7 @@ namespace Scoreboard.Forms
             this.cbTournaments.Name = "cbTournaments";
             this.cbTournaments.Size = new System.Drawing.Size(324, 28);
             this.cbTournaments.TabIndex = 39;
+            this.cbTournaments.SelectedIndexChanged += new System.EventHandler(this.cbTournaments_SelectedIndexChanged);
             // 
             // cbMatchClass
             // 
@@ -434,7 +435,6 @@ namespace Scoreboard.Forms
                 MessageBox.Show("Lỗi khi xóa: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void cbMatchClass_SelectedIndexChanged(object sender, EventArgs e)
         {
             int classId = 0; // mặc định = 0 nếu chưa chọn gì
@@ -445,6 +445,13 @@ namespace Scoreboard.Forms
             }
 
             LoadTournaments(classId);
+
+            dgTeam.DataSource = null;
+        }
+
+        private void cbTournaments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            dgTeam.DataSource = null;
         }
     }
 }

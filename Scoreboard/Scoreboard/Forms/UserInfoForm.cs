@@ -7,6 +7,7 @@ using MaterialSkin.Controls;
 using Scoreboard.Config;
 using Scoreboard.Data;
 using Scoreboard.Models;
+using System.Linq;
 
 namespace Scoreboard
 {
@@ -31,6 +32,7 @@ namespace Scoreboard
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel1;
         private UserModel currentUser;
+        private string currentMatchid;
         public UserInfoForm(UserModel u)
         {
             InitializeComponent();
@@ -342,12 +344,19 @@ namespace Scoreboard
         {
             // Set title with user name
             this.Text = currentUser?.Fullname ?? "";
-
+            currentMatchid = "";
             if (currentUser?.RoleId == 2) // role trọng tài
             {
-                var match = Repository.GetAllMatchSetsByUser(currentUser.Id);
+                DateTime now = DateTime.Now;
+                var match = Repository.GetAllMatchSetsByUser(currentUser.Id)
+                            .Where(m => m.Start <= now && m.End >= now)
+                            .ToList(); ;
                 if (match != null & match.Count > 0)
                 {
+                    if (match[0].Status == MatchStatusConfig.Status.NotStarted)
+                    {
+                        currentMatchid = match[0].MatchId;
+                    }
                     txtTitle.Text = match[0].TournamentName;
                     txtTeam1.Text = match[0].Team1;
                     txtTeam2.Text = match[0].Team2;
@@ -377,6 +386,10 @@ namespace Scoreboard
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (currentMatchid != "")
+            {
+                Repository.UpdateMatchStatus(currentMatchid, "1");
+            }
             var frmMain = new MainForm(currentUser);
             this.Hide();
             frmMain.FormClosed += (s, ev) => this.Show();

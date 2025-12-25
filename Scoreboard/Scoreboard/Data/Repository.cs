@@ -828,7 +828,9 @@ namespace Scoreboard.Data
                     mtl.id AS MatchClassId,
                     mtl.name as MatchClassName,
                     m.score1,
-                    m.score2
+                    m.score2,
+                    m.start,
+                    m.""end""
                 FROM MatchSets ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
@@ -868,7 +870,9 @@ namespace Scoreboard.Data
                             MatchClassId = dr.IsDBNull(14) ? (int?)null : dr.GetInt32(14),
                             MatchClassName = dr.IsDBNull(15) ? null : dr.GetString(15),
                             TotalScore1 = dr.IsDBNull(16) ? 0 : dr.GetInt32(16),
-                            TotalScore2 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17)
+                            TotalScore2 = dr.IsDBNull(17) ? 0 : dr.GetInt32(17),
+                            Start = dr.IsDBNull(18) ? (DateTime?)null : dr.GetDateTime(18),
+                            End = dr.IsDBNull(19) ? (DateTime?)null : dr.GetDateTime(19),
                         });
                     }
                 }
@@ -1016,7 +1020,7 @@ namespace Scoreboard.Data
             }
             return result;
         }
-        public static List<MatchModel> GetMatchesByStatus(string status, bool isEqual)
+        public static List<MatchModel> GetMatchesByStatus(string status, bool isEqual,int tournamentId)
         {
             var list = new List<MatchModel>();
             
@@ -1028,7 +1032,7 @@ namespace Scoreboard.Data
             }
             else
             {
-                whereClause = "WHERE (m.status !=@status OR m.status IS NULL)";
+                whereClause = "WHERE (m.tournament_id = @id) AND (m.status !=@status OR m.status IS NULL)";
             }
             
             string sql = $@"
@@ -1046,6 +1050,7 @@ namespace Scoreboard.Data
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
             {
+                cmd.Parameters.AddWithValue("@id", tournamentId);
                 cmd.Parameters.AddWithValue("@status", status);
 
                 using (var dr = cmd.ExecuteReader())
@@ -1084,13 +1089,13 @@ namespace Scoreboard.Data
                 SELECT 
                     m.id, tm1.name as team1, tm2.name as team2, m.score1, m.score2, m.start, m.""end"", 
                     m.time, m.referee_id, u.fullname AS referee_name, 
-                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name
+                    m.note, m.show_toggle, m.status, m.tournament_id, t.name AS tournament_name,m.match_class_id
                 FROM Matches m
                 LEFT JOIN Users u ON m.referee_id = u.id
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 LEFT JOIN Teams tm1 ON m.team1_id = tm1.id AND m.tournament_id = tm1.tournament_id
                 LEFT JOIN Teams tm2 ON m.team2_id = tm2.id AND m.tournament_id = tm2.tournament_id
-                WHERE m.status='1' AND m.show_toggle>0;
+                WHERE m.show_toggle>0;
             ";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))
@@ -1115,7 +1120,8 @@ namespace Scoreboard.Data
                             ShowToggle = dr.IsDBNull(11) ? 0 : dr.GetInt32(11),
                             Status = dr.IsDBNull(12) ? null : dr.GetString(12),
                             TournamentId = dr.IsDBNull(13) ? (int?)null : dr.GetInt32(13),
-                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14)
+                            TournamentName = dr.IsDBNull(14) ? null : dr.GetString(14),
+                            MatchClassId= dr.IsDBNull(15) ? 0 : dr.GetInt32(15),
                         };
                         list.Add(match);
                     }

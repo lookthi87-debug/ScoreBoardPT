@@ -22,6 +22,10 @@ namespace Scoreboard
         private MatchsetModel match;
         private int scoreTeam1;
         private int scoreTeam2;
+        private int countShow = 0;
+        private int[] _baseRowHeights;
+        private int _baseHeight;
+        private int _baseWidth;
         private void tableLayoutPanel_BongDa_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
         {
             using (Pen pen = new Pen(System.Drawing.Color.Red, 2))
@@ -32,9 +36,7 @@ namespace Scoreboard
                 e.Graphics.DrawRectangle(pen, rect);
             }
         }
-        private int[] _baseRowHeights;
-        private int _baseHeight;
-
+        
         private void InitTableViewLayout()
         {
             tableView.SuspendLayout();
@@ -42,55 +44,44 @@ namespace Scoreboard
             tableView.AutoSize = false;
             tableView.RowStyles.Clear();
 
-            // Lưu chiều cao gốc (DESIGN)
             _baseRowHeights = new int[]
             {
-                150, // Flag VN
-                50, // Title
-                50, // Time
-                50, // Hiệp đấu
-                50,  // Team
-                50,  //Score
-                60,   //Score detail
-                40
+                120,
+                50,
+                50,
+                50,
+                60,
+                40,
+                80,
+                50
             };
+            if (countShow == 1)
+            {
+                _baseRowHeights[0] = 120;
+            }
+            if (countShow >= 2 && countShow <= 4)
+            {
+                _baseRowHeights[0] = 100;
+            }
+            if (countShow >= 5 && countShow <= 6)
+            {
+                _baseRowHeights[0] = 80;
+            }
+            if (countShow > 6)
+            {
+                _baseRowHeights[0] = 60;
+            }
 
             tableView.RowCount = _baseRowHeights.Length;
 
-            // Header + footer: Absolute
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[0]));
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[1]));
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[2]));
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[3]));
+            int totalHeight = _baseRowHeights.Sum();
 
-            // Content chính
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[4]));
-
-            // Footer
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[5]));
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[6]));
-            tableView.RowStyles.Add(new RowStyle(SizeType.Absolute, _baseRowHeights[7]));
-
-            tableView.ResumeLayout();
-        }
-        private void ScaleTableViewRows(float scale)
-        {
-            tableView.SuspendLayout();
-
-            tableView.RowStyles.Clear();
-
-            for (int i = 0; i < _baseRowHeights.Length; i++)
+            foreach (int h in _baseRowHeights)
             {
-                if (_baseRowHeights[i] == 0)
-                {
-                    tableView.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-                }
-                else
-                {
-                    tableView.RowStyles.Add(
-                        new RowStyle(SizeType.Absolute, _baseRowHeights[i] * scale)
-                    );
-                }
+                float percent = (float)h * 100f / totalHeight;
+                tableView.RowStyles.Add(
+                    new RowStyle(SizeType.Percent, percent)
+                );
             }
 
             tableView.ResumeLayout();
@@ -110,11 +101,13 @@ namespace Scoreboard
                 }
             }
         }
-        public ucFormView_User(MatchsetModel m)
+        public ucFormView_User(MatchsetModel m, int nCount)
         {
             InitializeComponent();
             InitTableViewLayout();
             _baseHeight = this.Height;
+            _baseWidth = this.Width;
+            countShow = nCount;
 
             this.Padding = new Padding(4);
             this.Resize += MatchUC_Resize;
@@ -208,41 +201,107 @@ namespace Scoreboard
         private float _lastScale = -1f;
         private void MatchUC_Resize(object sender, EventArgs e)
         {
-            if (this.Height <= 0) return;
+            if (_baseHeight <= 0 || this.Width <= 0 || this.Height <= 0) return;
 
-            float scale = (float)this.Height / _baseHeight;
-            scale = Math.Max(0.6f, Math.Min(scale, 1.8f));
+            float scaleH = (float)this.Height / _baseHeight;
+            float scaleW = (float)this.Width / this._baseWidth;
 
-            if (Math.Abs(scale - _lastScale) < 0.05f) return;
+            float scale = Math.Min(scaleH, scaleW);
+            scale = Math.Max(0.25f, Math.Min(scale, 1.5f)); // cho phép scale nhỏ
+
+            if (Math.Abs(scale - _lastScale) < 0.03f) return;
             _lastScale = scale;
 
-            // 1️⃣ Scale row
-            ScaleTableViewRows(scale);
-
-            // 2️⃣ Scale font + flag
             ScaleContent(scale);
         }
         private void ScaleContent(float scale)
         {
-            float titleSize = Math.Max(12, Math.Min(32, 16 * scale));
-            float normalSize = Math.Max(10, Math.Min(28, 14 * scale));
+            if (countShow == 1)
+            {
+                lblTitle.Font = new System.Drawing.Font("Arial", 18 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+                lblHiepDau.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
+                lblTeam1.Font = new System.Drawing.Font("Arial", 30 * scale, FontStyle.Bold);
+                lblTeam2.Font = new System.Drawing.Font("Arial", 30 * scale, FontStyle.Bold);
 
-            lblTitle.Font = new Font("Arial", titleSize + 10, FontStyle.Bold);
-            lblTime.Font = new Font("Arial", normalSize + 40, FontStyle.Bold);
-            lblHiepDau.Font = new Font("Arial", normalSize, FontStyle.Bold);
-            lblTeam1.Font = new Font("Arial", normalSize + 20, FontStyle.Bold);
-            lblTeam2.Font = new Font("Arial", normalSize + 20, FontStyle.Bold);
-            lblScoreTeam1.Font = new Font("Arial", titleSize + 50, FontStyle.Bold);
-            lblScoreTeam2.Font = new Font("Arial", titleSize + 50, FontStyle.Bold);
-            lblBonus.Font = new Font("Arial", normalSize, FontStyle.Bold);
-            int flagVN = Math.Max(24, Math.Min(120, (int)(40 * scale)));
-            int flagTeam = Math.Max(20, Math.Min(100, (int)(30 * scale)));
+                lblScoreTeam1.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
+                lblScoreTeam2.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
+            }
+            if (countShow >= 1 && countShow <= 2)
+            {
+                lblTitle.Font = new System.Drawing.Font("Arial", 18 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+                lblHiepDau.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblTeam1.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblTeam2.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
 
-            pgFlagVN.Size = new Size(flagVN * 8, flagVN * 8);
-            pgFlagTeam1.Size = new Size(flagTeam * 8, flagTeam * 8);
-            pgFlagTeam2.Size = new Size(flagTeam * 8, flagTeam * 8);
+                lblScoreTeam1.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
+                lblScoreTeam2.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
+            }
+            if (countShow >= 4 && countShow <= 6)
+            {
+                lblTitle.Font = new System.Drawing.Font("Arial", 16 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
+                lblHiepDau.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblTeam1.Font = new System.Drawing.Font("Arial", 16 * scale, FontStyle.Bold);
+                lblTeam2.Font = new System.Drawing.Font("Arial", 16 * scale, FontStyle.Bold);
 
-            CenterAllLabels(this);
+                lblScoreTeam1.Font = new System.Drawing.Font("Arial", 28 * scale, FontStyle.Bold);
+                lblScoreTeam2.Font = new System.Drawing.Font("Arial", 28 * scale, FontStyle.Bold);
+            }
+            if (countShow >= 7)
+            {
+                lblTitle.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
+                lblHiepDau.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblTeam1.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblTeam2.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+
+                lblScoreTeam1.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+                lblScoreTeam2.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+            }
+
+            lblBonus.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+
+            lblTeam11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblTeam21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblSet1.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
+            lblSet2.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
+            lblSet3.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
+            lblSet4.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
+            lblSet5.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
+            lblScore11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore12.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore13.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore14.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore15.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore22.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore23.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore24.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblScore25.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+
+
+            int flagVN = (int)(40 * scale);
+            int flagTeam = (int)(30 * scale);
+            if (countShow == 1)
+            {
+                pgFlagVN.Size = new Size(flagVN * 6, flagVN * 4);
+            }
+            if (countShow >= 2 && countShow <= 4)
+            {
+                pgFlagVN.Size = new Size(flagVN * 5, flagVN * 3);
+            }
+            if (countShow >= 5 && countShow <= 6)
+            {
+                pgFlagVN.Size = new Size(flagVN * 4, flagVN * 2);
+            }
+            if (countShow > 6)
+            {
+                pgFlagVN.Size = new Size(flagVN * 3, flagVN * 2);
+            }
+            pgFlagTeam1.Size = new Size(flagTeam * 4, flagTeam * 3);
+            pgFlagTeam2.Size = new Size(flagTeam * 4, flagTeam * 3);
         }
         public void AddPointTeam1()
         {
@@ -450,167 +509,93 @@ namespace Scoreboard
         {
             try
             {
-                if (pnlSetScores == null) return;
-                
                 bool isSoccer = IsSoccerMatch();
-                pnlSetScores.Visible = !isSoccer; // Chỉ hiển thị khi KHÔNG phải bóng đá
-                
                 if (isSoccer)
                 {
-                    pnlSetScores.Controls.Clear();
-                    pnlSetScores.ColumnCount = 0;
-                    pnlSetScores.RowCount = 0;
+                    tableLayoutPanel2.Visible = false;
                     return;
                 }
+                lblSet1.Visible = false;
+                lblSet2.Visible = false;
+                lblSet3.Visible = false;
+                lblSet4.Visible = false;
+                lblSet5.Visible = false;
+                lblScore11.Visible = false;
+                lblScore12.Visible = false;
+                lblScore13.Visible = false;
+                lblScore14.Visible = false;
+                lblScore15.Visible = false;
+                lblScore21.Visible = false;
+                lblScore22.Visible = false;
+                lblScore23.Visible = false;
+                lblScore24.Visible = false;
+                lblScore25.Visible = false;
 
-                // Lấy tất cả các set theo thứ tự Id
-                var sets = Repository.GetMatchSetsByMatchId(match.MatchId);
-                sets = sets.OrderBy(s => s.Id).ToList();
-
-                if (sets.Count == 0)
+                var sets = Repository.GetMatchSetsByMatchId(match.MatchId)
+                    .Where(s => s.Id < match.Id).OrderBy(s => s.Id).ToList();
+                if (sets.Count > 0)
                 {
-                    pnlSetScores.Controls.Clear();
-                    pnlSetScores.ColumnCount = 0;
-                    pnlSetScores.RowCount = 0;
-                    return;
-                }
-
-                // Cấu trúc bảng: 2 hàng
-                // Cột 0: Tên đội
-                // Các cột 1+: Điểm của từng set
-                int columnCount = sets.Count + 1; // 1 cột cho tên đội + các cột cho từng set
-                
-                pnlSetScores.SuspendLayout();
-                pnlSetScores.Controls.Clear();
-                
-                // Thiết lập số cột và hàng
-                pnlSetScores.ColumnCount = columnCount;
-                pnlSetScores.RowCount = 2;
-                
-                // Xóa style cột cũ và thêm mới
-                pnlSetScores.ColumnStyles.Clear();
-                pnlSetScores.RowStyles.Clear();
-                
-                // Đặt width auto cho panel
-                pnlSetScores.AutoSize = true;
-                pnlSetScores.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                pnlSetScores.Dock = DockStyle.None;
-                pnlSetScores.Anchor = AnchorStyles.None;
-                
-                // Tính width tối thiểu cho cột tên đội dựa trên tên dài nhất
-                int maxNameWidth = 0;
-                using (Graphics g = pnlSetScores.CreateGraphics())
-                {
-                    Font nameFont = new Font("Arial", 11, FontStyle.Bold);
-                    int team1Width = (int)g.MeasureString(match.Team1 ?? "Đội 1", nameFont).Width + 15; // +15 cho padding
-                    int team2Width = (int)g.MeasureString(match.Team2 ?? "Đội 2", nameFont).Width + 15;
-                    maxNameWidth = Math.Max(team1Width, team2Width);
-                }
-                
-                // Cột 0: tên đội - Absolute với width đủ cho tên dài nhất
-                pnlSetScores.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, maxNameWidth));
-                
-                // Các cột điểm set - cố định 20px
-                for (int i = 0; i < sets.Count; i++)
-                {
-                    pnlSetScores.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 60F));
-                }
-                
-                // Tính chiều cao hàng theo font
-                int rowHeight = TextRenderer.MeasureText("0", new Font("Arial", 14, FontStyle.Bold)).Height + 8;
-                pnlSetScores.RowStyles.Add(new RowStyle(SizeType.Absolute, rowHeight));
-                pnlSetScores.RowStyles.Add(new RowStyle(SizeType.Absolute, rowHeight));
-
-                // Hàng 0, Cột 0: Tên Đội 1 - nền trong suốt, viền trắng
-                var lblTeam1 = new Label();
-                lblTeam1.Dock = DockStyle.Fill;
-                lblTeam1.Margin = new Padding(1);
-                lblTeam1.ForeColor = Color.White;
-                lblTeam1.BackColor = Color.Transparent;
-                lblTeam1.TextAlign = ContentAlignment.MiddleLeft;
-                lblTeam1.Font = new Font("Arial", 11, FontStyle.Bold);
-                lblTeam1.AutoSize = false;
-                lblTeam1.Padding = new Padding(5, 0, 5, 0);
-                lblTeam1.Text = match.Team1 ?? "Đội 1";
-                lblTeam1.Paint += (s, e) => {
-                    using (Pen pen = new Pen(Color.White, 1))
+                    tableLayoutPanel2.Visible = true;
+                    lblTeam11.Text = lblTeam1.Text;
+                    lblTeam21.Text = lblTeam2.Text;
+                    for (int i = 0; i < sets.Count; i++)
                     {
-                        e.Graphics.DrawRectangle(pen, 0, 0, lblTeam1.Width - 1, lblTeam1.Height - 1);
-                    }
-                };
-                pnlSetScores.Controls.Add(lblTeam1, 0, 0);
-
-                // Hàng 1, Cột 0: Tên Đội 2 - nền trong suốt, viền trắng
-                var lblTeam2 = new Label();
-                lblTeam2.Dock = DockStyle.Fill;
-                lblTeam2.Margin = new Padding(1);
-                lblTeam2.ForeColor = Color.White;
-                lblTeam2.BackColor = Color.Transparent;
-                lblTeam2.TextAlign = ContentAlignment.MiddleLeft;
-                lblTeam2.Font = new Font("Arial", 11, FontStyle.Bold);
-                lblTeam2.AutoSize = false;
-                lblTeam2.Padding = new Padding(5, 0, 5, 0);
-                lblTeam2.Text = match.Team2 ?? "Đội 2";
-                lblTeam2.Paint += (s, e) => {
-                    using (Pen pen = new Pen(Color.White, 1))
-                    {
-                        e.Graphics.DrawRectangle(pen, 0, 0, lblTeam2.Width - 1, lblTeam2.Height - 1);
-                    }
-                };
-                pnlSetScores.Controls.Add(lblTeam2, 0, 1);
-
-                // Thêm điểm các set: Hàng 0 (điểm Đội 1), Hàng 1 (điểm Đội 2) - nền trong suốt, viền trắng
-                for (int i = 0; i < sets.Count; i++)
-                {
-                    var set = sets[i];
-                    int colIndex = i + 1; // Bắt đầu từ cột 1
-
-                    // Hàng 0: Điểm Đội 1 của set này
-                    var lblScore1 = new Label();
-                    lblScore1.Dock = DockStyle.Fill;
-                    lblScore1.Margin = new Padding(1);
-                    lblScore1.ForeColor = Color.White;
-                    lblScore1.BackColor = Color.Transparent;
-                    lblScore1.TextAlign = ContentAlignment.MiddleCenter;
-                    lblScore1.Font = new Font("Arial", 14, FontStyle.Bold);
-                    lblScore1.AutoSize = false;
-                    lblScore1.Text = set.Score1.ToString();
-                    lblScore1.Paint += (s, e) => {
-                        using (Pen pen = new Pen(Color.White, 1))
+                        var set = sets[i];
+                        if (i == 0)
                         {
-                            e.Graphics.DrawRectangle(pen, 0, 0, lblScore1.Width - 1, lblScore1.Height - 1);
+                            lblSet1.Visible = true;
+                            lblScore11.Visible = true;
+                            lblScore21.Visible = true;
+                            lblSet1.Text = set.ClassSetsName;
+                            lblScore11.Text = set.Score1.ToString();
+                            lblScore21.Text = set.Score2.ToString();
+                            continue;
                         }
-                    };
-                    pnlSetScores.Controls.Add(lblScore1, colIndex, 0);
-
-                    // Hàng 1: Điểm Đội 2 của set này
-                    var lblScore2 = new Label();
-                    lblScore2.Dock = DockStyle.Fill;
-                    lblScore2.Margin = new Padding(1);
-                    lblScore2.ForeColor = Color.White;
-                    lblScore2.BackColor = Color.Transparent;
-                    lblScore2.TextAlign = ContentAlignment.MiddleCenter;
-                    lblScore2.Font = new Font("Arial", 14, FontStyle.Bold);
-                    lblScore2.AutoSize = false;
-                    lblScore2.Text = set.Score2.ToString();
-                    lblScore2.Paint += (s, e) => {
-                        using (Pen pen = new Pen(Color.White, 1))
+                        if (i == 1)
                         {
-                            e.Graphics.DrawRectangle(pen, 0, 0, lblScore2.Width - 1, lblScore2.Height - 1);
+                            lblSet2.Visible = true;
+                            lblScore12.Visible = true;
+                            lblScore22.Visible = true;
+                            lblSet2.Text = set.ClassSetsName;
+                            lblScore12.Text = set.Score1.ToString();
+                            lblScore22.Text = set.Score2.ToString();
                         }
-                    };
-                    pnlSetScores.Controls.Add(lblScore2, colIndex, 1);
+                        if (i == 2)
+                        {
+                            lblSet3.Visible = true;
+                            lblScore13.Visible = true;
+                            lblScore23.Visible = true;
+                            lblSet3.Text = set.ClassSetsName;
+                            lblScore13.Text = set.Score1.ToString();
+                            lblScore23.Text = set.Score2.ToString();
+                        }
+                        if (i == 3)
+                        {
+                            lblSet4.Visible = true;
+                            lblScore14.Visible = true;
+                            lblScore24.Visible = true;
+                            lblSet4.Text = set.ClassSetsName;
+                            lblScore14.Text = set.Score1.ToString();
+                            lblScore24.Text = set.Score2.ToString();
+                        }
+                        if (i == 4)
+                        {
+                            lblSet5.Visible = true;
+                            lblScore15.Visible = true;
+                            lblScore25.Visible = true;
+                            lblSet5.Text = set.ClassSetsName;
+                            lblScore15.Text = set.Score1.ToString();
+                            lblScore25.Text = set.Score2.ToString();
+                        }
+                    }
                 }
-                
-                // Đăng ký sự kiện CellPaint để vẽ border cho bảng
-                pnlSetScores.CellPaint -= PnlSetScores_CellPaint; // Xóa sự kiện cũ nếu có
-                pnlSetScores.CellPaint += PnlSetScores_CellPaint;
-                
-                pnlSetScores.ResumeLayout();
+                else
+                {
+                    tableLayoutPanel2.Visible = false;
+                }
             }
             catch
             {
-                // ignore UI errors for panel rendering
             }
         }
 

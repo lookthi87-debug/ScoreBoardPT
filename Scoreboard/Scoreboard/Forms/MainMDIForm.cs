@@ -56,6 +56,8 @@ namespace Scoreboard
             menuTeam.Click += (s, ev) => { SetSelectedMenuItem(menuTeam); menuTeam_Click(s, ev); };
             menuMatches.Click += (s, ev) => { SetSelectedMenuItem(menuMatches); menuMatches_Click(s, ev); };
             menuUsers.Click += (s, ev) => { SetSelectedMenuItem(menuUsers); menuUsers_Click(s, ev); };
+            menuFlagVN.Click += (s, ev) => { SetSelectedMenuItem(menuFlagVN); menuFlagVN_Click(s, ev); };
+            mLicense.Click += (s, ev) => { SetSelectedMenuItem(mLicense); mLicense_Click(s, ev); };
             mDB.Click += (s, ev) => { SetSelectedMenuItem(mDB); mDB_Click(s, ev); };
         }
         
@@ -332,6 +334,26 @@ namespace Scoreboard
         {
             ConfigDatabase configDatabase = new ConfigDatabase();
             configDatabase.ShowDialog();
+
+
+            SetMenuVisibel(false);
+            
+            // Kiểm tra LoginForm có tồn tại chưa
+            var login = this.MdiChildren.OfType<LoginForm>().FirstOrDefault();
+            if (login == null)
+            {
+                login = new LoginForm(this);
+                login.MdiParent = this;
+                login.Dock = DockStyle.Fill;
+                login.Show();
+            }
+            else
+            {
+                login.Show();
+                login.BringToFront();
+            }
+
+            activeForm = login;
         }
 
         private void menuUsers_Click(object sender, EventArgs e)

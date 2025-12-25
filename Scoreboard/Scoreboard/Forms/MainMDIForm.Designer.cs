@@ -58,7 +58,7 @@
             this.menuTournaments.Name = "menuTournaments";
             this.menuTournaments.Size = new System.Drawing.Size(84, 20);
             this.menuTournaments.Text = "⚽ Giải đấu";
-            this.menuTournaments.Click += new System.EventHandler(this.menuTournaments_Click);
+            //this.menuTournaments.Click += new System.EventHandler(this.menuTournaments_Click);
             // 
             // menuTeam
             // 
@@ -75,7 +75,7 @@
             this.menuMatches.Name = "menuMatches";
             this.menuMatches.Size = new System.Drawing.Size(88, 20);
             this.menuMatches.Text = "🏆 Trận đấu";
-            this.menuMatches.Click += new System.EventHandler(this.menuMatches_Click);
+            //this.menuMatches.Click += new System.EventHandler(this.menuMatches_Click);
             // 
             // menuUsers
             // 
@@ -85,7 +85,7 @@
             this.menuUsers.Name = "menuUsers";
             this.menuUsers.Size = new System.Drawing.Size(103, 20);
             this.menuUsers.Text = "👤 Người dùng";
-            this.menuUsers.Click += new System.EventHandler(this.menuUsers_Click);
+            //this.menuUsers.Click += new System.EventHandler(this.menuUsers_Click);
             // 
             // menuLogout
             // 
@@ -104,14 +104,13 @@
             this.mLicense.Name = "mLicense";
             this.mLicense.Size = new System.Drawing.Size(155, 20);
             this.mLicense.Text = "🔑 Bản quyền / License";
-            this.mLicense.Click += new System.EventHandler(this.mLicense_Click);
             // 
             // mDB
             // 
             this.mDB.Name = "mDB";
             this.mDB.Size = new System.Drawing.Size(94, 20);
             this.mDB.Text = "⚙️ Cấu hình DB";
-            this.mDB.Click += new System.EventHandler(this.mDB_Click);
+            //this.mDB.Click += new System.EventHandler(this.mDB_Click);
             // 
             // menuFlagVN
             // 
@@ -119,7 +118,7 @@
             this.menuFlagVN.Name = "menuFlagVN";
             this.menuFlagVN.Size = new System.Drawing.Size(90, 20);
             this.menuFlagVN.Text = "✪ Cờ Việt Nam";
-            this.menuFlagVN.Click += new System.EventHandler(this.menuFlagVN_Click);
+            //this.menuFlagVN.Click += new System.EventHandler(this.menuFlagVN_Click);
             // 
             // MainMDIForm
             // 

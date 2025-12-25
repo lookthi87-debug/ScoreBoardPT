@@ -71,7 +71,6 @@ namespace Scoreboard
             this.Name = "Toggle";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.Toggle_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.ResumeLayout(false);
 
@@ -121,7 +120,7 @@ namespace Scoreboard
                 tableLayoutPanel_BongDa.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
                 tableLayoutPanel_BongDa.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-                var uc = new ucFormView_Toggle(m[0]);
+                var uc = new ucFormView_Toggle(m[0], m.Count);
                 uc.Dock = DockStyle.Fill;
                 tableLayoutPanel_BongDa.Controls.Add(uc, 0, 0);
                 ucs.Add(uc);
@@ -150,7 +149,7 @@ namespace Scoreboard
                     for (int c = 0; c < cols; c++)
                     {
                         if (index >= m.Count) break;
-                        var uc = new ucFormView_Toggle(m[index]);
+                        var uc = new ucFormView_Toggle(m[index],m.Count);
                         uc.Dock = DockStyle.Fill;
                         tableLayoutPanel_BongDa.Controls.Add(uc, c, r);
                         ucs.Add(uc);
@@ -201,34 +200,6 @@ namespace Scoreboard
         private void StopClock()
         {
             isPaused = true;
-        }
-
-        private void Toggle_Load(object sender, EventArgs e)
-        {
-            //bool isConnect = false;
-            //try
-            //{
-            //    matchsetModels = Repository.GetActiveMatchSetsShowtoggle();
-            //    isConnect=true;
-            //}
-            //catch
-            //{
-            //    ConfigDatabase cf = new ConfigDatabase();
-            //    cf.ShowDialog();
-            //    if (cf.DialogResult == DialogResult.OK)
-            //    {
-            //        isConnect = true;
-            //        matchsetModels = Repository.GetActiveMatchSetsShowtoggle();
-            //    }
-            //}
-            //if (isConnect == true)
-            //{
-            //    LoadCacTranDau(matchsetModels);
-            //    StartClock();
-            //}
-            //LoadCacTranDau(matchsetModels);
-            //StartClock();
-
         }
     }
 }
