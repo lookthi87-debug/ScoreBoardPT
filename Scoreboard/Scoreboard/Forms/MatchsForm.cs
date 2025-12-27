@@ -889,14 +889,7 @@ namespace Scoreboard
                             m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
                             break;
                         case MatchStatusConfig.Status.InProgress:
-                            if (mTemp.Status == MatchStatusConfig.Status.NotStarted)
-                            {
-                                m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.NotStarted);
-                            }
-                            else
-                            {
-                                m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress);
-                            }
+                            m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.InProgress);
                             break;
                         case MatchStatusConfig.Status.Finished:
                             m.Status = MatchStatusConfig.GetStatusText(MatchStatusConfig.Status.Finished);
@@ -1163,8 +1156,13 @@ namespace Scoreboard
 
             // Thêm vào lvToggle
             var m = Repository.GetMatchById(matchId);
+            if (m.Status == MatchStatusConfig.Status.NotStarted)
+            {
+                MessageBox.Show("Trận này chưa diễn ra !!!");
+                return;
+            }
             string startTime = m.Start.HasValue ? m.Start.Value.ToString("dd/MM HH:mm") : "N/A";
-            var li = new ListViewItem($"{startTime} - {m.Team1}   vs   {m.Team2}    - {m.RefereeName}") { Tag = matchId };
+            var li = new ListViewItem($"{startTime} - {m.Team1}   vs   {m.Team2}   -   {m.RefereeName}") { Tag = matchId };
             lvToggle.Items.Add(li);
 
             // Cập nhật ShowToggle trên Matches
@@ -1476,7 +1474,11 @@ namespace Scoreboard
         private void btnDeleteMatchset_Click(object sender, EventArgs e)
         {
             if (dgvDetail.CurrentRow == null) return;
-
+            if (dgvDetail.Rows.Count == 1)
+            {
+                MessageBox.Show($"Hiệp/set đấu tối thiếu có 1 hiệp/set");
+                return;
+            }
             int colMatchid = dgvDetail.CurrentRow.DataGridView.Columns["MatchId"].Index;
             string Matchid = dgvDetail.CurrentRow.Cells[colMatchid].Value.ToString();
             int colid = dgvDetail.CurrentRow.DataGridView.Columns["Id2"].Index;

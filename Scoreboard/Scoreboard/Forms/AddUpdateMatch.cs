@@ -914,7 +914,7 @@ namespace Scoreboard
                                 Score2 = 0,
                                 Time = "00:00",
                                 Note = "",
-                                Status = MatchStatusConfig.Status.InProgress, // Active
+                                Status = MatchStatusConfig.Status.NotStarted,
                                 RefereeId = (currentMatch.RefereeIds != null && currentMatch.RefereeIds.Count > 0) ? (int?)currentMatch.RefereeIds[0] : null,
                                 RefereeName = currentMatch.RefereeName,
                                 ClassSetsName = firstPeriodName, // Use "Hiệp 1" instead of firstClassSet.Name
@@ -943,6 +943,13 @@ namespace Scoreboard
                                 Repository.UpdateMatchSetStatus(currentMatch.Id, matchSet.Id, MatchStatusConfig.Status.Finished);
                             }
                         }
+                    }
+
+                    // Kiểm tra và chuyển đổi trận đấu và Hiệp/set đầu tiên sang 1 (đang diễn ra)
+                    if (currentMatch.Status == MatchStatusConfig.Status.InProgress)
+                    {
+                        var allMatchSets = Repository.GetMatchSetsByMatchId(currentMatch.Id);
+                        Repository.UpdateMatchSetStatus(currentMatch.Id, allMatchSets[allMatchSets.Count - 1].Id, MatchStatusConfig.Status.InProgress);
                     }
 
                     Repository.UpdateMatch(currentMatch);
