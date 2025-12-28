@@ -46,14 +46,14 @@ namespace Scoreboard
 
             _baseRowHeights = new int[]
             {
-                120,
-                50,
-                50,
-                50,
-                60,
-                40,
-                80,
-                50
+                54,  // Row 0: FlagVN area (20% of 270 = 54)
+                14,  // Row 1: Title area (5% of 270 = 14)
+                32,  // Row 2: Time area (12% of 270 = 32)
+                22,  // Row 3: HiepDau area (8% of 270 = 22)
+                41,  // Row 4: Team names and flags area (15% of 270 = 41)
+                8,   // Row 5: Bonus area (3% of 270 = 8)
+                30,  // Row 6: Main score area (fixed 30F)
+                60   // Row 7: Set scores area (fixed 60F)
             };
             if (countShow == 1)
             {
@@ -263,23 +263,23 @@ namespace Scoreboard
 
             lblBonus.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
 
-            lblTeam11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblTeam21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblSet1.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet2.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet3.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet4.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet5.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblScore11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore12.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore13.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore14.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore15.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore22.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore23.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore24.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore25.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            lblTeam11.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblTeam21.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblSet1.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblSet2.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblSet3.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblSet4.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblSet5.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore11.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore12.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore13.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore14.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore15.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore21.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore22.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore23.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore24.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+            lblScore25.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
 
 
             int flagVN = (int)(40 * scale);
