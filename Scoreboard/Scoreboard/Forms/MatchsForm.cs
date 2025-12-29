@@ -1156,11 +1156,11 @@ namespace Scoreboard
 
             // Thêm vào lvToggle
             var m = Repository.GetMatchById(matchId);
-            if (m.Status == MatchStatusConfig.Status.NotStarted)
-            {
-                MessageBox.Show("Trận này chưa diễn ra !!!");
-                return;
-            }
+            //if (m.Status == MatchStatusConfig.Status.NotStarted)
+            //{
+            //    MessageBox.Show("Trận này chưa diễn ra !!!");
+            //    return;
+            //}
             string startTime = m.Start.HasValue ? m.Start.Value.ToString("dd/MM HH:mm") : "N/A";
             var li = new ListViewItem($"{startTime} - {m.Team1}   vs   {m.Team2}   -   {m.RefereeName}") { Tag = matchId };
             lvToggle.Items.Add(li);

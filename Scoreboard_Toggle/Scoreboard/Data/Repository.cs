@@ -836,7 +836,11 @@ namespace Scoreboard.Data
                 LEFT JOIN Tournaments t ON m.tournament_id = t.id
                 LEFT JOIN Teams tm1 ON m.team1_id = tm1.id AND m.tournament_id = tm1.tournament_id
                 LEFT JOIN Teams tm2 ON m.team2_id = tm2.id AND m.tournament_id = tm2.tournament_id
-                WHERE ms.status = '1'
+                WHERE ms.id = (
+                    SELECT MAX(ms2.id)
+                    FROM MatchSets ms2
+                    WHERE ms2.match_id = ms.match_id
+                )
                 AND m.show_toggle > 0
                 ORDER BY m.show_toggle;
             ";

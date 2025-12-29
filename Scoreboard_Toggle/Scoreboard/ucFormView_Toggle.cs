@@ -72,7 +72,7 @@ namespace Scoreboard
                 60,
                 40,
                 80,
-                50
+                60
             };
             if (countShow == 1)
             {
@@ -138,8 +138,8 @@ namespace Scoreboard
         }
         private void ScaleContent(float scale)
         {
-            
-            if (countShow == 1)
+
+            if (countShow >= 1 && countShow <= 2)
             {
                 lblTitle.Font = new System.Drawing.Font("Arial", 18 * scale, FontStyle.Bold);
                 lblTime.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
@@ -149,19 +149,37 @@ namespace Scoreboard
 
                 lblScoreTeam1.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
                 lblScoreTeam2.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
-            }
-            if (countShow >= 1 && countShow <= 2)
-            {
-                lblTitle.Font = new System.Drawing.Font("Arial", 18 * scale, FontStyle.Bold);
-                lblTime.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
-                lblHiepDau.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblTeam1.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
-                lblTeam2.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
 
-                lblScoreTeam1.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
-                lblScoreTeam2.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
+                lblTeam11.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblTeam21.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblSet1.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+                lblSet2.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+                lblSet3.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+                lblSet4.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+                lblSet5.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
+                lblScore11.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore12.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore13.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore14.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore15.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore21.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore22.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore23.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore24.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
+                lblScore25.Font = new System.Drawing.Font("Arial", 12 * scale, FontStyle.Bold);
             }
-            if (countShow >= 4 && countShow <=6)
+            //if (countShow >= 1 && countShow <= 2)
+            //{
+            //    lblTitle.Font = new System.Drawing.Font("Arial", 18 * scale, FontStyle.Bold);
+            //    lblTime.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+            //    lblHiepDau.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+            //    lblTeam1.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+            //    lblTeam2.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+
+            //    lblScoreTeam1.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
+            //    lblScoreTeam2.Font = new System.Drawing.Font("Arial", 32 * scale, FontStyle.Bold);
+            //}
+            if (countShow >= 3 && countShow <=6)
             {
                 lblTitle.Font = new System.Drawing.Font("Arial", 16 * scale, FontStyle.Bold);
                 lblTime.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
@@ -171,6 +189,24 @@ namespace Scoreboard
 
                 lblScoreTeam1.Font = new System.Drawing.Font("Arial", 28 * scale, FontStyle.Bold);
                 lblScoreTeam2.Font = new System.Drawing.Font("Arial", 28 * scale, FontStyle.Bold);
+
+                lblTeam11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblTeam21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblSet1.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet2.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet3.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet4.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet5.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblScore11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore12.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore13.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore14.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore15.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore22.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore23.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore24.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore25.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
             }
             if (countShow >= 7)
             {
@@ -182,26 +218,28 @@ namespace Scoreboard
 
                 lblScoreTeam1.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
                 lblScoreTeam2.Font = new System.Drawing.Font("Arial", 26 * scale, FontStyle.Bold);
+
+                lblTeam11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblTeam21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblSet1.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet2.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet3.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet4.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblSet5.Font = new System.Drawing.Font("Arial", 7 * scale, FontStyle.Bold);
+                lblScore11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore12.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore13.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore14.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore15.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore22.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore23.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore24.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+                lblScore25.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
             }
             lblBonus.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
 
-            lblTeam11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblTeam21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblSet1.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet2.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet3.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet4.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblSet5.Font = new System.Drawing.Font("Arial", 5 * scale, FontStyle.Bold);
-            lblScore11.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore12.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore13.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore14.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore15.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore21.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore22.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore23.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore24.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
-            lblScore25.Font = new System.Drawing.Font("Arial", 8 * scale, FontStyle.Bold);
+            
 
 
             int flagVN = (int)(40 * scale);
