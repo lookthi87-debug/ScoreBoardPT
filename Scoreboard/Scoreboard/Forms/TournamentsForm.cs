@@ -23,6 +23,8 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn description;
         private DataGridViewTextBoxColumn id;
         private UserModel user;
+        private Label lblStart;
+        private ComboBox cbYear;
         private MainMDIForm mainForm;
         public TournamentsForm(MainMDIForm parent,UserModel us)
         {
@@ -50,6 +52,8 @@ namespace Scoreboard
             this.btnSearch = new MaterialSkin.Controls.MaterialButton();
             this.cbMatchClass = new System.Windows.Forms.ComboBox();
             this.lblClassMatch = new System.Windows.Forms.Label();
+            this.lblStart = new System.Windows.Forms.Label();
+            this.cbYear = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgData)).BeginInit();
             this.SuspendLayout();
             // 
@@ -86,13 +90,13 @@ namespace Scoreboard
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgData.DefaultCellStyle = dataGridViewCellStyle4;
-            this.dgData.Location = new System.Drawing.Point(17, 63);
+            this.dgData.Location = new System.Drawing.Point(17, 90);
             this.dgData.Name = "dgData";
             this.dgData.RowHeadersVisible = false;
             dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
             this.dgData.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dgData.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgData.Size = new System.Drawing.Size(1046, 543);
+            this.dgData.Size = new System.Drawing.Size(1046, 516);
             this.dgData.TabIndex = 5;
             this.dgData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgUser_DoubleClick);
             // 
@@ -224,11 +228,34 @@ namespace Scoreboard
             this.lblClassMatch.Text = "Bộ môn";
             this.lblClassMatch.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblStart
+            // 
+            this.lblStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStart.ForeColor = System.Drawing.Color.Black;
+            this.lblStart.Location = new System.Drawing.Point(12, 53);
+            this.lblStart.Name = "lblStart";
+            this.lblStart.Size = new System.Drawing.Size(152, 29);
+            this.lblStart.TabIndex = 36;
+            this.lblStart.Text = "Năm";
+            this.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // cbYear
+            // 
+            this.cbYear.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbYear.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cbYear.FormattingEnabled = true;
+            this.cbYear.Location = new System.Drawing.Point(172, 50);
+            this.cbYear.Name = "cbYear";
+            this.cbYear.Size = new System.Drawing.Size(85, 28);
+            this.cbYear.TabIndex = 37;
+            // 
             // TournamentsForm
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1078, 671);
             this.ControlBox = false;
+            this.Controls.Add(this.cbYear);
+            this.Controls.Add(this.lblStart);
             this.Controls.Add(this.cbMatchClass);
             this.Controls.Add(this.lblClassMatch);
             this.Controls.Add(this.btnSearch);
@@ -271,6 +298,7 @@ namespace Scoreboard
         private void AdminForm_Load(object sender, EventArgs e)
         {
             LoadClass();
+            LoadYears();
             LoadTournaments(cbMatchClass.SelectedValue.ToString());
         }
         private void LoadTournaments(string Class_id = "")
@@ -290,7 +318,13 @@ namespace Scoreboard
                                     .Where(u => u.match_class_id == id)
                                     .ToList();
                 }
+                int selectedYear = (int)cbYear.SelectedItem;
+
+                tournaments = tournaments
+                                .Where(t => t.Start?.Year == selectedYear)
+                                .ToList();
             }
+            
 
             dgData.AutoGenerateColumns = false;
             dgData.DataSource = tournaments;
@@ -363,6 +397,20 @@ namespace Scoreboard
         private void cbMatchClass_SelectedIndexChanged(object sender, EventArgs e)
         {
             dgData.DataSource = null;
+        }
+        private void LoadYears()
+        {
+            cbYear.Items.Clear();
+
+            int startYear = 2025;
+            int currentYear = DateTime.Now.Year;
+
+            for (int i = currentYear; i >= startYear; i--)
+            {
+                cbYear.Items.Add(i);
+            }
+
+            cbYear.SelectedItem = currentYear;
         }
     }
 }

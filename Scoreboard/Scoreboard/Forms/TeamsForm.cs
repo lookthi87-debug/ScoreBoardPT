@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Drawing.Diagrams;
@@ -28,6 +29,7 @@ namespace Scoreboard.Forms
         private DataGridViewTextBoxColumn note;
         private DataGridViewTextBoxColumn id;
         private ComboBox cbMatchClass;
+        private bool isLoad = true;
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -198,7 +200,7 @@ namespace Scoreboard.Forms
             this.btnSearch.Depth = 0;
             this.btnSearch.HighEmphasis = true;
             this.btnSearch.Icon = null;
-            this.btnSearch.Location = new System.Drawing.Point(503, 49);
+            this.btnSearch.Location = new System.Drawing.Point(787, 49);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSearch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSearch.Name = "btnSearch";
@@ -217,7 +219,7 @@ namespace Scoreboard.Forms
             this.cbTournaments.FormattingEnabled = true;
             this.cbTournaments.Location = new System.Drawing.Point(172, 50);
             this.cbTournaments.Name = "cbTournaments";
-            this.cbTournaments.Size = new System.Drawing.Size(324, 28);
+            this.cbTournaments.Size = new System.Drawing.Size(608, 28);
             this.cbTournaments.TabIndex = 39;
             this.cbTournaments.SelectedIndexChanged += new System.EventHandler(this.cbTournaments_SelectedIndexChanged);
             // 
@@ -350,9 +352,10 @@ namespace Scoreboard.Forms
 
             Flag.ImageLayout = DataGridViewImageCellLayout.Zoom;
             dgTeam.RowTemplate.Height = 30;
-
+            isLoad = true;
             LoadMatchClass(matchClassId, tournamentId);
             btnSearch_Click(this, new EventArgs());
+            isLoad = false;
         }
 
         private void LoadAllTeam()
@@ -392,7 +395,10 @@ namespace Scoreboard.Forms
 
                 if (string.IsNullOrWhiteSpace(cbTournaments.Text))
                 {
-                    MessageBox.Show("Chưa chọn giải đấu");
+                    if (isLoad == false)
+                    {
+                        MessageBox.Show("Chưa chọn giải đấu");
+                    }
                     cbTournaments.Focus();
                     return;
                 }

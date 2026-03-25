@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DocumentFormat.OpenXml.Drawing.Charts;
@@ -57,7 +58,7 @@ namespace Scoreboard
         private DataGridViewTextBoxColumn End;
         private DataGridViewTextBoxColumn time2;
         private MaterialButton btnExportExcel;
-
+        private bool isLoad = true;
         private UserModel user { get; set; }
         private void InitializeComponent()
         {
@@ -324,7 +325,7 @@ namespace Scoreboard
             this.btnSearch.Depth = 0;
             this.btnSearch.HighEmphasis = true;
             this.btnSearch.Icon = null;
-            this.btnSearch.Location = new System.Drawing.Point(503, 81);
+            this.btnSearch.Location = new System.Drawing.Point(501, 84);
             this.btnSearch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSearch.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSearch.Name = "btnSearch";
@@ -550,7 +551,7 @@ namespace Scoreboard
             this.cbTournaments.FormattingEnabled = true;
             this.cbTournaments.Location = new System.Drawing.Point(172, 50);
             this.cbTournaments.Name = "cbTournaments";
-            this.cbTournaments.Size = new System.Drawing.Size(324, 28);
+            this.cbTournaments.Size = new System.Drawing.Size(592, 28);
             this.cbTournaments.TabIndex = 39;
             this.cbTournaments.SelectedIndexChanged += new System.EventHandler(this.cbTournaments_SelectedIndexChanged);
             this.cbTournaments.Enter += new System.EventHandler(this.cbTournaments_Enter);
@@ -773,7 +774,9 @@ namespace Scoreboard
             LoadMatchClass();
             LoadListMatchActive();
             LoadListMatchShowToggle();
+            isLoad = true;
             btnSearch_Click(this, new EventArgs());
+            isLoad = false;
         }
 
         private void LoadAllMatches(string keyword = null)
@@ -1026,16 +1029,17 @@ namespace Scoreboard
                 dgvDetail.DataSource = null;
                 dgGiaiDau.DataSource = null;
 
+                // Load danh sách trận theo điều kiện
                 if (string.IsNullOrWhiteSpace(cbTournaments.Text))
                 {
-                    MessageBox.Show("Chưa chọn giải đấu");
+                    if (isLoad == false)
+                    {
+                        MessageBox.Show("Chưa chọn giải đấu");
+                    }
                     cbTournaments.Focus();
                     return;
                 }
-
-                // Load danh sách trận theo điều kiện
                 LoadAllMatches();
-
                 // 2Chuẩn bị danh sách hiển thị
                 List<(string Id, int ShowToggle)> showList = new List<(string, int)>();
                 //lvActiveMatch.Items.Clear();
@@ -1138,10 +1142,10 @@ namespace Scoreboard
                 return;
             }
 
-            // Giới hạn 8 trận
-            if (lvToggle.Items.Count >= 8)
+            // Giới hạn 2 trận
+            if (lvToggle.Items.Count >= 2)
             {
-                MessageBox.Show("Không thể hiển thị quá 8 trận trên Toggle.");
+                MessageBox.Show("Không thể hiển thị quá 2 trận trên Toggle.");
                 return;
             }
 
@@ -1599,16 +1603,19 @@ namespace Scoreboard
             try
             {
                 lvActiveMatch.Items.Clear();
-                List<MatchModel> activeMatches = Repository.GetMatchesByStatus(MatchStatusConfig.Status.Finished, false, (int)cbTournaments.SelectedValue);
-                foreach (var match in activeMatches)
+                if (cbTournaments.Items.Count > 0)
                 {
-                    string startTime = match.Start.HasValue ? match.Start.Value.ToString("dd/MM HH:mm") : "N/A";
-                    var li = new ListViewItem($"{startTime} - {match.Team1}   vs   {match.Team2}    - {match.RefereeName}")
+                    List<MatchModel> activeMatches = Repository.GetMatchesByStatus(MatchStatusConfig.Status.Finished, false, (int)cbTournaments.SelectedValue);
+                    foreach (var match in activeMatches)
                     {
-                        Tag = match.Id
-                    };
-                    lvActiveMatch.Items.Add(li);
-                }
+                        string startTime = match.Start.HasValue ? match.Start.Value.ToString("dd/MM HH:mm") : "N/A";
+                        var li = new ListViewItem($"{startTime} - {match.Team1}   vs   {match.Team2}    - {match.RefereeName}")
+                        {
+                            Tag = match.Id
+                        };
+                        lvActiveMatch.Items.Add(li);
+                    }
+                }          
             }
             catch (Exception ex)
             {

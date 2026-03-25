@@ -124,7 +124,6 @@ namespace Scoreboard
                     menuMatches.Visible = true;
                     menuUsers.Visible = true;
                     menuLogout.Enabled = true;
-                    mLicense.Visible = true;
                     menuTeam.Visible = true;
                     menuFlagVN.Visible = true;
                 }
@@ -133,7 +132,6 @@ namespace Scoreboard
                     menuTournaments.Visible = false;
                     menuMatches.Visible = false;
                     menuUsers.Visible = false;
-                    mLicense.Visible = false;
                     menuLogout.Enabled = true;
                     menuTeam.Visible= false;
                     menuFlagVN.Visible= false;
@@ -145,7 +143,6 @@ namespace Scoreboard
                 menuTournaments.Visible = false;
                 menuMatches.Visible = false;
                 menuUsers.Visible = false;
-                mLicense.Visible = false;
                 menuLogout.Enabled = false;
                 mDB.Visible = true;
                 menuTeam.Visible = false;

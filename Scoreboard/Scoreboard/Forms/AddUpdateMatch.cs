@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using MaterialSkin.Controls;
 using Scoreboard.Config;
 using Scoreboard.Data;

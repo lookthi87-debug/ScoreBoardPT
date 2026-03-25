@@ -24,9 +24,9 @@
             this.menuMatches = new System.Windows.Forms.ToolStripMenuItem();
             this.menuUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.menuLogout = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuFlagVN = new System.Windows.Forms.ToolStripMenuItem();
             this.mLicense = new System.Windows.Forms.ToolStripMenuItem();
             this.mDB = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuFlagVN = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,8 +44,8 @@
             this.menuUsers,
             this.menuLogout,
             this.menuFlagVN,
-            this.mLicense,
-            this.mDB});
+            this.mDB,
+            this.mLicense});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1000, 24);
@@ -58,7 +58,6 @@
             this.menuTournaments.Name = "menuTournaments";
             this.menuTournaments.Size = new System.Drawing.Size(84, 20);
             this.menuTournaments.Text = "⚽ Giải đấu";
-            //this.menuTournaments.Click += new System.EventHandler(this.menuTournaments_Click);
             // 
             // menuTeam
             // 
@@ -75,7 +74,6 @@
             this.menuMatches.Name = "menuMatches";
             this.menuMatches.Size = new System.Drawing.Size(88, 20);
             this.menuMatches.Text = "🏆 Trận đấu";
-            //this.menuMatches.Click += new System.EventHandler(this.menuMatches_Click);
             // 
             // menuUsers
             // 
@@ -85,7 +83,6 @@
             this.menuUsers.Name = "menuUsers";
             this.menuUsers.Size = new System.Drawing.Size(103, 20);
             this.menuUsers.Text = "👤 Người dùng";
-            //this.menuUsers.Click += new System.EventHandler(this.menuUsers_Click);
             // 
             // menuLogout
             // 
@@ -96,6 +93,13 @@
             this.menuLogout.Size = new System.Drawing.Size(93, 20);
             this.menuLogout.Text = "🚪 Đăng xuất";
             this.menuLogout.Click += new System.EventHandler(this.menuLogout_Click);
+            // 
+            // menuFlagVN
+            // 
+            this.menuFlagVN.ForeColor = System.Drawing.Color.Red;
+            this.menuFlagVN.Name = "menuFlagVN";
+            this.menuFlagVN.Size = new System.Drawing.Size(90, 20);
+            this.menuFlagVN.Text = "✪ Cờ Việt Nam";
             // 
             // mLicense
             // 
@@ -110,15 +114,6 @@
             this.mDB.Name = "mDB";
             this.mDB.Size = new System.Drawing.Size(94, 20);
             this.mDB.Text = "⚙️ Cấu hình DB";
-            //this.mDB.Click += new System.EventHandler(this.mDB_Click);
-            // 
-            // menuFlagVN
-            // 
-            this.menuFlagVN.ForeColor = System.Drawing.Color.Red;
-            this.menuFlagVN.Name = "menuFlagVN";
-            this.menuFlagVN.Size = new System.Drawing.Size(90, 20);
-            this.menuFlagVN.Text = "✪ Cờ Việt Nam";
-            //this.menuFlagVN.Click += new System.EventHandler(this.menuFlagVN_Click);
             // 
             // MainMDIForm
             // 

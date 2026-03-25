@@ -224,6 +224,12 @@ namespace Scoreboard.Forms
                 txtName.Focus();
                 return;
             }
+            if (txtName.Text.Trim().Length > 18)
+            {
+                MessageBox.Show("Không được nhập quá 18 ký tự", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtName.Focus();
+                return;
+            }
 
             try
             {

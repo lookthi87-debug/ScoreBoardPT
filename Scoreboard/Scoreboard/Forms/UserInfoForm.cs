@@ -33,6 +33,7 @@ namespace Scoreboard
         private Panel panel1;
         private UserModel currentUser;
         private string currentMatchid;
+        private int currentMatchSetid;
         public UserInfoForm(UserModel u)
         {
             InitializeComponent();
@@ -345,17 +346,19 @@ namespace Scoreboard
             // Set title with user name
             this.Text = currentUser?.Fullname ?? "";
             currentMatchid = "";
+            currentMatchSetid = 0;
             if (currentUser?.RoleId == 2) // role trọng tài
             {
                 DateTime now = DateTime.Now;
                 var match = Repository.GetAllMatchSetsByUser(currentUser.Id)
-                            .Where(m => m.Start <= now && m.End >= now)
+                            .Where(m => (m.Status == MatchStatusConfig.Status.InProgress) || m.Start <= now && m.End >= now)
                             .ToList(); ;
                 if (match != null & match.Count > 0)
                 {
                     if (match[0].Status == MatchStatusConfig.Status.NotStarted)
                     {
                         currentMatchid = match[0].MatchId;
+                        currentMatchSetid = match[0].Id;
                     }
                     txtTitle.Text = match[0].TournamentName;
                     txtTeam1.Text = match[0].Team1;
@@ -372,7 +375,7 @@ namespace Scoreboard
                         nScore2.Value = match[0].Score2;
                     }
 
-                        txtTime.Text = match[0].Time;
+                    txtTime.Text = match[0].Time;
                     lblMessage.Text = "";
                     btnStart.Enabled = true;
                 }
@@ -389,6 +392,7 @@ namespace Scoreboard
             if (currentMatchid != "")
             {
                 Repository.UpdateMatchStatus(currentMatchid, "1");
+                Repository.UpdateMatchSetStatus(currentMatchid, currentMatchSetid, "1");
             }
             var frmMain = new MainForm(currentUser);
             this.Hide();
