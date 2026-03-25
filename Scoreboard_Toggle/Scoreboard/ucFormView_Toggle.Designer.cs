@@ -88,9 +88,9 @@ namespace Scoreboard
             this.lblHiepDau.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblHiepDau.Font = new System.Drawing.Font("Arial", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblHiepDau.ForeColor = System.Drawing.Color.Aqua;
-            this.lblHiepDau.Location = new System.Drawing.Point(3, 120);
+            this.lblHiepDau.Location = new System.Drawing.Point(3, 129);
             this.lblHiepDau.Name = "lblHiepDau";
-            this.lblHiepDau.Size = new System.Drawing.Size(474, 33);
+            this.lblHiepDau.Size = new System.Drawing.Size(474, 36);
             this.lblHiepDau.TabIndex = 5;
             this.lblHiepDau.Text = "Set 1";
             this.lblHiepDau.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -101,9 +101,9 @@ namespace Scoreboard
             this.lblTime.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTime.Font = new System.Drawing.Font("Arial", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTime.ForeColor = System.Drawing.Color.Yellow;
-            this.lblTime.Location = new System.Drawing.Point(3, 77);
+            this.lblTime.Location = new System.Drawing.Point(3, 83);
             this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(474, 43);
+            this.lblTime.Size = new System.Drawing.Size(474, 46);
             this.lblTime.TabIndex = 4;
             this.lblTime.Text = "00:00";
             this.lblTime.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -114,9 +114,9 @@ namespace Scoreboard
             this.lblTitle.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTitle.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(3, 58);
+            this.lblTitle.Location = new System.Drawing.Point(3, 62);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(474, 19);
+            this.lblTitle.Size = new System.Drawing.Size(474, 21);
             this.lblTitle.TabIndex = 1;
             this.lblTitle.Text = "Giải đấu";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
@@ -150,9 +150,10 @@ namespace Scoreboard
             this.lblTeam1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTeam1.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam1.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblTeam1.Location = new System.Drawing.Point(3, 0);
+            this.lblTeam1.Location = new System.Drawing.Point(0, 0);
+            this.lblTeam1.Margin = new System.Windows.Forms.Padding(0);
             this.lblTeam1.Name = "lblTeam1";
-            this.lblTeam1.Size = new System.Drawing.Size(174, 46);
+            this.lblTeam1.Size = new System.Drawing.Size(180, 34);
             this.lblTeam1.TabIndex = 5;
             this.lblTeam1.Text = "Đội 1";
             this.lblTeam1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -162,9 +163,10 @@ namespace Scoreboard
             this.lblTeam2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTeam2.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTeam2.ForeColor = System.Drawing.Color.Red;
-            this.lblTeam2.Location = new System.Drawing.Point(295, 0);
+            this.lblTeam2.Location = new System.Drawing.Point(292, 0);
+            this.lblTeam2.Margin = new System.Windows.Forms.Padding(0);
             this.lblTeam2.Name = "lblTeam2";
-            this.lblTeam2.Size = new System.Drawing.Size(176, 46);
+            this.lblTeam2.Size = new System.Drawing.Size(182, 34);
             this.lblTeam2.TabIndex = 7;
             this.lblTeam2.Text = "Đội 2";
             this.lblTeam2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -185,16 +187,14 @@ namespace Scoreboard
             this.tableView.Location = new System.Drawing.Point(0, 0);
             this.tableView.Name = "tableView";
             this.tableView.RowCount = 8;
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 26.88172F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.139785F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 19.8895F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.5914F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 24.19355F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.301075F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.87058F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.815999F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 21.36104F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.74494F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 18.58814F));
+            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.619293F));
             this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
             this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableView.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableView.Size = new System.Drawing.Size(480, 270);
             this.tableView.TabIndex = 8;
             // 
@@ -202,13 +202,13 @@ namespace Scoreboard
             // 
             this.tableLayoutPanel2.AutoSize = true;
             this.tableLayoutPanel2.ColumnCount = 7;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 8F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.Controls.Add(this.lblSet4, 4, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblSet3, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.lblSet2, 2, 0);
@@ -227,13 +227,13 @@ namespace Scoreboard
             this.tableLayoutPanel2.Controls.Add(this.lblTeam11, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.lblScore21, 1, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 259);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 260);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(474, 8);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(474, 7);
             this.tableLayoutPanel2.TabIndex = 49;
             // 
             // lblSet4
@@ -242,7 +242,7 @@ namespace Scoreboard
             this.lblSet4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSet4.Font = new System.Drawing.Font("Arial", 6F, System.Drawing.FontStyle.Bold);
             this.lblSet4.ForeColor = System.Drawing.Color.Aqua;
-            this.lblSet4.Location = new System.Drawing.Point(256, 0);
+            this.lblSet4.Location = new System.Drawing.Point(303, 0);
             this.lblSet4.Name = "lblSet4";
             this.lblSet4.Size = new System.Drawing.Size(31, 2);
             this.lblSet4.TabIndex = 41;
@@ -255,7 +255,7 @@ namespace Scoreboard
             this.lblSet3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSet3.Font = new System.Drawing.Font("Arial", 6F, System.Drawing.FontStyle.Bold);
             this.lblSet3.ForeColor = System.Drawing.Color.Aqua;
-            this.lblSet3.Location = new System.Drawing.Point(219, 0);
+            this.lblSet3.Location = new System.Drawing.Point(266, 0);
             this.lblSet3.Name = "lblSet3";
             this.lblSet3.Size = new System.Drawing.Size(31, 2);
             this.lblSet3.TabIndex = 40;
@@ -269,7 +269,7 @@ namespace Scoreboard
             this.lblSet2.Font = new System.Drawing.Font("Arial", 6F, System.Drawing.FontStyle.Bold);
             this.lblSet2.ForeColor = System.Drawing.Color.Aqua;
             this.lblSet2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblSet2.Location = new System.Drawing.Point(182, 0);
+            this.lblSet2.Location = new System.Drawing.Point(229, 0);
             this.lblSet2.Name = "lblSet2";
             this.lblSet2.Size = new System.Drawing.Size(31, 2);
             this.lblSet2.TabIndex = 39;
@@ -282,7 +282,7 @@ namespace Scoreboard
             this.lblSet5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblSet5.Font = new System.Drawing.Font("Arial", 6F, System.Drawing.FontStyle.Bold);
             this.lblSet5.ForeColor = System.Drawing.Color.Aqua;
-            this.lblSet5.Location = new System.Drawing.Point(293, 0);
+            this.lblSet5.Location = new System.Drawing.Point(340, 0);
             this.lblSet5.Name = "lblSet5";
             this.lblSet5.Size = new System.Drawing.Size(31, 2);
             this.lblSet5.TabIndex = 38;
@@ -296,7 +296,7 @@ namespace Scoreboard
             this.lblSet1.Font = new System.Drawing.Font("Arial", 6F, System.Drawing.FontStyle.Bold);
             this.lblSet1.ForeColor = System.Drawing.Color.Aqua;
             this.lblSet1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblSet1.Location = new System.Drawing.Point(145, 0);
+            this.lblSet1.Location = new System.Drawing.Point(192, 0);
             this.lblSet1.Name = "lblSet1";
             this.lblSet1.Size = new System.Drawing.Size(31, 2);
             this.lblSet1.TabIndex = 37;
@@ -308,9 +308,9 @@ namespace Scoreboard
             this.lblScore25.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore25.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore25.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblScore25.Location = new System.Drawing.Point(293, 4);
+            this.lblScore25.Location = new System.Drawing.Point(340, 4);
             this.lblScore25.Name = "lblScore25";
-            this.lblScore25.Size = new System.Drawing.Size(31, 4);
+            this.lblScore25.Size = new System.Drawing.Size(31, 3);
             this.lblScore25.TabIndex = 36;
             this.lblScore25.Text = "0";
             this.lblScore25.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -320,7 +320,7 @@ namespace Scoreboard
             this.lblScore14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore14.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore14.ForeColor = System.Drawing.Color.Red;
-            this.lblScore14.Location = new System.Drawing.Point(256, 2);
+            this.lblScore14.Location = new System.Drawing.Point(303, 2);
             this.lblScore14.Name = "lblScore14";
             this.lblScore14.Size = new System.Drawing.Size(31, 2);
             this.lblScore14.TabIndex = 35;
@@ -332,7 +332,7 @@ namespace Scoreboard
             this.lblScore11.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore11.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore11.ForeColor = System.Drawing.Color.Red;
-            this.lblScore11.Location = new System.Drawing.Point(145, 2);
+            this.lblScore11.Location = new System.Drawing.Point(192, 2);
             this.lblScore11.Name = "lblScore11";
             this.lblScore11.Size = new System.Drawing.Size(31, 2);
             this.lblScore11.TabIndex = 34;
@@ -344,7 +344,7 @@ namespace Scoreboard
             this.lblScore15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore15.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore15.ForeColor = System.Drawing.Color.Red;
-            this.lblScore15.Location = new System.Drawing.Point(293, 2);
+            this.lblScore15.Location = new System.Drawing.Point(340, 2);
             this.lblScore15.Name = "lblScore15";
             this.lblScore15.Size = new System.Drawing.Size(31, 2);
             this.lblScore15.TabIndex = 32;
@@ -356,7 +356,7 @@ namespace Scoreboard
             this.lblScore13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore13.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore13.ForeColor = System.Drawing.Color.Red;
-            this.lblScore13.Location = new System.Drawing.Point(219, 2);
+            this.lblScore13.Location = new System.Drawing.Point(266, 2);
             this.lblScore13.Name = "lblScore13";
             this.lblScore13.Size = new System.Drawing.Size(31, 2);
             this.lblScore13.TabIndex = 31;
@@ -368,7 +368,7 @@ namespace Scoreboard
             this.lblScore12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore12.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore12.ForeColor = System.Drawing.Color.Red;
-            this.lblScore12.Location = new System.Drawing.Point(182, 2);
+            this.lblScore12.Location = new System.Drawing.Point(229, 2);
             this.lblScore12.Name = "lblScore12";
             this.lblScore12.Size = new System.Drawing.Size(31, 2);
             this.lblScore12.TabIndex = 30;
@@ -380,9 +380,9 @@ namespace Scoreboard
             this.lblScore24.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore24.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore24.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblScore24.Location = new System.Drawing.Point(256, 4);
+            this.lblScore24.Location = new System.Drawing.Point(303, 4);
             this.lblScore24.Name = "lblScore24";
-            this.lblScore24.Size = new System.Drawing.Size(31, 4);
+            this.lblScore24.Size = new System.Drawing.Size(31, 3);
             this.lblScore24.TabIndex = 27;
             this.lblScore24.Text = "0";
             this.lblScore24.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -392,9 +392,9 @@ namespace Scoreboard
             this.lblScore23.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore23.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore23.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblScore23.Location = new System.Drawing.Point(219, 4);
+            this.lblScore23.Location = new System.Drawing.Point(266, 4);
             this.lblScore23.Name = "lblScore23";
-            this.lblScore23.Size = new System.Drawing.Size(31, 4);
+            this.lblScore23.Size = new System.Drawing.Size(31, 3);
             this.lblScore23.TabIndex = 26;
             this.lblScore23.Text = "0";
             this.lblScore23.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -404,9 +404,9 @@ namespace Scoreboard
             this.lblScore22.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore22.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore22.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblScore22.Location = new System.Drawing.Point(182, 4);
+            this.lblScore22.Location = new System.Drawing.Point(229, 4);
             this.lblScore22.Name = "lblScore22";
-            this.lblScore22.Size = new System.Drawing.Size(31, 4);
+            this.lblScore22.Size = new System.Drawing.Size(31, 3);
             this.lblScore22.TabIndex = 25;
             this.lblScore22.Text = "0";
             this.lblScore22.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -418,7 +418,7 @@ namespace Scoreboard
             this.lblTeam21.ForeColor = System.Drawing.Color.Red;
             this.lblTeam21.Location = new System.Drawing.Point(3, 4);
             this.lblTeam21.Name = "lblTeam21";
-            this.lblTeam21.Size = new System.Drawing.Size(136, 4);
+            this.lblTeam21.Size = new System.Drawing.Size(183, 3);
             this.lblTeam21.TabIndex = 23;
             this.lblTeam21.Text = "Đội 2";
             this.lblTeam21.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -430,7 +430,7 @@ namespace Scoreboard
             this.lblTeam11.ForeColor = System.Drawing.Color.LimeGreen;
             this.lblTeam11.Location = new System.Drawing.Point(3, 2);
             this.lblTeam11.Name = "lblTeam11";
-            this.lblTeam11.Size = new System.Drawing.Size(136, 2);
+            this.lblTeam11.Size = new System.Drawing.Size(183, 2);
             this.lblTeam11.TabIndex = 22;
             this.lblTeam11.Text = "Đội 1";
             this.lblTeam11.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -440,9 +440,9 @@ namespace Scoreboard
             this.lblScore21.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblScore21.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblScore21.ForeColor = System.Drawing.Color.LimeGreen;
-            this.lblScore21.Location = new System.Drawing.Point(145, 4);
+            this.lblScore21.Location = new System.Drawing.Point(192, 4);
             this.lblScore21.Name = "lblScore21";
-            this.lblScore21.Size = new System.Drawing.Size(31, 4);
+            this.lblScore21.Size = new System.Drawing.Size(31, 3);
             this.lblScore21.TabIndex = 21;
             this.lblScore21.Text = "0";
             this.lblScore21.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -454,7 +454,7 @@ namespace Scoreboard
             this.lblBonus.ForeColor = System.Drawing.Color.Yellow;
             this.lblBonus.Location = new System.Drawing.Point(3, 205);
             this.lblBonus.Name = "lblBonus";
-            this.lblBonus.Size = new System.Drawing.Size(474, 9);
+            this.lblBonus.Size = new System.Drawing.Size(474, 10);
             this.lblBonus.TabIndex = 48;
             this.lblBonus.Text = "BONUS";
             this.lblBonus.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -471,13 +471,13 @@ namespace Scoreboard
             this.tblFlagVN.Name = "tblFlagVN";
             this.tblFlagVN.RowCount = 1;
             this.tblFlagVN.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tblFlagVN.Size = new System.Drawing.Size(474, 52);
+            this.tblFlagVN.Size = new System.Drawing.Size(474, 56);
             this.tblFlagVN.TabIndex = 46;
             // 
             // pgFlagVN
             // 
             this.pgFlagVN.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.pgFlagVN.Location = new System.Drawing.Point(142, 3);
+            this.pgFlagVN.Location = new System.Drawing.Point(142, 5);
             this.pgFlagVN.Margin = new System.Windows.Forms.Padding(0);
             this.pgFlagVN.Name = "pgFlagVN";
             this.pgFlagVN.Size = new System.Drawing.Size(189, 46);
@@ -495,7 +495,7 @@ namespace Scoreboard
             this.tableLayoutPanel1.Controls.Add(this.lblScoreTeam2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.lblScoreTeam1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 217);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 218);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -515,27 +515,29 @@ namespace Scoreboard
             this.tableLayoutPanel3.Controls.Add(this.lblTeam1, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.lblTeam2, 4, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 156);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 168);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(474, 46);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(474, 34);
             this.tableLayoutPanel3.TabIndex = 6;
             // 
             // pgFlagTeam2
             // 
+            this.pgFlagTeam2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgFlagTeam2.Location = new System.Drawing.Point(253, 3);
             this.pgFlagTeam2.Name = "pgFlagTeam2";
-            this.pgFlagTeam2.Size = new System.Drawing.Size(36, 30);
+            this.pgFlagTeam2.Size = new System.Drawing.Size(36, 28);
             this.pgFlagTeam2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pgFlagTeam2.TabIndex = 47;
             this.pgFlagTeam2.TabStop = false;
             // 
             // pgFlagTeam1
             // 
+            this.pgFlagTeam1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pgFlagTeam1.Location = new System.Drawing.Point(183, 3);
             this.pgFlagTeam1.Name = "pgFlagTeam1";
-            this.pgFlagTeam1.Size = new System.Drawing.Size(36, 30);
+            this.pgFlagTeam1.Size = new System.Drawing.Size(36, 28);
             this.pgFlagTeam1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pgFlagTeam1.TabIndex = 46;
             this.pgFlagTeam1.TabStop = false;
