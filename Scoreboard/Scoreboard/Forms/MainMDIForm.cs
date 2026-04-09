@@ -305,8 +305,7 @@ namespace Scoreboard
                         File.Copy(selectedPath, targetPath, overwrite: true);
 
                         // Gọi SyncLicenseFileToDB để cập nhật xuống DB (chỉ update nếu license mới hơn)
-                        LicenseVerifier.SyncLicenseFileToDB(targetPath, currentUser.Id);
-
+                        LicenseVerifier.SyncLicenseFileToDB(targetPath);
                         // Thông báo thành công
                         MessageBox.Show(
                             $"Đã cập nhật license mới!\n" +

@@ -170,7 +170,7 @@ namespace Scoreboard
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(109, 23);
             this.label4.TabIndex = 10;
-            this.label4.Text = "Pass word";
+            this.label4.Text = "Password";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnCancel

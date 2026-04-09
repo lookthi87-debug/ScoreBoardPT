@@ -28,11 +28,14 @@ namespace Scoreboard
             this.WindowState = FormWindowState.Maximized;
             this.KeyPreview = true;
             this.KeyDown += MainForm_KeyDown;
-
-            var list = Repository.GetActiveMatchSetsShowtoggle();
-            matchsetModels = list;
-            LoadCacTranDau(list);
-
+            try
+            {
+                var list = Repository.GetActiveMatchSetsShowtoggle();
+                matchsetModels = list;
+                LoadCacTranDau(list);
+            }
+            catch { }
+            
             InitTimer();
             StartClock();
         }
@@ -166,28 +169,30 @@ namespace Scoreboard
             {
                 if (!isPaused)
                 {
-                    if (PostgresHelper.OpenSharedConnection() == true)
-                    {
-                        var list = Repository.GetActiveMatchSetsShowtoggle();
-                        if (list.Count != matchsetModels.Count)
+                    try
+                    { 
+                        if (PostgresHelper.OpenSharedConnection() == true)
                         {
-                            LoadCacTranDau(list);
-                            matchsetModels = list;
-                        }
-                        else
-                        {
-                            for(int i = 0; i < list.Count; i++)
+                            var list = Repository.GetActiveMatchSetsShowtoggle();
+                            if (list.Count != matchsetModels.Count)
                             {
-                                if (list[i].MatchId.ToString() != matchsetModels[i].MatchId.ToString())
+                                LoadCacTranDau(list);
+                                matchsetModels = list;
+                            }
+                            else
+                            {
+                                for(int i = 0; i < list.Count; i++)
                                 {
-                                    LoadCacTranDau(list);
-                                    matchsetModels = list;
-                                    break;
+                                    if (list[i].MatchId.ToString() != matchsetModels[i].MatchId.ToString())
+                                    {
+                                        LoadCacTranDau(list);
+                                        matchsetModels = list;
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
-                    
+                    } catch { }
                 }
             };
             matchTimer.Start();

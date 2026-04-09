@@ -1849,8 +1849,15 @@ namespace Scoreboard.Data
             }
             return null;
         }
-        public static void UpdateSystemLicense(string licenseData, string newHash, int adminId)
+        public static void UpdateSystemLicense(string licenseData, string newHash)
         {
+            int id = 0;
+            using (var cmd = new NpgsqlCommand("SELECT COALESCE(MAX(updated_by), 0) + 1 as id FROM systemsecrs", Conn))
+            using (var reader = cmd.ExecuteReader())
+            {
+                if (reader.Read() && !reader.IsDBNull(0))
+                    id = reader.GetInt32(0);
+            }
             using (var cmd = new NpgsqlCommand(@"
                 INSERT INTO systemsecrs (license_data, license_hash, last_update, updated_by)
                 VALUES (@d, @h, NOW(), @u);
@@ -1858,7 +1865,7 @@ namespace Scoreboard.Data
             {
                 cmd.Parameters.AddWithValue("@d", (object)licenseData ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@h", (object)newHash ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@u", adminId);
+                cmd.Parameters.AddWithValue("@u", id);
                 cmd.ExecuteNonQuery();
             }
         }

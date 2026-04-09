@@ -1143,9 +1143,9 @@ namespace Scoreboard
             }
 
             // Giới hạn 2 trận
-            if (lvToggle.Items.Count >= 2)
+            if (lvToggle.Items.Count >= 8)
             {
-                MessageBox.Show("Không thể hiển thị quá 2 trận trên Toggle.");
+                MessageBox.Show("Không thể hiển thị quá 8 trận trên Toggle.");
                 return;
             }
 

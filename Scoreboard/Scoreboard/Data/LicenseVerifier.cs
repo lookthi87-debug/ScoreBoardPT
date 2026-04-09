@@ -124,7 +124,7 @@ namespace Scoreboard.Data
         /// <summary>
         /// Khi admin đăng nhập, nếu file license.licx khác DB → update vào DB
         /// </summary>
-        public static void SyncLicenseFileToDB(string licPath, int adminId)
+        public static void SyncLicenseFileToDB(string licPath)
         {
             if (!File.Exists(licPath)) return;
 
@@ -137,7 +137,7 @@ namespace Scoreboard.Data
 
             string json = File.ReadAllText(licPath);
 
-            // 2Giải mã license trong file
+            //
             int fileMachines = 0;
             DateTime fileExpiry = DateTime.MinValue;
 
@@ -154,7 +154,7 @@ namespace Scoreboard.Data
                 return;
             }
 
-            // 3Lấy license trong DB (nếu có)
+            // Lấy license trong DB (nếu có)
             int dbMachines = 0;
             DateTime dbExpiry = DateTime.MinValue;
             string dbMsg = "";
@@ -169,7 +169,7 @@ namespace Scoreboard.Data
                 }
             }
             // 5Nếu license mới hơn → update DB
-            Repository.UpdateSystemLicense(json, fileHash, adminId);
+            Repository.UpdateSystemLicense(json, fileHash);
         }
     }
 }

@@ -286,7 +286,7 @@ namespace Scoreboard
                         try
                         {
                             string licPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "license.licx");
-                            LicenseVerifier.SyncLicenseFileToDB(licPath, User.Id);
+                            LicenseVerifier.SyncLicenseFileToDB(licPath);
                         }
                         catch
                         { 
