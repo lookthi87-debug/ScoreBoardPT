@@ -61,7 +61,6 @@ namespace Scoreboard
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
-            this.txtUserName.Text = "Admin";
             this.txtUserName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUserName_KeyDown);
             // 
             // lblUser
@@ -84,7 +83,6 @@ namespace Scoreboard
             this.txtPassWord.PasswordChar = '*';
             this.txtPassWord.Size = new System.Drawing.Size(354, 29);
             this.txtPassWord.TabIndex = 1;
-            this.txtPassWord.Text = "Abc12345";
             this.txtPassWord.UseSystemPasswordChar = true;
             this.txtPassWord.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPassWord_KeyDown);
             // 
