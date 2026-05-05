@@ -107,7 +107,7 @@ namespace Scoreboard
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(109, 23);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Post";
+            this.label1.Text = "Port";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtDatabase

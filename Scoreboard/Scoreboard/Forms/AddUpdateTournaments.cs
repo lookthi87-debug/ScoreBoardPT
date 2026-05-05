@@ -247,6 +247,11 @@ namespace Scoreboard
         }
         private void PopulateFromModel(TournamentModel t)
         {
+            dStart.MinDate = DateTimePicker.MinimumDateTime;
+            dStart.MaxDate = DateTimePicker.MaximumDateTime;
+            dEnd.MinDate = DateTimePicker.MinimumDateTime;
+            dEnd.MaxDate = DateTimePicker.MaximumDateTime;
+
             lblId.Text = t.Id.ToString();
             txtName.Text = t.Name;
             if (t.Start.HasValue)

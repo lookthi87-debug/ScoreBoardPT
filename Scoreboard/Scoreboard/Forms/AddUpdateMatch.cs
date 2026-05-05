@@ -618,6 +618,11 @@ namespace Scoreboard
 
         private void PopulateFromModel(MatchModel m)
         {
+            dtpStartDateTime.MinDate = DateTimePicker.MinimumDateTime;
+            dtpStartDateTime.MaxDate = DateTimePicker.MaximumDateTime;
+            dtpEndDateTime.MinDate = DateTimePicker.MinimumDateTime;
+            dtpEndDateTime.MaxDate = DateTimePicker.MaximumDateTime;
+
             lblMatch_Id.Text = m.Id.ToString();
             txtTeam1.Text = m.Team1;
             txtTeam2.Text = m.Team2;
@@ -629,6 +634,7 @@ namespace Scoreboard
             //nScore2.Value = m.Score2;
 
             // Load start and end datetime
+            
             if (m.Start.HasValue)
             {
                 dtpStartDateTime.Value = m.Start.Value;
