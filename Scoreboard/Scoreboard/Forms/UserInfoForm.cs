@@ -27,24 +27,27 @@ namespace Scoreboard
         private Label lblTenTranDau;
         private MaterialButton btnCancel;
         private MaterialButton btnStart;
-        private MaterialButton btnRefresh;
+        private MaterialButton btnEndMatch;
         private Label lblMessage;
         private TableLayoutPanel tableLayoutPanel1;
         private Panel panel1;
+        private DataGridView dgvMatches;
         private UserModel currentUser;
         private string currentMatchid;
         private int currentMatchSetid;
+        private bool _isLoadingGrid = false;
         public UserInfoForm(UserModel u)
         {
             InitializeComponent();
             currentUser = u;
-            LoadUserInfo();
+            LoadMatchesList();
         }
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserInfoForm));
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
-            this.btnRefresh = new MaterialSkin.Controls.MaterialButton();
+            this.btnEndMatch = new MaterialSkin.Controls.MaterialButton();
+            this.dgvMatches = new System.Windows.Forms.DataGridView();
             this.txtTime = new System.Windows.Forms.TextBox();
             this.nScore2 = new System.Windows.Forms.NumericUpDown();
             this.nScore1 = new System.Windows.Forms.NumericUpDown();
@@ -87,25 +90,25 @@ namespace Scoreboard
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // btnRefresh
+            // btnEndMatch
             // 
-            this.btnRefresh.AutoSize = false;
-            this.btnRefresh.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnRefresh.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.btnRefresh.Depth = 0;
-            this.btnRefresh.HighEmphasis = true;
-            this.btnRefresh.Icon = null;
-            this.btnRefresh.Location = new System.Drawing.Point(545, 244);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnRefresh.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(102, 36);
-            this.btnRefresh.TabIndex = 3;
-            this.btnRefresh.Text = "Làm mới";
-            this.btnRefresh.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.btnRefresh.UseAccentColor = false;
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnEndMatch.AutoSize = false;
+            this.btnEndMatch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnEndMatch.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            this.btnEndMatch.Depth = 0;
+            this.btnEndMatch.HighEmphasis = true;
+            this.btnEndMatch.Icon = null;
+            this.btnEndMatch.Location = new System.Drawing.Point(545, 244);
+            this.btnEndMatch.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnEndMatch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnEndMatch.Name = "btnEndMatch";
+            this.btnEndMatch.Size = new System.Drawing.Size(102, 36);
+            this.btnEndMatch.TabIndex = 3;
+            this.btnEndMatch.Text = "Kết thúc trận đấu";
+            this.btnEndMatch.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            this.btnEndMatch.UseAccentColor = false;
+            this.btnEndMatch.UseVisualStyleBackColor = true;
+            this.btnEndMatch.Click += new System.EventHandler(this.btnEndMatch_Click);
             // 
             // txtTime
             // 
@@ -275,6 +278,27 @@ namespace Scoreboard
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // dgvMatches
+            // 
+            this.dgvMatches.AllowUserToAddRows = false;
+            this.dgvMatches.AllowUserToDeleteRows = false;
+            this.dgvMatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMatches.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMatches.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvMatches.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvMatches.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvMatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvMatches.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMatches.Location = new System.Drawing.Point(3, 3);
+            this.dgvMatches.MultiSelect = false;
+            this.dgvMatches.Name = "dgvMatches";
+            this.dgvMatches.ReadOnly = true;
+            this.dgvMatches.RowHeadersVisible = false;
+            this.dgvMatches.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMatches.Size = new System.Drawing.Size(811, 194);
+            this.dgvMatches.TabIndex = 42;
+            this.dgvMatches.SelectionChanged += new System.EventHandler(this.dgvMatches_SelectionChanged);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
@@ -282,14 +306,15 @@ namespace Scoreboard
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.dgvMatches, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 48);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1036, 682);
             this.tableLayoutPanel1.TabIndex = 41;
             // 
@@ -300,7 +325,7 @@ namespace Scoreboard
             this.panel1.Controls.Add(this.btnStart);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.txtTitle);
-            this.panel1.Controls.Add(this.btnRefresh);
+            this.panel1.Controls.Add(this.btnEndMatch);
             this.panel1.Controls.Add(this.lblTeam1);
             this.panel1.Controls.Add(this.txtTime);
             this.panel1.Controls.Add(this.txtTeam1);
@@ -341,54 +366,131 @@ namespace Scoreboard
             this.ResumeLayout(false);
 
         }
-        private void LoadUserInfo()
+        private void LoadMatchesList()
         {
             // Set title with user name
             this.Text = currentUser?.Fullname ?? "";
             currentMatchid = "";
             currentMatchSetid = 0;
-            if (currentUser?.RoleId == 2) // role trọng tài
-            {
-                DateTime now = DateTime.Now;
-                var match = Repository.GetAllMatchSetsByUser(currentUser.Id)
-                            .Where(m => (m.Status == MatchStatusConfig.Status.InProgress) || m.Start <= now && m.End >= now)
-                            .ToList(); ;
-                if (match != null & match.Count > 0)
-                {
-                    if (match[0].Status == MatchStatusConfig.Status.NotStarted)
-                    {
-                        currentMatchid = match[0].MatchId;
-                        currentMatchSetid = match[0].Id;
-                    }
-                    txtTitle.Text = match[0].TournamentName;
-                    txtTeam1.Text = match[0].Team1;
-                    txtTeam2.Text = match[0].Team2;
-                    var matchClass = Repository.GetMatchClassById((int)match[0].MatchClassId);
-                    if (matchClass.PeriodType.ToLower() == "half")
-                    {
-                        nScore1.Value = match[0].TotalScore1;
-                        nScore2.Value = match[0].TotalScore2;
-                    } 
-                    else
-                    {
-                        nScore1.Value = match[0].Score1;
-                        nScore2.Value = match[0].Score2;
-                    }
 
-                    txtTime.Text = match[0].Time;
-                    lblMessage.Text = "";
-                    btnStart.Enabled = true;
+            if (currentUser?.RoleId != 2) // role trọng tài
+            {
+                lblMessage.Text = "Không có quyền trọng tài";
+                btnStart.Enabled = false;
+                btnEndMatch.Enabled = false;
+                return;
+            }
+
+            try
+            {
+                _isLoadingGrid = true;
+                var matches = Repository.GetMatchesByRefereeToday(currentUser.Id);
+
+                dgvMatches.Columns.Clear();
+                dgvMatches.Columns.Add("TournamentName", "Giải đấu");
+                dgvMatches.Columns.Add("Team1", "Đội 1");
+                dgvMatches.Columns.Add("Team2", "Đội 2");
+                dgvMatches.Columns.Add("Set", "Hiệp/Set");
+                dgvMatches.Columns.Add("Score", "Tỉ số");
+                dgvMatches.Columns.Add("Status", "Trạng thái");
+                dgvMatches.Columns.Add("StartTime", "Bắt đầu");
+                dgvMatches.Columns["StartTime"].Visible = false;
+                dgvMatches.Columns.Add("MatchId", "MatchId");
+                dgvMatches.Columns["MatchId"].Visible = false;
+                dgvMatches.Columns.Add("SetId", "SetId");
+                dgvMatches.Columns["SetId"].Visible = false;
+
+                foreach (var m in matches)
+                {
+                    string statusText = MatchStatusConfig.GetStatusText(m.Status);
+                    string startTime = m.Start.HasValue ? m.Start.Value.ToString("HH:mm") : "";
+                    dgvMatches.Rows.Add(
+                        m.TournamentName,
+                        m.Team1,
+                        m.Team2,
+                        m.ClassSetsName,
+                        $"{m.Score1} - {m.Score2}",
+                        statusText,
+                        startTime,
+                        m.MatchId,
+                        m.Id
+                    );
+                }
+
+                if (matches.Count == 0)
+                {
+                    lblMessage.Text = "Chưa có trận đấu nào trong ngày";
+                    btnStart.Enabled = false;
+                    btnEndMatch.Enabled = false;
                 }
                 else
                 {
-                    lblMessage.Text = "Chưa có dữ liệu";
-                    btnStart.Enabled = false;
-                    btnCancel.Focus();
+                    lblMessage.Text = "";
+                    btnStart.Enabled = true;
+                    btnEndMatch.Enabled = true;
                 }
             }
+            catch (Exception ex)
+            {
+                lblMessage.Text = "Lỗi tải dữ liệu";
+                MessageBox.Show($"Lỗi tải danh sách trận đấu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                _isLoadingGrid = false;
+            }
+        }
+
+        private void dgvMatches_SelectionChanged(object sender, EventArgs e)
+        {
+            if (_isLoadingGrid) return;
+            if (dgvMatches.SelectedRows.Count == 0) return;
+
+            var row = dgvMatches.SelectedRows[0];
+            currentMatchid = row.Cells["MatchId"].Value?.ToString() ?? "";
+            currentMatchSetid = int.TryParse(row.Cells["SetId"].Value?.ToString(), out int setId) ? setId : 0;
+
+            txtTitle.Text = row.Cells["TournamentName"].Value?.ToString() ?? "";
+            txtTeam1.Text = row.Cells["Team1"].Value?.ToString() ?? "";
+            txtTeam2.Text = row.Cells["Team2"].Value?.ToString() ?? "";
+
+            string scoreStr = row.Cells["Score"].Value?.ToString() ?? "0 - 0";
+            var scoreParts = scoreStr.Split('-');
+            if (scoreParts.Length == 2 &&
+                int.TryParse(scoreParts[0].Trim(), out int s1) &&
+                int.TryParse(scoreParts[1].Trim(), out int s2))
+            {
+                nScore1.Value = s1;
+                nScore2.Value = s2;
+            }
+
+            // Load time from matchset
+            if (currentMatchid != "" && currentMatchSetid > 0)
+            {
+                try
+                {
+                    var matchSet = Repository.GetMatchSetByMatchAndId(currentMatchid, currentMatchSetid);
+                    if (matchSet != null)
+                    {
+                        txtTime.Text = matchSet.Time ?? "00:00";
+                    }
+                }
+                catch
+                {
+                    txtTime.Text = "00:00";
+                }
+            }
+
+            lblMessage.Text = "";
         }
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (dgvMatches.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một trận đấu trong danh sách.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (currentMatchid != "")
             {
                 Repository.UpdateMatchStatus(currentMatchid, "1");
@@ -396,8 +498,7 @@ namespace Scoreboard
             }
             var frmMain = new MainForm(currentUser);
             this.Hide();
-            frmMain.FormClosed += (s, ev) => this.Show();
-            LoadUserInfo();
+            frmMain.FormClosed += (s, ev) => { this.Show(); LoadMatchesList(); };
             frmMain.Show();
         }
         private void btnCancel_Click(object sender, EventArgs e)
@@ -405,9 +506,41 @@ namespace Scoreboard
             this.Close();
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void btnEndMatch_Click(object sender, EventArgs e)
         {
-            LoadUserInfo();
+            if (dgvMatches.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một trận đấu trong danh sách.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(currentMatchid)) return;
+
+            DialogResult rs = MessageBox.Show(
+                "Bạn có chắc chắn muốn kết thúc trận đấu này?",
+                "Xác nhận kết thúc",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (rs != DialogResult.Yes) return;
+
+            try
+            {
+                // Kết thúc tất cả các hiệp/set của trận đấu
+                var allSets = Repository.GetMatchSetsByMatchId(currentMatchid);
+                foreach (var set in allSets)
+                {
+                    Repository.UpdateMatchSetStatus(currentMatchid, set.Id, MatchStatusConfig.Status.Finished);
+                }
+                Repository.UpdateMatchStatus(currentMatchid, MatchStatusConfig.Status.Finished);
+
+                MessageBox.Show("Đã kết thúc trận đấu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadMatchesList();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khi kết thúc trận đấu: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void UserInfoForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -417,7 +550,7 @@ namespace Scoreboard
 
         private void UserInfoForm_Activated(object sender, EventArgs e)
         {
-            LoadUserInfo();
+            LoadMatchesList();
         }
 
         // Create border panels for textboxes after the form loads
@@ -432,9 +565,9 @@ namespace Scoreboard
             btnCancel.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
             btnCancel.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
             
-            // btnRefresh - Xám nhạt #E5E7EB
-            btnRefresh.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
-            btnRefresh.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
+            // btnEndMatch - Xám nhạt #E5E7EB
+            btnEndMatch.BackColor = Color.FromArgb(229, 231, 235); // #E5E7EB - Xám nhạt
+            btnEndMatch.ForeColor = Color.FromArgb(52, 64, 84); // #344054 - Xám đậm for text
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)

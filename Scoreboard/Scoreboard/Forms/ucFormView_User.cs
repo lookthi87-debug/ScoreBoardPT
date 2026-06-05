@@ -225,7 +225,7 @@ namespace Scoreboard
             if (countShow == 1)
             {
                 lblTitle.Font = new System.Drawing.Font("Arial", 22 * scale, FontStyle.Bold);
-                lblTime.Font = new System.Drawing.Font("Arial", 60 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
                 lblHiepDau.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
                 lblTeam1.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
                 lblTeam2.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
