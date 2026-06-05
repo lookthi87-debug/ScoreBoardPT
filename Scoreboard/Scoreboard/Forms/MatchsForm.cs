@@ -1142,10 +1142,10 @@ namespace Scoreboard
                 return;
             }
 
-            // Giới hạn 2 trận
-            if (lvToggle.Items.Count >= 8)
+            // Giới hạn 4 trận
+            if (lvToggle.Items.Count >= 4)
             {
-                MessageBox.Show("Không thể hiển thị quá 8 trận trên Toggle.");
+                MessageBox.Show("Không thể hiển thị quá 4 trận trên Toggle.");
                 return;
             }
 
@@ -1736,10 +1736,10 @@ namespace Scoreboard
                 return;
             }
 
-            // Giới hạn 8 trận
-            if (lvToggle.Items.Count >= 8)
+            // Giới hạn 4 trận
+            if (lvToggle.Items.Count >= 4)
             {
-                MessageBox.Show("Không thể hiển thị quá 8 trận trên Toggle.");
+                MessageBox.Show("Không thể hiển thị quá 4 trận trên Toggle.");
                 return;
             }
 

@@ -74,8 +74,7 @@ namespace Scoreboard
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(1116, 21);
             this.lblNote.TabIndex = 1;
-            this.lblNote.Text = "Phím số : 1-Đ1+ | 2-Đ2+ | 3-Reset điểm |  5-Bắt đầu | 6-Dừng | 7-Reset TG | 8-Lưu" +
-    " | + Hiệp/Set | 0-Ẩn/Hiện";
+            this.lblNote.Text = "Phím số : 1-Đ1+ | 2-Đ2+ | 3-Đ1- | 4-Đ2- | 5-Bắt đầu | 6-Dừng | 7-Reset TG | 8-Lưu | 9-Reset điểm | + Hiệp/Set | 0-Ẩn/Hiện";
             this.lblNote.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // tableLayoutPanel_BongDa
@@ -149,51 +148,29 @@ namespace Scoreboard
             switch (e.KeyCode)
             {
                 case Keys.D1:  // + điểm đội 1
-                    MessageBox.Show("Phím 1 được nhận (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    if (activeUc != null)
-                    {
-                        activeUc.AddPointTeam1();
-                    }
-                    else
-                    {
-                        MessageBox.Show("activeUc is null (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    activeUc.AddPoint(1);
                     break;
 
                 case Keys.D2:  // + điểm đội 2
-                    MessageBox.Show("Phím 2 được nhận (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    if (activeUc != null)
-                    {
-                        activeUc.AddPointTeam2();
-                    }
-                    else
-                    {
-                        MessageBox.Show("activeUc is null (Admin)!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    activeUc.AddPoint(2);
                     break;
 
-                case Keys.D3:  // Reset điểm
-                    activeUc.ResetScore();
+                case Keys.D3:  // - điểm đội 1
+                    activeUc.SubtractPoint(1);
                     break;
 
-                case Keys.D4:  // Cập nhật thời gian
-                    {
+                case Keys.D4:  // - điểm đội 2
+                    activeUc.SubtractPoint(2);
+                    break;
+
+                case Keys.D5:  // Start clock (chỉ cho bóng đá Futsal)
+                    if (activeUc.IsSoccerMatch())
+                        activeUc.StartClock();
+                    break;
+
+                case Keys.D6:  // Stop clock (chỉ cho bóng đá Futsal)
+                    if (activeUc.IsSoccerMatch())
                         activeUc.StopClock();
-                        var updateForm = new UpdateTime();
-                        updateForm.MatchsetModel.Time = activeUc.Matchset.Time;
-                        if (updateForm.ShowDialog() == DialogResult.OK)
-                        {
-                            activeUc.UpdateMatchTime(updateForm.MatchsetModel.Time);
-                        }
-                        break;
-                    }
-
-                case Keys.D5:  // Start clock
-                    activeUc.StartClock();
-                    break;
-
-                case Keys.D6:  // Stop clock
-                    activeUc.StopClock();
                     break;
 
                 case Keys.D7:  // Reset clock
@@ -203,6 +180,10 @@ namespace Scoreboard
                 case Keys.D8:  // Lưu Excel
                     activeUc.StopClock();
                     activeUc.ExportMatchToExcel(activeUc.Matchset);
+                    break;
+
+                case Keys.D9:  // Reset điểm
+                    activeUc.ResetScore();
                     break;
 
                 case Keys.Oemplus: // phím "+"

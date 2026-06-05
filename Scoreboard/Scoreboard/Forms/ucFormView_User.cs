@@ -36,7 +36,7 @@ namespace Scoreboard
                 e.Graphics.DrawRectangle(pen, rect);
             }
         }
-        
+
         private void InitTableViewLayout()
         {
             tableView.SuspendLayout();
@@ -142,6 +142,12 @@ namespace Scoreboard
             }
             lblTime.Text = m.Time ?? "00:00";
 
+            // Ẩn đồng hồ cho các môn không phải bóng đá (Futsal)
+            if (!IsSoccerMatch())
+            {
+                lblTime.Visible = false;
+            }
+
             // Khởi tạo điểm số của hiệp/set hiện tại
             scoreTeam1 = m.Score1;
             scoreTeam2 = m.Score2;
@@ -186,7 +192,7 @@ namespace Scoreboard
                 e.Graphics.DrawRectangle(pen, rect);
             }
         }
-        
+
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
@@ -227,23 +233,23 @@ namespace Scoreboard
                 lblScoreTeam1.Font = new System.Drawing.Font("Arial", 64 * scale, FontStyle.Bold);
                 lblScoreTeam2.Font = new System.Drawing.Font("Arial", 64 * scale, FontStyle.Bold);
 
-                lblTeam11.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblTeam21.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblSet1.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
-                lblSet2.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
-                lblSet3.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
-                lblSet4.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
-                lblSet5.Font = new System.Drawing.Font("Arial", 10 * scale, FontStyle.Bold);
-                lblScore11.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore12.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore13.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore14.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore15.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore21.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore22.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore23.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore24.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
-                lblScore25.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblTeam11.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblTeam21.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblSet1.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblSet2.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblSet3.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblSet4.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblSet5.Font = new System.Drawing.Font("Arial", 14 * scale, FontStyle.Bold);
+                lblScore11.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore12.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore13.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore14.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore15.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore21.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore22.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore23.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore24.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
+                lblScore25.Font = new System.Drawing.Font("Arial", 20 * scale, FontStyle.Bold);
             }
             //if (countShow >= 1 && countShow <= 2)
             //{
@@ -325,7 +331,7 @@ namespace Scoreboard
             //pgFlagTeam1.Size = new Size(flagTeam * 4, flagTeam * 3);
             //pgFlagTeam2.Size = new Size(flagTeam * 4, flagTeam * 3);
         }
-        public void AddPointTeam1()
+        public void AddPoint(int team)
         {
             try
             {
@@ -336,93 +342,128 @@ namespace Scoreboard
                     return;
                 }
 
+                string teamName = team == 1 ? match.Team1 : match.Team2;
+
                 // Hiển thị hộp thoại xác nhận
                 DialogResult result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team1}?",
+                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {teamName}?",
                     "Xác nhận cộng điểm",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes)
-                {
-                    return; // Người dùng chọn Không, không cộng điểm
-                }
+                if (result != DialogResult.Yes) return;
 
-                // Tăng điểm của hiệp/set hiện tại
-                scoreTeam1++;
+                // Tăng điểm và lưu vào cơ sở dữ liệu
+                IncrementTeamScore(team);
 
-                // Cập nhật điểm của hiệp/set hiện tại vào đối tượng trận đấu
-                match.Score1 = scoreTeam1;
-
-                // Lưu vào cơ sở dữ liệu trước
-                Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
-
-                // Tính tổng điểm từ cơ sở dữ liệu (tổng tất cả các hiệp/set cùng match_id)
+                // Tính tổng điểm cho bóng đá
                 if (IsSoccerMatch())
                 {
                     var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
                     if (allPeriods.Count <= 4)
                     {
-                        Repository.UpdateMatchScore1(match.MatchId, CalculateTotalScore1());
+                        UpdateMatchTotalScore(match.MatchId, team);
                     }
                 }
+
                 // Cập nhật giao diện
                 UpdateScoreLabel();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi trong AddPointTeam1: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi trong AddPoint({team}): {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        public void AddPointTeam2()
+        public void SubtractPoint(int team)
         {
             try
             {
-                // Chỉ cho phép cộng điểm khi đồng hồ đang chạy
                 if (isPaused)
                 {
-                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi trừ điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Hiển thị hộp thoại xác nhận
+                // Kiểm tra điểm hiện tại, không cho giảm dưới 0
+                int currentScore = team == 1 ? scoreTeam1 : scoreTeam2;
+                if (currentScore <= 0)
+                {
+                    MessageBox.Show("Điểm đã ở mức 0, không thể trừ thêm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string teamName = team == 1 ? match.Team1 : match.Team2;
+
                 DialogResult result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {match.Team2}?",
-                    "Xác nhận cộng điểm",
+                    $"Bạn có chắc chắn muốn trừ 1 điểm của {teamName}?",
+                    "Xác nhận trừ điểm",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes)
-                {
-                    return; // Người dùng chọn Không, không cộng điểm
-                }
+                if (result != DialogResult.Yes) return;
 
-                // Tăng điểm của hiệp/set hiện tại
-                scoreTeam2++;
+                // Giảm điểm và lưu vào cơ sở dữ liệu
+                DecrementTeamScore(team);
 
-                // Cập nhật điểm của hiệp/set hiện tại vào đối tượng trận đấu
-                match.Score2 = scoreTeam2;
-
-                // Lưu vào cơ sở dữ liệu trước
-                Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
-
-                // Tính tổng điểm từ cơ sở dữ liệu (tổng tất cả các hiệp/set cùng match_id)
+                // Tính tổng điểm cho bóng đá
                 if (IsSoccerMatch())
                 {
                     var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
-                    if (allPeriods.Count <= 2)
+                    if (allPeriods.Count <= 4)
                     {
-                        Repository.UpdateMatchScore2(match.MatchId, CalculateTotalScore2());
+                        UpdateMatchTotalScore(match.MatchId, team);
                     }
                 }
+
                 // Cập nhật giao diện
                 UpdateScoreLabel();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi trong AddPointTeam2: {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Lỗi trong SubtractPoint({team}): {ex.Message}\n\nStack: {ex.StackTrace}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void IncrementTeamScore(int team)
+        {
+            if (team == 1)
+            {
+                scoreTeam1++;
+                match.Score1 = scoreTeam1;
+                Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
+            }
+            else
+            {
+                scoreTeam2++;
+                match.Score2 = scoreTeam2;
+                Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
+            }
+        }
+
+        private void DecrementTeamScore(int team)
+        {
+            if (team == 1)
+            {
+                scoreTeam1--;
+                match.Score1 = scoreTeam1;
+                Repository.UpdateMatchSetScore1(match.MatchId, match.Id, match.Score1);
+            }
+            else
+            {
+                scoreTeam2--;
+                match.Score2 = scoreTeam2;
+                Repository.UpdateMatchSetScore2(match.MatchId, match.Id, match.Score2);
+            }
+        }
+
+        private void UpdateMatchTotalScore(string matchId, int team)
+        {
+            int totalScore = CalculateTotalScore(team);
+            if (team == 1)
+                Repository.UpdateMatchScore1(matchId, totalScore);
+            else
+                Repository.UpdateMatchScore2(matchId, totalScore);
         }
 
         public void ResetScore()
@@ -436,8 +477,8 @@ namespace Scoreboard
             match.Score2 = 0;
 
             // Tính lại tổng điểm
-            match.TotalScore1 = CalculateTotalScore1();
-            match.TotalScore2 = CalculateTotalScore2();
+            match.TotalScore1 = CalculateTotalScore(1);
+            match.TotalScore2 = CalculateTotalScore(2);
 
             // Cập nhật cơ sở dữ liệu
             Repository.UpdateMatchSetScore1(match.MatchId, match.Id, 0);
@@ -447,48 +488,20 @@ namespace Scoreboard
         }
 
 
-        private int CalculateTotalScore1()
+        private int CalculateTotalScore(int team)
         {
             if (IsSoccerMatch())
             {
                 // Lấy tất cả các hiệp/set của trận đấu từ cơ sở dữ liệu
                 var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
                 allPeriods = allPeriods.Where(m => !m.ClassSetsName.Contains("Penalty")).ToList();
-                // Cộng dồn toàn bộ Score1 của tất cả hiệp/set cùng match_id
-                int totalScore = 0;
-                foreach (var period in allPeriods)
-                {
-                    totalScore += period.Score1;
-                }
-
-                return totalScore;
-            } else
-            {
-                var matchQuery = Repository.GetMatchById(match.MatchId);
-                return matchQuery.Score1;
-            }
-        }
-
-        private int CalculateTotalScore2()
-        {
-            if (IsSoccerMatch())
-            {
-                // Lấy tất cả các hiệp/set của trận đấu từ cơ sở dữ liệu
-                var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
-                allPeriods = allPeriods.Where(m => !m.ClassSetsName.Contains("Penalty")).ToList();
-                // Cộng dồn toàn bộ Score2 của tất cả hiệp/set cùng match_id
-                int totalScore = 0;
-                foreach (var period in allPeriods)
-                {
-                    totalScore += period.Score2;
-                }
-
-                return totalScore;
+                // Cộng dồn toàn bộ điểm của tất cả hiệp/set cùng match_id
+                return allPeriods.Sum(p => team == 1 ? p.Score1 : p.Score2);
             }
             else
             {
                 var matchQuery = Repository.GetMatchById(match.MatchId);
-                return matchQuery.Score2;
+                return team == 1 ? matchQuery.Score1 : matchQuery.Score2;
             }
         }
 
@@ -503,7 +516,8 @@ namespace Scoreboard
                     var matchPen = list.SingleOrDefault(m => m.ClassSetsName.Contains("Penalty"));
                     lblScoreTeam1.Text = matchPen.Score1.ToString();
                     lblScoreTeam2.Text = matchPen.Score2.ToString();
-                } else
+                }
+                else
                 {
                     // Hiển thị tổng điểm (tổng của tất cả hiệp/set)
                     lblScoreTeam1.Text = list.Sum(x => x.Score1).ToString();
@@ -517,7 +531,7 @@ namespace Scoreboard
                 lblScoreTeam2.Text = data.Score2.ToString();
             }
 
-           // // Làm mới bảng điểm các set cho môn không phải bóng đá
+            // // Làm mới bảng điểm các set cho môn không phải bóng đá
             UpdateSetScoresPanel();
         }
 
@@ -632,7 +646,7 @@ namespace Scoreboard
                 e.Graphics.DrawRectangle(pen, rect);
             }
         }
-        
+
         public void ExportMatchToExcel(MatchsetModel match)
         {
             try
@@ -840,13 +854,20 @@ namespace Scoreboard
                 Repository.UpdateMatchSetScore2(match.MatchId, match.Id, 0);
 
                 // Tính toán và cập nhật tổng điểm từ cơ sở dữ liệu
-                match.TotalScore1 = CalculateTotalScore1();
-                match.TotalScore2 = CalculateTotalScore2();
+                match.TotalScore1 = CalculateTotalScore(1);
+                match.TotalScore2 = CalculateTotalScore(2);
 
                 // Buộc cập nhật giao diện
                 UpdateUI();
 
-                if (lblTime.Text != "00:00")
+                if (IsSoccerMatch())
+                {
+                    // Futsal: reset đồng hồ đếm ngược về thời gian mặc định
+                    var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+                    int defaultMinutes = matchClass?.DefaultPeriodMinutes ?? 20;
+                    elapsedMinutes = defaultMinutes * 60;
+                }
+                else if (lblTime.Text != "00:00")
                 {
                     var parts = lblTime.Text.Split(':');
                     if (parts.Length == 2 &&
@@ -983,7 +1004,7 @@ namespace Scoreboard
             }
 
             // After overtime, if still tied, go to penalty
-            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count >= matchClass.MaxOvertimePeriods && penaltyPeriods.Count == 0 && CalculateTotalScore1() == CalculateTotalScore2())
+            if (isTied && matchClass.AllowOvertime && overtimePeriods.Count >= matchClass.MaxOvertimePeriods && penaltyPeriods.Count == 0 && CalculateTotalScore(1) == CalculateTotalScore(2))
             {
                 return "Penalty";
             }
@@ -1022,8 +1043,8 @@ namespace Scoreboard
             {
                 var allPeriods = Repository.GetMatchSetsByMatchId(match.MatchId);
                 var matchPen = allPeriods.FirstOrDefault(m => m.ClassSetsName.Contains("Penalty"));
-                int team1Score = CalculateTotalScore1();
-                int team2Score = CalculateTotalScore2();
+                int team1Score = CalculateTotalScore(1);
+                int team2Score = CalculateTotalScore(2);
                 int team1ScorePen = 0;
                 int team2ScorePen = 0;
                 string winner = "";
@@ -1111,10 +1132,29 @@ namespace Scoreboard
                 {
                     if (!isPaused)
                     {
-                        elapsedMinutes++;
-                        int hours = elapsedMinutes / 60;
-                        int minutes = elapsedMinutes % 60;
-                        lblTime.Text = $"{hours:D2}:{minutes:D2}";
+                        if (IsSoccerMatch())
+                        {
+                            // Đếm ngược cho Futsal
+                            elapsedMinutes--;
+                            if (elapsedMinutes <= 0)
+                            {
+                                elapsedMinutes = 0;
+                                isPaused = true;
+                                matchTimer.Stop();
+                                lblTime.Text = "00:00";
+                                Repository.UpdateMatchSetTime(match.MatchId, match.Id, lblTime.Text);
+                                MessageBox.Show("Hết giờ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            // Đếm xuôi cho các môn khác
+                            elapsedMinutes++;
+                        }
+                        int mins = elapsedMinutes / 60;
+                        int secs = elapsedMinutes % 60;
+                        lblTime.Text = $"{mins:D2}:{secs:D2}";
                         Repository.UpdateMatchSetTime(match.MatchId, match.Id, lblTime.Text);
                     }
                 };
@@ -1147,8 +1187,21 @@ namespace Scoreboard
 
         public void ResetClock()
         {
-            elapsedMinutes = 0;
-            lblTime.Text = "00:00";
+            if (IsSoccerMatch())
+            {
+                // Reset về thời gian mặc định của hiệp (từ MatchClass)
+                var matchClass = Repository.GetMatchClassById(match.MatchClassId ?? 0);
+                int defaultMinutes = matchClass?.DefaultPeriodMinutes ?? 20;
+                elapsedMinutes = defaultMinutes * 60;
+                int mins = elapsedMinutes / 60;
+                int secs = elapsedMinutes % 60;
+                lblTime.Text = $"{mins:D2}:{secs:D2}";
+            }
+            else
+            {
+                elapsedMinutes = 0;
+                lblTime.Text = "00:00";
+            }
         }
 
         public MatchsetModel Matchset => match;
@@ -1182,8 +1235,8 @@ namespace Scoreboard
                     if (isSecondHalf)
                     {
                         // Check if scores are tied
-                        int team1TotalScore = CalculateTotalScore1();
-                        int team2TotalScore = CalculateTotalScore2();
+                        int team1TotalScore = CalculateTotalScore(1);
+                        int team2TotalScore = CalculateTotalScore(2);
 
                         return team1TotalScore == team2TotalScore;
                     }
@@ -1236,7 +1289,8 @@ namespace Scoreboard
             if ((matchQuery.Score1 >= matchClass.PeriodsToWin || matchQuery.Score2 >= matchClass.PeriodsToWin) && !IsSoccerMatch())
             {
                 return false;
-            } else
+            }
+            else
                 return true;
         }
         private void LoadFlagImagesVN()

@@ -1542,7 +1542,8 @@ namespace Scoreboard.Data
             var list = new List<MatchClassModel>();
 
             using (var cmd = new NpgsqlCommand(@"SELECT id, name, period_type, standard_periods, periods_to_win, 
-                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at FROM MatchClass ORDER BY id", Conn))
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at, 
+                COALESCE(default_period_minutes, 0) as default_period_minutes FROM MatchClass ORDER BY id", Conn))
             using (var dr = cmd.ExecuteReader())
             {
                 while (dr.Read())
@@ -1558,7 +1559,8 @@ namespace Scoreboard.Data
                         MaxOvertimePeriods = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
                         AllowTie = dr.IsDBNull(7) ? false : dr.GetBoolean(7),
                         CreatedAt = dr.IsDBNull(8) ? DateTime.Now : dr.GetDateTime(8),
-                        UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9)
+                        UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9),
+                        DefaultPeriodMinutes = dr.IsDBNull(10) ? 0 : dr.GetInt32(10)
                     });
                 }
             }
@@ -1572,7 +1574,8 @@ namespace Scoreboard.Data
         public static MatchClassModel GetMatchClassById(int id)
         {
             using (var cmd = new NpgsqlCommand(@"SELECT id, name, period_type, standard_periods, periods_to_win, 
-                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at FROM MatchClass WHERE id = @id", Conn))
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at, 
+                COALESCE(default_period_minutes, 0) as default_period_minutes FROM MatchClass WHERE id = @id", Conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 using (var dr = cmd.ExecuteReader())
@@ -1590,7 +1593,8 @@ namespace Scoreboard.Data
                             MaxOvertimePeriods = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
                             AllowTie = dr.IsDBNull(7) ? false : dr.GetBoolean(7),
                             CreatedAt = dr.IsDBNull(8) ? DateTime.Now : dr.GetDateTime(8),
-                            UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9)
+                            UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9),
+                            DefaultPeriodMinutes = dr.IsDBNull(10) ? 0 : dr.GetInt32(10)
                         };
                     }
                 }
@@ -2132,6 +2136,21 @@ namespace Scoreboard.Data
         }
         public static void DeleteTeam(int tid,int id)
         {
+            // Kiểm tra đội có trận đấu nào không
+            string checkSql = "SELECT COUNT(*) FROM Matches WHERE (team1_id = @id OR team2_id = @id) AND tournament_id = @tid";
+            int matchCount;
+            using (var checkCmd = new NpgsqlCommand(checkSql, Conn))
+            {
+                checkCmd.Parameters.AddWithValue("@tid", tid);
+                checkCmd.Parameters.AddWithValue("@id", id);
+                matchCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+            }
+
+            if (matchCount > 0)
+            {
+                throw new InvalidOperationException("Không thể xóa đội đã có lịch sử thi đấu.");
+            }
+
             string sql = "DELETE FROM teams WHERE tournament_id = @tid AND id = @id";
 
             using (var cmd = new NpgsqlCommand(sql, Conn))

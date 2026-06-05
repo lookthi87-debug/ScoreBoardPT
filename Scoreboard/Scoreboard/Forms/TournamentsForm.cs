@@ -299,7 +299,8 @@ namespace Scoreboard
         {
             LoadClass();
             LoadYears();
-            LoadTournaments(cbMatchClass.SelectedValue.ToString());
+            string classId = cbMatchClass.SelectedValue?.ToString() ?? "";
+            LoadTournaments(classId);
         }
         private void LoadTournaments(string Class_id = "")
         {
