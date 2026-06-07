@@ -860,8 +860,13 @@ namespace Scoreboard
             //currentMatch.Score1 = int.Parse(nScore1.Value.ToString());
             //currentMatch.Score2 = int.Parse(nScore2.Value.ToString());
             // Always save time as 00:00
-            currentMatch.Time = "00:00";
-
+            if (currentMatch.MatchClassId == 1)
+            {
+                currentMatch.Time = "20:00";
+            } else
+            {
+                currentMatch.Time = "00:00";
+            }
             // Set start and end datetime
             currentMatch.Start = dtpStartDateTime.Value;
             currentMatch.End = dtpEndDateTime.Value;
@@ -936,7 +941,7 @@ namespace Scoreboard
                                 Team2 = currentMatch.Team2,
                                 Score1 = 0,
                                 Score2 = 0,
-                                Time = "00:00",
+                                Time = currentMatch.Time,
                                 Note = "",
                                 Status = MatchStatusConfig.Status.NotStarted,
                                 RefereeId = (currentMatch.RefereeIds != null && currentMatch.RefereeIds.Count > 0) ? (int?)currentMatch.RefereeIds[0] : null,

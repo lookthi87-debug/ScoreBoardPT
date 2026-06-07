@@ -375,6 +375,14 @@ namespace Scoreboard
             currentMatch.Team2 = txtTeam2.Text.Trim();
             currentMatch.Score1 = int.Parse(nScore1.Value.ToString());
             currentMatch.Score2 = int.Parse(nScore2.Value.ToString());
+            if (currentMatch.MatchClassId == 1)
+            {
+                currentMatch.Time = "20:00";
+            }
+            else 
+            {
+                currentMatch.Time = "00:00";
+            }
             // Set the selected referee
             if (selectedReferees.Count > 0)
             {
