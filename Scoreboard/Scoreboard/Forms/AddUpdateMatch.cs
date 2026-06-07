@@ -716,12 +716,12 @@ namespace Scoreboard
             LoadUsers();
             // Load tournament information to set date constraints
             var tournament = Repository.GetAllTournamentsById(tournament_id);
-            if (tournament != null && tournament.End.HasValue)
+            if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
             {
                 // Set the maximum date for the end date picker to the tournament's end date
                 // But ensure it's at 23:59:59 of that day
                 var maxEndDate = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-                var maxStartDate = tournament.Start.Value.Date.AddHours(00).AddMinutes(00).AddSeconds(00);
+                var maxStartDate = tournament.Start.Value.Date;
                 dtpEndDateTime.MaxDate = maxEndDate;
                 dtpStartDateTime.MaxDate = maxEndDate;
                 dtpStartDateTime.MinDate = maxStartDate;
@@ -807,27 +807,31 @@ namespace Scoreboard
             if (currentMatch.TournamentId.HasValue)
             {
                 var tournament = Repository.GetAllTournamentsById(currentMatch.TournamentId.Value);
-                // Set the MatchClassId from the tournament
-                currentMatch.MatchClassId = tournament.match_class_id;
-                currentMatch.MatchClassName = tournament.match_class_name;
-                var start = tournament.Start.Value.Date.AddHours(00).AddMinutes(00).AddSeconds(00);
-                var end = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
-                if (tournament != null && tournament.Start.HasValue && tournament.End.HasValue)
+                if (tournament != null)
                 {
-                    if (dtpStartDateTime.Value < start || dtpStartDateTime.Value > end)
+                    // Set the MatchClassId from the tournament
+                    currentMatch.MatchClassId = tournament.match_class_id;
+                    currentMatch.MatchClassName = tournament.match_class_name;
+                    if (tournament.Start.HasValue && tournament.End.HasValue)
                     {
-                        MessageBox.Show($"Thời gian bắt đầu ({dtpStartDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
-                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        dtpStartDateTime.Focus();
-                        return;
-                    }
+                        var start = tournament.Start.Value.Date;
+                        var end = tournament.End.Value.Date.AddHours(23).AddMinutes(59).AddSeconds(59);
 
-                    if (dtpEndDateTime.Value < start || dtpEndDateTime.Value > end)
-                    {
-                        MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
-                                      "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        dtpEndDateTime.Focus();
-                        return;
+                        if (dtpStartDateTime.Value < start || dtpStartDateTime.Value > end)
+                        {
+                            MessageBox.Show($"Thời gian bắt đầu ({dtpStartDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
+                                          "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            dtpStartDateTime.Focus();
+                            return;
+                        }
+
+                        if (dtpEndDateTime.Value < start || dtpEndDateTime.Value > end)
+                        {
+                            MessageBox.Show($"Thời gian kết thúc ({dtpEndDateTime.Value:dd/MM/yyyy HH:mm}) phải nằm trong khoảng thời gian của giải đấu ({tournament.Start.Value:dd/MM/yyyy HH:mm} - {tournament.End.Value:dd/MM/yyyy HH:mm})",
+                                          "Thời gian không hợp lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            dtpEndDateTime.Focus();
+                            return;
+                        }
                     }
                 }
             }
@@ -867,8 +871,21 @@ namespace Scoreboard
             currentMatch.RefereeNames = new List<string>();
             currentMatch.Status = cbStatus.SelectedValue?.ToString();
 
-            currentMatch.Team1Id = int.Parse(lblId1.Text.ToString());
-            currentMatch.Team2Id = int.Parse(lblId2.Text.ToString());
+            currentMatch.Team1Id = int.TryParse(lblId1.Text, out int t1Id) ? t1Id : -1;
+            currentMatch.Team2Id = int.TryParse(lblId2.Text, out int t2Id) ? t2Id : -1;
+
+            if (currentMatch.Team1Id <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn đội 1", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTeam1.Focus();
+                return;
+            }
+            if (currentMatch.Team2Id <= 0)
+            {
+                MessageBox.Show("Vui lòng chọn đội 2", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTeam2.Focus();
+                return;
+            }
 
             foreach (var referee in selectedReferees)
             {
@@ -1135,26 +1152,35 @@ namespace Scoreboard
         }
         private void txtTeam1_DoubleClick(object sender, EventArgs e)
         {
+            if (!currentMatch.TournamentId.HasValue) return;
             TeamsSearchForm frm = new TeamsSearchForm((int)currentMatch.TournamentId);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var teams = Repository.GetTeamById(frm.team_Id, (int)currentMatch.TournamentId);
+                if (teams == null)
+                {
+                    MessageBox.Show("Không tìm thấy đội.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 lblId1.Text = teams.Id.ToString();
-
                 txtTeam1.Text = teams.Name;
                 LoadFlagToPictureBox(teams.Flag, pbTeam1Flag);
             }
-            
         }
 
         private void txtTeam2_DoubleClick(object sender, EventArgs e)
         {
+            if (!currentMatch.TournamentId.HasValue) return;
             TeamsSearchForm frm = new TeamsSearchForm((int)currentMatch.TournamentId);
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var teams = Repository.GetTeamById(frm.team_Id, (int)currentMatch.TournamentId);
+                if (teams == null)
+                {
+                    MessageBox.Show("Không tìm thấy đội.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 lblId2.Text = teams.Id.ToString();
-
                 txtTeam2.Text = teams.Name;
                 LoadFlagToPictureBox(teams.Flag, pbTeam2Flag);
             }

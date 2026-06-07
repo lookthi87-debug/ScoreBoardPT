@@ -259,26 +259,31 @@ namespace Scoreboard
             {
                 MessageBox.Show("Vui lòng nhập host.");
                 txtHost.Focus();
+                return;
             }
             if (txtPort.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Vui lòng nhập port.");
                 txtPort.Focus();
+                return;
             }
             if (txtDatabase.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Vui lòng nhập database name.");
                 txtDatabase.Focus();
+                return;
             }
             if (txtUserName.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Vui lòng nhập user name.");
                 txtUserName.Focus();
+                return;
             }
             if (txtPass.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Vui lòng nhập password.");
                 txtPass.Focus();
+                return;
             }
             PostgresHelper.SaveConfig(txtHost.Text.Trim(), txtPort.Text.Trim(), txtDatabase.Text.Trim(), txtUserName.Text.Trim(), txtPass.Text.Trim());
             if (PostgresHelper.OpenSharedConnection() == true)

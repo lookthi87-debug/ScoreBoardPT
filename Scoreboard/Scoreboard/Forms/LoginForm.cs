@@ -32,7 +32,7 @@ namespace Scoreboard
             InitializeComponent();
             mainForm = parent;
             pingTimer = new Timer();
-            pingTimer.Interval = 10 * 60 * 500; // 5 phút
+            pingTimer.Interval = 5 * 60 * 1000; // 5 phút
             pingTimer.Tick += PingTimer_Tick;
             pingTimer.Start();
         }
@@ -389,7 +389,7 @@ namespace Scoreboard
         private void linkChangePass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var frmChangePass = new ChangePassForm(User);
-            if (new ChangePassForm(User).ShowDialog() == DialogResult.OK)
+            if (frmChangePass.ShowDialog() == DialogResult.OK)
             {
                 txtPassWord.Focus();
             }

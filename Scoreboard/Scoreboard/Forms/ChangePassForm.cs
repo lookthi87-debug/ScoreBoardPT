@@ -65,7 +65,7 @@ namespace Scoreboard
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(354, 29);
             this.txtUserName.TabIndex = 0;
-            this.txtUserName.Text = "admin";
+            this.txtUserName.Text = "";
             this.txtUserName.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblUser
@@ -87,7 +87,7 @@ namespace Scoreboard
             this.txtPassWord.PasswordChar = '*';
             this.txtPassWord.Size = new System.Drawing.Size(354, 29);
             this.txtPassWord.TabIndex = 1;
-            this.txtPassWord.Text = "admin123";
+            this.txtPassWord.Text = "";
             this.txtPassWord.UseSystemPasswordChar = true;
             this.txtPassWord.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
@@ -150,7 +150,7 @@ namespace Scoreboard
             this.txtPassWordNew.PasswordChar = '*';
             this.txtPassWordNew.Size = new System.Drawing.Size(354, 29);
             this.txtPassWordNew.TabIndex = 2;
-            this.txtPassWordNew.Text = "admin123";
+            this.txtPassWordNew.Text = "";
             this.txtPassWordNew.UseSystemPasswordChar = true;
             this.txtPassWordNew.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
@@ -173,7 +173,7 @@ namespace Scoreboard
             this.txtPassWordNewCf.PasswordChar = '*';
             this.txtPassWordNewCf.Size = new System.Drawing.Size(354, 29);
             this.txtPassWordNewCf.TabIndex = 3;
-            this.txtPassWordNewCf.Text = "admin123";
+            this.txtPassWordNewCf.Text = "";
             this.txtPassWordNewCf.UseSystemPasswordChar = true;
             this.txtPassWordNewCf.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
@@ -319,6 +319,7 @@ namespace Scoreboard
                 User.Password = Security.HashPassword(txtPassWordNew.Text);
                 Repository.UpdateUser(User);
                 MessageBox.Show("Thay đổi mật khẩu thành công.");
+                this.DialogResult = DialogResult.OK;
             }
             catch
             {

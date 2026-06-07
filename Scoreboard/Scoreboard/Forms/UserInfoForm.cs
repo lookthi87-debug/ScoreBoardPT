@@ -373,7 +373,19 @@ namespace Scoreboard
             currentMatchid = "";
             currentMatchSetid = 0;
 
-            if (currentUser?.RoleId != 2) // role trọng tài
+            // Check if user has referee role (by role name, with legacy ID fallback)
+            bool isReferee = false;
+            if (currentUser?.RoleName != null)
+            {
+                isReferee = currentUser.RoleName.IndexOf("trọng tài", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            currentUser.RoleName.Equals("Referee", StringComparison.OrdinalIgnoreCase);
+            }
+            // Fallback: legacy check by role ID
+            if (!isReferee && currentUser?.RoleId == 2)
+            {
+                isReferee = true;
+            }
+            if (!isReferee)
             {
                 lblMessage.Text = "Không có quyền trọng tài";
                 btnStart.Enabled = false;

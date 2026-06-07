@@ -162,8 +162,10 @@ namespace Scoreboard.Data
         public static UserModel GetUserByName(string username)
         {
             using (var cmd = new NpgsqlCommand(@"
-                SELECT id, name, password, role_id, fullname, phone, email
-                FROM Users WHERE name=@u AND isactive='1'", Conn))
+                SELECT u.id, u.name, u.password, u.role_id, u.fullname, u.phone, u.email, r.name AS role_name
+                FROM Users u
+                LEFT JOIN Roles r ON u.role_id = r.id
+                WHERE u.name=@u AND u.isactive='1'", Conn))
             {
                 cmd.Parameters.AddWithValue("@u", username);
                 using (var dr = cmd.ExecuteReader())
@@ -178,7 +180,8 @@ namespace Scoreboard.Data
                             RoleId = dr.IsDBNull(3) ? (int?)null : dr.GetInt32(3),
                             Fullname = dr.IsDBNull(4) ? null : dr.GetString(4),
                             Phone = dr.IsDBNull(5) ? null : dr.GetString(5),
-                            Email = dr.IsDBNull(6) ? null : dr.GetString(6)
+                            Email = dr.IsDBNull(6) ? null : dr.GetString(6),
+                            RoleName = dr.IsDBNull(7) ? null : dr.GetString(7)
                         };
                     }
                 }
@@ -302,7 +305,7 @@ namespace Scoreboard.Data
         {
             using (var cmd = new NpgsqlCommand("SELECT t.id, t.name, t.start, t.\"end\", t.description, t.match_class_id, mcl.name as match_class_name" +
                 " FROM Tournaments t " +
-                " LEFT JOIN Matchclass mcl ON t.match_class_id = mcl.id" +
+                " LEFT JOIN MatchClass mcl ON t.match_class_id = mcl.id" +
                 " WHERE t.id = @id", Conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
@@ -332,7 +335,7 @@ namespace Scoreboard.Data
 
             string query = "SELECT t.id, t.name, t.start, t.\"end\", t.description, t.match_class_id, mcl.name AS match_class_name " +
                            "FROM Tournaments t " +
-                           "LEFT JOIN Matchclass mcl ON t.match_class_id = mcl.id ";
+                           "LEFT JOIN MatchClass mcl ON t.match_class_id = mcl.id ";
 
             // Nếu id > 0 thì lọc theo class_id
             if (id > 0)

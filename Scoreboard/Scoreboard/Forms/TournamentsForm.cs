@@ -319,11 +319,13 @@ namespace Scoreboard
                                     .Where(u => u.match_class_id == id)
                                     .ToList();
                 }
-                int selectedYear = (int)cbYear.SelectedItem;
-
-                tournaments = tournaments
-                                .Where(t => t.Start?.Year == selectedYear)
-                                .ToList();
+                if (cbYear.SelectedItem != null)
+                {
+                    int selectedYear = (int)cbYear.SelectedItem;
+                    tournaments = tournaments
+                                    .Where(t => t.Start?.Year == selectedYear)
+                                    .ToList();
+                }
             }
             
 
@@ -403,8 +405,8 @@ namespace Scoreboard
         {
             cbYear.Items.Clear();
 
-            int startYear = 2025;
             int currentYear = DateTime.Now.Year;
+            int startYear = currentYear - 5; // Allow 5 years in the past
 
             for (int i = currentYear; i >= startYear; i--)
             {

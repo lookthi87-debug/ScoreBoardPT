@@ -119,10 +119,12 @@ namespace Scoreboard.Data
                     _sharedConn.Close();
                     _sharedConn.Dispose();
                 }
+                _sharedConn = null;
             }
             catch
             {
                 MessageBox.Show("Không thể kết nối database");
+                _sharedConn = null;
             }
         }
 
