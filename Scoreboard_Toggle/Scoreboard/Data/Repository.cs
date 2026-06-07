@@ -1638,7 +1638,8 @@ namespace Scoreboard.Data
         public static MatchClassModel GetMatchClassById(int id)
         {
             using (var cmd = new NpgsqlCommand(@"SELECT id, name, period_type, standard_periods, periods_to_win, 
-                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at FROM MatchClass WHERE id = @id", Conn))
+                allow_overtime, max_overtime_periods, allow_tie, created_at, updated_at, 
+                COALESCE(default_period_minutes, 0) as default_period_minutes FROM MatchClass WHERE id = @id", Conn))
             {
                 cmd.Parameters.AddWithValue("@id", id);
                 using (var dr = cmd.ExecuteReader())
@@ -1656,7 +1657,8 @@ namespace Scoreboard.Data
                             MaxOvertimePeriods = dr.IsDBNull(6) ? 0 : dr.GetInt32(6),
                             AllowTie = dr.IsDBNull(7) ? false : dr.GetBoolean(7),
                             CreatedAt = dr.IsDBNull(8) ? DateTime.Now : dr.GetDateTime(8),
-                            UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9)
+                            UpdatedAt = dr.IsDBNull(9) ? DateTime.Now : dr.GetDateTime(9),
+                            DefaultPeriodMinutes = dr.IsDBNull(10) ? 0 : dr.GetInt32(10)
                         };
                     }
                 }

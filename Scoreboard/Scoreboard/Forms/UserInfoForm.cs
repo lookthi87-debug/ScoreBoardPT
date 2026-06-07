@@ -44,6 +44,8 @@ namespace Scoreboard
         }
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UserInfoForm));
             this.btnStart = new MaterialSkin.Controls.MaterialButton();
             this.btnEndMatch = new MaterialSkin.Controls.MaterialButton();
@@ -64,6 +66,7 @@ namespace Scoreboard
             this.lblMessage = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMatches)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -110,8 +113,40 @@ namespace Scoreboard
             this.btnEndMatch.UseVisualStyleBackColor = true;
             this.btnEndMatch.Click += new System.EventHandler(this.btnEndMatch_Click);
             // 
+            // dgvMatches
+            // 
+            this.dgvMatches.AllowUserToAddRows = false;
+            this.dgvMatches.AllowUserToDeleteRows = false;
+            this.dgvMatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvMatches.BackgroundColor = System.Drawing.Color.White;
+            this.dgvMatches.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvMatches.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvMatches.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            this.dgvMatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMatches.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvMatches.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvMatches.Location = new System.Drawing.Point(109, 3);
+            this.dgvMatches.MultiSelect = false;
+            this.dgvMatches.Name = "dgvMatches";
+            this.dgvMatches.ReadOnly = true;
+            this.dgvMatches.RowHeadersVisible = false;
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            this.dgvMatches.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvMatches.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvMatches.Size = new System.Drawing.Size(817, 194);
+            this.dgvMatches.TabIndex = 42;
+            this.dgvMatches.SelectionChanged += new System.EventHandler(this.dgvMatches_SelectionChanged);
+            // 
             // txtTime
             // 
+            this.txtTime.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTime.Location = new System.Drawing.Point(154, 89);
             this.txtTime.Name = "txtTime";
@@ -120,10 +155,10 @@ namespace Scoreboard
             this.txtTime.TabIndex = 36;
             this.txtTime.TabStop = false;
             this.txtTime.Text = "00:00";
-            this.txtTime.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // nScore2
             // 
+            this.nScore2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.nScore2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nScore2.Location = new System.Drawing.Point(470, 195);
             this.nScore2.Name = "nScore2";
@@ -132,10 +167,10 @@ namespace Scoreboard
             this.nScore2.TabIndex = 35;
             this.nScore2.TabStop = false;
             this.nScore2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nScore2.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // nScore1
             // 
+            this.nScore1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.nScore1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.nScore1.Location = new System.Drawing.Point(152, 195);
             this.nScore1.Name = "nScore1";
@@ -144,12 +179,11 @@ namespace Scoreboard
             this.nScore1.TabIndex = 34;
             this.nScore1.TabStop = false;
             this.nScore1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.nScore1.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // label4
             // 
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.label4.Location = new System.Drawing.Point(36, 88);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(110, 23);
@@ -160,7 +194,7 @@ namespace Scoreboard
             // lblScore
             // 
             this.lblScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblScore.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblScore.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblScore.Location = new System.Drawing.Point(36, 201);
             this.lblScore.Name = "lblScore";
             this.lblScore.Size = new System.Drawing.Size(110, 23);
@@ -171,7 +205,7 @@ namespace Scoreboard
             // lblName
             // 
             this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblName.Location = new System.Drawing.Point(36, 155);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(110, 23);
@@ -181,6 +215,7 @@ namespace Scoreboard
             // 
             // txtTeam2
             // 
+            this.txtTeam2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTeam2.Location = new System.Drawing.Point(470, 155);
             this.txtTeam2.Name = "txtTeam2";
@@ -188,12 +223,11 @@ namespace Scoreboard
             this.txtTeam2.Size = new System.Drawing.Size(303, 26);
             this.txtTeam2.TabIndex = 32;
             this.txtTeam2.TabStop = false;
-            this.txtTeam2.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTeam2
             // 
             this.lblTeam2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTeam2.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblTeam2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblTeam2.Location = new System.Drawing.Point(557, 114);
             this.lblTeam2.Name = "lblTeam2";
             this.lblTeam2.Size = new System.Drawing.Size(124, 38);
@@ -203,6 +237,7 @@ namespace Scoreboard
             // 
             // txtTeam1
             // 
+            this.txtTeam1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTeam1.Location = new System.Drawing.Point(152, 155);
             this.txtTeam1.Name = "txtTeam1";
@@ -210,12 +245,11 @@ namespace Scoreboard
             this.txtTeam1.Size = new System.Drawing.Size(303, 26);
             this.txtTeam1.TabIndex = 31;
             this.txtTeam1.TabStop = false;
-            this.txtTeam1.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTeam1
             // 
             this.lblTeam1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTeam1.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblTeam1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblTeam1.Location = new System.Drawing.Point(241, 114);
             this.lblTeam1.Name = "lblTeam1";
             this.lblTeam1.Size = new System.Drawing.Size(124, 38);
@@ -225,6 +259,7 @@ namespace Scoreboard
             // 
             // txtTitle
             // 
+            this.txtTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(250)))), ((int)(((byte)(251)))));
             this.txtTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.txtTitle.Location = new System.Drawing.Point(152, 55);
             this.txtTitle.Name = "txtTitle";
@@ -232,12 +267,11 @@ namespace Scoreboard
             this.txtTitle.Size = new System.Drawing.Size(621, 26);
             this.txtTitle.TabIndex = 26;
             this.txtTitle.TabStop = false;
-            this.txtTitle.BackColor = System.Drawing.Color.FromArgb(249, 250, 251); // #F9FAFB - Textbox background
             // 
             // lblTenTranDau
             // 
             this.lblTenTranDau.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTenTranDau.ForeColor = System.Drawing.Color.FromArgb(52, 64, 84); // #344054 - Xám đậm
+            this.lblTenTranDau.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(64)))), ((int)(((byte)(84)))));
             this.lblTenTranDau.Location = new System.Drawing.Point(36, 55);
             this.lblTenTranDau.Name = "lblTenTranDau";
             this.lblTenTranDau.Size = new System.Drawing.Size(110, 23);
@@ -267,7 +301,7 @@ namespace Scoreboard
             // 
             // lblMessage
             // 
-            this.lblMessage.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
+            this.lblMessage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
             this.lblMessage.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblMessage.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblMessage.ForeColor = System.Drawing.Color.Red;
@@ -278,30 +312,9 @@ namespace Scoreboard
             this.lblMessage.Text = "Message";
             this.lblMessage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // dgvMatches
-            // 
-            this.dgvMatches.AllowUserToAddRows = false;
-            this.dgvMatches.AllowUserToDeleteRows = false;
-            this.dgvMatches.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvMatches.BackgroundColor = System.Drawing.Color.White;
-            this.dgvMatches.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dgvMatches.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvMatches.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            this.dgvMatches.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvMatches.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvMatches.Location = new System.Drawing.Point(3, 3);
-            this.dgvMatches.MultiSelect = false;
-            this.dgvMatches.Name = "dgvMatches";
-            this.dgvMatches.ReadOnly = true;
-            this.dgvMatches.RowHeadersVisible = false;
-            this.dgvMatches.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMatches.Size = new System.Drawing.Size(811, 194);
-            this.dgvMatches.TabIndex = 42;
-            this.dgvMatches.SelectionChanged += new System.EventHandler(this.dgvMatches_SelectionChanged);
-            // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(244, 246, 248); // #F4F6F8 - Nền chính (Form background)
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(244)))), ((int)(((byte)(246)))), ((int)(((byte)(248)))));
             this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -320,7 +333,7 @@ namespace Scoreboard
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.White; // #FFFFFF - Khung đăng nhập (Panel)
+            this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.lblTenTranDau);
             this.panel1.Controls.Add(this.btnStart);
             this.panel1.Controls.Add(this.btnCancel);
@@ -336,7 +349,7 @@ namespace Scoreboard
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.lblName);
             this.panel1.Controls.Add(this.lblScore);
-            this.panel1.Location = new System.Drawing.Point(109, 167);
+            this.panel1.Location = new System.Drawing.Point(109, 203);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(817, 348);
             this.panel1.TabIndex = 0;
@@ -355,9 +368,10 @@ namespace Scoreboard
             this.Name = "UserInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Thông tin";
-            this.Load += new System.EventHandler(this.UserInfoForm_Load);
             this.Activated += new System.EventHandler(this.UserInfoForm_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UserInfoForm_FormClosed);
+            this.Load += new System.EventHandler(this.UserInfoForm_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvMatches)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nScore1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -388,11 +402,17 @@ namespace Scoreboard
 
                 dgvMatches.Columns.Clear();
                 dgvMatches.Columns.Add("TournamentName", "Giải đấu");
+                dgvMatches.Columns["TournamentName"].Width = 250;
                 dgvMatches.Columns.Add("Team1", "Đội 1");
+                dgvMatches.Columns["Team1"].Width = 150;
                 dgvMatches.Columns.Add("Team2", "Đội 2");
+                dgvMatches.Columns["Team2"].Width = 150;
                 dgvMatches.Columns.Add("Set", "Hiệp/Set");
+                dgvMatches.Columns["Set"].Width = 100;
                 dgvMatches.Columns.Add("Score", "Tỉ số");
+                dgvMatches.Columns["Score"].Width = 80;
                 dgvMatches.Columns.Add("Status", "Trạng thái");
+                dgvMatches.Columns["Status"].Width = 100;
                 dgvMatches.Columns.Add("StartTime", "Bắt đầu");
                 dgvMatches.Columns["StartTime"].Visible = false;
                 dgvMatches.Columns.Add("MatchId", "MatchId");

@@ -884,7 +884,13 @@ namespace Scoreboard.Data
         {
             var list = new List<MatchsetModel>();
             string sql = @"
-                SELECT 
+                WITH LatestMatchSet AS (
+                    SELECT DISTINCT ON (ms.match_id)
+                           ms.*
+                    FROM MatchSets ms
+                    ORDER BY ms.match_id, ms.id DESC
+                )
+                SELECT
                     ms.id,
                     ms.match_id,
                     tm1.name as team1,
@@ -905,7 +911,7 @@ namespace Scoreboard.Data
                     m.score2,
                     m.start,
                     m.""end""
-                FROM MatchSets ms
+                FROM LatestMatchSet ms
                 INNER JOIN Matches m ON ms.match_id = m.id
                 LEFT JOIN Users u ON ms.referee_id = u.id
                 LEFT JOIN MatchClass mtl ON m.match_class_id = mtl.id
@@ -913,13 +919,13 @@ namespace Scoreboard.Data
                 LEFT JOIN Teams tm1 ON m.team1_id = tm1.id AND m.tournament_id = tm1.tournament_id
                 LEFT JOIN Teams tm2 ON m.team2_id = tm2.id AND m.tournament_id = tm2.tournament_id
                 WHERE ms.referee_id = @uid
-                  AND m.start::date = CURRENT_DATE
-                ORDER BY 
-                    CASE m.status 
-                        WHEN '2' THEN 0 
-                        WHEN '1' THEN 1 
-                        WHEN '0' THEN 2 
-                        ELSE 3 
+                  AND CURRENT_DATE BETWEEN t.start::date AND t.""end""::date
+                ORDER BY
+                    CASE m.status
+                        WHEN '2' THEN 0
+                        WHEN '1' THEN 1
+                        WHEN '0' THEN 2
+                        ELSE 3
                     END,
                     m.start;
             ";

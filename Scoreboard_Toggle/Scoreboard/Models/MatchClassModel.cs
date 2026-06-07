@@ -12,6 +12,7 @@ namespace Scoreboard.Models
         public bool AllowOvertime { get; set; } // Có cho phép hiệp phụ hay không: true cho bóng đá, false cho bóng chuyền
         public int MaxOvertimePeriods { get; set; } // Số hiệp phụ tối đa cho phép: 2 với bóng đá, 0 nếu không có
         public bool AllowTie { get; set; } // Có cho phép hòa không: true nếu có thể hòa, false nếu phải có thắng thua
+        public int DefaultPeriodMinutes { get; set; } // Thời gian mặc định mỗi hiệp (phút): 20 với Futsal, 0 nếu không đếm ngược
         public DateTime CreatedAt { get; set; } // Ngày tạo bản ghi
         public DateTime UpdatedAt { get; set; } // Ngày cập nhật gần nhất
     }

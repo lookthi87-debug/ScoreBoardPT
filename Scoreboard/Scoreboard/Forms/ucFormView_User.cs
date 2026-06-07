@@ -225,7 +225,7 @@ namespace Scoreboard
             if (countShow == 1)
             {
                 lblTitle.Font = new System.Drawing.Font("Arial", 22 * scale, FontStyle.Bold);
-                lblTime.Font = new System.Drawing.Font("Arial", 40 * scale, FontStyle.Bold);
+                lblTime.Font = new System.Drawing.Font("Arial", 60 * scale, FontStyle.Bold);
                 lblHiepDau.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
                 lblTeam1.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
                 lblTeam2.Font = new System.Drawing.Font("Arial", 24 * scale, FontStyle.Bold);
@@ -336,22 +336,22 @@ namespace Scoreboard
             try
             {
                 // Chỉ cho phép cộng điểm khi đồng hồ đang chạy
-                if (isPaused)
-                {
-                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                //if (isPaused)
+                //{
+                //    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi cộng điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
 
                 string teamName = team == 1 ? match.Team1 : match.Team2;
 
                 // Hiển thị hộp thoại xác nhận
-                DialogResult result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn cộng 1 điểm cho {teamName}?",
-                    "Xác nhận cộng điểm",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+                //DialogResult result = MessageBox.Show(
+                //    $"Bạn có chắc chắn muốn cộng 1 điểm cho {teamName}?",
+                //    "Xác nhận cộng điểm",
+                //    MessageBoxButtons.YesNo,
+                //    MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                //if (result != DialogResult.Yes) return;
 
                 // Tăng điểm và lưu vào cơ sở dữ liệu
                 IncrementTeamScore(team);
@@ -379,29 +379,29 @@ namespace Scoreboard
         {
             try
             {
-                if (isPaused)
-                {
-                    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi trừ điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                //if (isPaused)
+                //{
+                //    MessageBox.Show("Vui lòng bắt đầu đồng hồ trước khi trừ điểm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
 
                 // Kiểm tra điểm hiện tại, không cho giảm dưới 0
                 int currentScore = team == 1 ? scoreTeam1 : scoreTeam2;
                 if (currentScore <= 0)
                 {
-                    MessageBox.Show("Điểm đã ở mức 0, không thể trừ thêm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    //MessageBox.Show("Điểm đã ở mức 0, không thể trừ thêm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 string teamName = team == 1 ? match.Team1 : match.Team2;
 
-                DialogResult result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn trừ 1 điểm của {teamName}?",
-                    "Xác nhận trừ điểm",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+                //DialogResult result = MessageBox.Show(
+                //    $"Bạn có chắc chắn muốn trừ 1 điểm của {teamName}?",
+                //    "Xác nhận trừ điểm",
+                //    MessageBoxButtons.YesNo,
+                //    MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                //if (result != DialogResult.Yes) return;
 
                 // Giảm điểm và lưu vào cơ sở dữ liệu
                 DecrementTeamScore(team);
@@ -911,7 +911,14 @@ namespace Scoreboard
                     return null; // Không còn hiệp/set nào được phép
                 }
 
-
+                if (match.MatchClassId == 1)
+                {
+                    match.Time = "20:00";
+                }
+                else
+                {
+                    match.Time = "00:00";
+                }
                 // Tạo hiệp/set mới
                 var newSet = new MatchsetModel
                 {
@@ -920,7 +927,7 @@ namespace Scoreboard
                     Team2 = match.Team2,
                     Score1 = 0,
                     Score2 = 0,
-                    Time = "00:00",
+                    Time = match.Time,
                     Note = "",
                     Status = MatchStatusConfig.Status.NotStarted, // Ban đầu chưa hoạt động
                     RefereeId = match.RefereeId,
